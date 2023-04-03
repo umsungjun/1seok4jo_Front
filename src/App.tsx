@@ -1,5 +1,14 @@
+import {BrowserRouter} from 'react-router-dom'
+import Header from './Common/Header'
+import PageNavigator from './PageNavigator'
+
 function App() {
-  return <div>프론트엔드 1석 4조 </div>
+  return (
+    <BrowserRouter>
+      <Header />
+      <PageNavigator />
+    </BrowserRouter>
+  )
 }
 
 export default App
