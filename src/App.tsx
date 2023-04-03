@@ -1,5 +1,6 @@
 import {BrowserRouter} from 'react-router-dom'
 import Header from './Common/Header'
+import MainBanner from './Common/MainBanner'
 import PageNavigator from './PageNavigator'
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
     <BrowserRouter>
       <Header />
       <PageNavigator />
+      <MainBanner />
     </BrowserRouter>
   )
 }
