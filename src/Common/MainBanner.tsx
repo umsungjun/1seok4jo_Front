@@ -69,10 +69,6 @@ export default function MainBanner() {
             </div>
           </SwiperSlide>
         ))}
-        <div className='pagination-container'>
-          <div className='circle-line' />
-          <div className='swiper-pagination' />
-        </div>
       </Swiper>
     </BannerSwiper>
   )
