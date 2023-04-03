@@ -6,12 +6,14 @@ import {SlCompass} from 'react-icons/sl'
 import {GoSearch} from 'react-icons/go'
 import {AiOutlineBell} from 'react-icons/ai'
 import {RxHamburgerMenu} from 'react-icons/rx'
+import Login from '../Popups/Login'
 
 export default function Header() {
   const [searchSelect, setSerachSelect] = useState('검색')
   const [selectUl, setSelectUl] = useState(false)
   const [token, setToken] = useState(true) // TODO 로그인 상태
   const [userUlList, setUserUlList] = useState(false)
+  const [showLoginModal, setShowLoginModal] = useState(false)
 
   const handleSearchSelect = () => {
     setSelectUl(true)
@@ -29,6 +31,13 @@ export default function Header() {
   const handleLogout = () => {
     setToken(false)
   }
+
+  const handleLogin = () => {
+    setShowLoginModal(true)
+    const modalBack = document.querySelector('#modalBackdrop') as HTMLElement
+    modalBack.style.display = 'block'
+  }
+
   return (
     <HeaderSection>
       <LogoBox>
@@ -57,7 +66,7 @@ export default function Header() {
         </SearchButton>
       </SearchBox>
       {!token ? (
-        <LoginText>로그인</LoginText>
+        <LoginText onClick={handleLogin}>로그인</LoginText>
       ) : (
         <LoginBox>
           <NotificationsLink to='/notifications'>
@@ -79,6 +88,7 @@ export default function Header() {
           </UserButton>
         </LoginBox>
       )}
+      <Login show={showLoginModal} />
     </HeaderSection>
   )
 }
@@ -206,6 +216,7 @@ const SearchButton = styled.button`
 `
 const LoginText = styled.span`
   cursor: pointer;
+  min-width: 9rem;
 `
 
 const LoginBox = styled.div`
