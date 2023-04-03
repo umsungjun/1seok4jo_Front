@@ -76,13 +76,13 @@ export default function MainBanner() {
 
 const BannerSwiper = styled.div`
   position: relative;
-  top: 85px;
-  border: 1px solid red;
+  top: 83px;
+  border-bottom: 1px solid lightgray;
 `
 const SwiperImage = styled.div`
   img {
-    width: 500px;
-    height: 350px;
+    width: 100%;
+    height: 380px;
     object-fit: cover;
   }
 `
