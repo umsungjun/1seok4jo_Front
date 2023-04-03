@@ -1,6 +1,7 @@
 import {useState} from 'react'
 // import styled from 'styled-components'
 import styled from '@emotion/styled'
+import {FcSportsMode} from 'react-icons/fc'
 
 export default function ThemeSlide() {
   const [category, setCategory] = useState('')
@@ -26,33 +27,43 @@ export default function ThemeSlide() {
 
 const themeSlide = [
   {
+    icon: {FcSportsMode},
     category: '레저',
   },
   {
+    icon: {FcSportsMode},
     category: '맛집',
   },
   {
+    icon: {FcSportsMode},
     category: '자연',
   },
   {
+    icon: {FcSportsMode},
     category: '문화',
   },
   {
+    icon: {FcSportsMode},
     category: '쇼핑',
   },
   {
+    icon: {FcSportsMode},
     category: '체험',
   },
   {
+    icon: {FcSportsMode},
     category: '종교',
   },
   {
+    icon: {FcSportsMode},
     category: '가족',
   },
   {
+    icon: {FcSportsMode},
     category: '반려동물',
   },
   {
+    icon: {FcSportsMode},
     category: '건강',
   },
 ]
