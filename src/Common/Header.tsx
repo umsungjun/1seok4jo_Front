@@ -1,12 +1,17 @@
 import styled, {keyframes} from 'styled-components'
+import {useEffect, useState} from 'react'
+import {Link} from 'react-router-dom'
 
 import {SlCompass} from 'react-icons/sl'
 import {GoSearch} from 'react-icons/go'
-import {useState} from 'react'
+import {AiOutlineBell} from 'react-icons/ai'
+import {RxHamburgerMenu} from 'react-icons/rx'
 
 export default function Header() {
   const [searchSelect, setSerachSelect] = useState('검색')
   const [selectUl, setSelectUl] = useState(false)
+  const [token, setToken] = useState(true) // TODO 로그인 상태
+  const [userUlList, setUserUlList] = useState(false)
 
   const handleSearchSelect = () => {
     setSelectUl(true)
@@ -15,6 +20,14 @@ export default function Header() {
   const handleSearchValue = (e: React.MouseEvent<HTMLLIElement>) => {
     setSelectUl(false)
     setSerachSelect(e.currentTarget.innerText)
+  }
+
+  const handleOpenUserUl = () => {
+    setUserUlList(!userUlList)
+  }
+
+  const handleLogout = () => {
+    setToken(false)
   }
   return (
     <HeaderSection>
@@ -43,9 +56,29 @@ export default function Header() {
           <GoSearch />
         </SearchButton>
       </SearchBox>
-      <LoginBox>
+      {!token ? (
         <LoginText>로그인</LoginText>
-      </LoginBox>
+      ) : (
+        <LoginBox>
+          <NotificationsLink to='/notifications'>
+            <AiOutlineBell />
+            <Count>10</Count>
+          </NotificationsLink>
+          <UserButton onClick={handleOpenUserUl}>
+            <RxHamburgerMenu />
+            <UserImg src='https://a0.muscache.com/defaults/user_pic-36x36.png?im_w=240' alt='userImg' />
+            {userUlList && (
+              <UserUl>
+                <UserLiLink to='PostWrite'>글쓰기</UserLiLink>
+                <UserLiLink to='Message'>메시지함</UserLiLink>
+                <UserLiLink to='MyPage'>마이페이지</UserLiLink>
+                <UserLiButton>회원정보 수정</UserLiButton>
+                <UserLiButton onClick={handleLogout}>로그아웃</UserLiButton>
+              </UserUl>
+            )}
+          </UserButton>
+        </LoginBox>
+      )}
     </HeaderSection>
   )
 }
@@ -66,6 +99,7 @@ const LogoBox = styled.div`
   display: flex;
   align-items: center;
   color: #1877f2;
+  font-weight: 600;
   svg {
     font-size: 2rem;
   }
@@ -82,8 +116,18 @@ const SearchBox = styled.div`
   align-items: center;
   border: 1px solid #c0c0c0;
   border-radius: 2rem;
-  box-shadow: 0px 1px 1px 1px #e0e0e0;
+  box-shadow: 0px 1px 1px 1px #dbdbdb;
   position: relative;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease-in-out;
+
+  &:hover {
+    box-shadow: 0px 1px 2px 2px #dbdbdb;
+  }
+
+  &:focus {
+    box-shadow: 0px 1px 2px 2px #dbdbdb;
+  }
 `
 
 const SearchSelect = styled.button`
@@ -91,6 +135,7 @@ const SearchSelect = styled.button`
   background: inherit;
   cursor: pointer;
   min-width: 4rem;
+  font-size: 1rem;
   &:focus {
     outline: none;
   }
@@ -99,9 +144,11 @@ const SearchSelect = styled.button`
 const slideIn = keyframes`
   from {
     transform: translateY(0);
+    opacity: 0;
   }
   to {
     transform: translateY(15%);
+    opacity: 1;
   }
 `
 
@@ -126,20 +173,6 @@ const SearchLi = styled.li`
   cursor: pointer;
   border-bottom: 1px solid #d0d0d0;
   text-align: center;
-`
-
-const SelectBox = styled.select`
-  border: none;
-  &:focus {
-    outline: none;
-  }
-`
-
-const Option = styled.option`
-  background-color: #fff;
-  color: #333;
-  font-size: 14px;
-  padding: 5px;
 `
 
 const Bar = styled.span`
@@ -171,9 +204,102 @@ const SearchButton = styled.button`
     font-size: 1rem;
   }
 `
-
-const LoginBox = styled.div``
-
 const LoginText = styled.span`
   cursor: pointer;
+`
+
+const LoginBox = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+const NotificationsLink = styled(Link)`
+  position: relative;
+  margin-right: 1rem;
+  border-radius: 1rem;
+  padding: 0.2rem;
+  transition: background-color 0.3s ease-in-out;
+  color: #1877f2;
+  svg {
+    font-size: 2rem;
+  }
+
+  &:hover {
+    background-color: #f7f7f7;
+  }
+`
+
+const Count = styled.span`
+  position: absolute;
+  background: #ff385c;
+  color: #fff;
+  font-size: 0.8rem;
+  padding: 0.2rem;
+  border-radius: 50%;
+  right: -2px;
+  top: -3px;
+`
+const UserButton = styled.button`
+  display: flex;
+  align-items: center;
+  border: 1px solid #c0c0c0;
+  padding: 0.3rem 0.3rem 0.3rem 0.5rem;
+  gap: 0.8rem;
+  cursor: pointer;
+  border-radius: 1.2rem;
+  background: inherit;
+  transition: box-shadow 0.3s ease-in-out;
+  position: relative;
+  svg {
+    font-size: 1.2rem;
+  }
+
+  &:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+  }
+
+  &:active {
+    border: none;
+  }
+`
+
+const UserImg = styled.img`
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+`
+
+const UserUl = styled.ul`
+  position: absolute;
+  top: 1rem;
+  right: 0;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  border: 1px solid #d0d0d0;
+  box-sizing: border-box;
+  animation: ${slideIn} 0.3s ease-in-out forwards;
+  li:last-child {
+    border-bottom: none;
+  }
+`
+
+const UserLiLink = styled(Link)`
+  min-width: 8rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  border-bottom: 1px solid #d0d0d0;
+  text-align: center;
+  font-size: 0.9rem;
+`
+
+const UserLiButton = styled.li`
+  min-width: 8rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  text-align: center;
+  font-size: 0.9rem;
+  border: none;
+  border-bottom: 1px solid #d0d0d0;
 `
