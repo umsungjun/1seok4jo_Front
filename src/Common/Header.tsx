@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, {keyframes} from 'styled-components'
 
 import {SlCompass} from 'react-icons/sl'
 import {GoSearch} from 'react-icons/go'
@@ -6,7 +6,16 @@ import {useState} from 'react'
 
 export default function Header() {
   const [searchSelect, setSerachSelect] = useState('검색')
+  const [selectUl, setSelectUl] = useState(false)
 
+  const handleSearchSelect = () => {
+    setSelectUl(true)
+  }
+
+  const handleSearchValue = (e: React.MouseEvent<HTMLLIElement>) => {
+    setSelectUl(false)
+    setSerachSelect(e.currentTarget.innerText)
+  }
   return (
     <HeaderSection>
       <LogoBox>
@@ -14,12 +23,20 @@ export default function Header() {
         <LogoText>Compass</LogoText>
       </LogoBox>
       <SearchBox>
-        {/* <SelectBox>
-          <Option value='title'>제목</Option>
-          <Option value='detail'>내용</Option>
-          <Option value='hashtag'>해시태그</Option>
-        </SelectBox> */}
-        <SearchSelect>{searchSelect}</SearchSelect>
+        <SearchSelect onClick={handleSearchSelect}>{searchSelect}</SearchSelect>
+        {selectUl && (
+          <SearchUl>
+            <SearchLi onClick={handleSearchValue} value='title'>
+              제목
+            </SearchLi>
+            <SearchLi onClick={handleSearchValue} value='detail'>
+              내용
+            </SearchLi>
+            <SearchLi onClick={handleSearchValue} value='hashtag'>
+              해시태그
+            </SearchLi>
+          </SearchUl>
+        )}
         <Bar />
         <Search />
         <SearchButton>
@@ -66,11 +83,49 @@ const SearchBox = styled.div`
   border: 1px solid #c0c0c0;
   border-radius: 2rem;
   box-shadow: 0px 1px 1px 1px #e0e0e0;
+  position: relative;
 `
 
 const SearchSelect = styled.button`
   border: none;
   background: inherit;
+  cursor: pointer;
+  min-width: 4rem;
+  &:focus {
+    outline: none;
+  }
+`
+
+const slideIn = keyframes`
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(15%);
+  }
+`
+
+const SearchUl = styled.ul`
+  position: absolute;
+  top: 2rem;
+  left: 0.6rem;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  border: 1px solid #d0d0d0;
+  box-sizing: border-box;
+  animation: ${slideIn} 0.3s ease-in-out forwards;
+  li:last-child {
+    border-bottom: none;
+  }
+`
+
+const SearchLi = styled.li`
+  padding: 0.5rem;
+  cursor: pointer;
+  border-bottom: 1px solid #d0d0d0;
+  text-align: center;
 `
 
 const SelectBox = styled.select`
