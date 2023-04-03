@@ -2,8 +2,11 @@ import styled from 'styled-components'
 
 import {SlCompass} from 'react-icons/sl'
 import {GoSearch} from 'react-icons/go'
+import {useState} from 'react'
 
 export default function Header() {
+  const [searchSelect, setSerachSelect] = useState('검색')
+
   return (
     <HeaderSection>
       <LogoBox>
@@ -11,11 +14,12 @@ export default function Header() {
         <LogoText>Compass</LogoText>
       </LogoBox>
       <SearchBox>
-        <SelectBox>
+        {/* <SelectBox>
           <Option value='title'>제목</Option>
           <Option value='detail'>내용</Option>
           <Option value='hashtag'>해시태그</Option>
-        </SelectBox>
+        </SelectBox> */}
+        <SearchSelect>{searchSelect}</SearchSelect>
         <Bar />
         <Search />
         <SearchButton>
@@ -62,6 +66,11 @@ const SearchBox = styled.div`
   border: 1px solid #c0c0c0;
   border-radius: 2rem;
   box-shadow: 0px 1px 1px 1px #e0e0e0;
+`
+
+const SearchSelect = styled.button`
+  border: none;
+  background: inherit;
 `
 
 const SelectBox = styled.select`
