@@ -12,7 +12,6 @@ export default function ThemeSlide() {
         {themeSlide.map((data, index) => (
           <li key={index}>
             <TabBtnStyled
-              // active
               active={category === `${data.category}` ? true : false}
               onClick={() => setCategory(`${data.category}`)}
             >
@@ -27,7 +26,6 @@ export default function ThemeSlide() {
 
 const themeSlide = [
   {
-    icon: {FcSportsMode},
     category: '레저',
   },
   {
@@ -71,7 +69,7 @@ const themeSlide = [
 // 탭
 const TabBtnWrapStyled = styled.div`
   position: relative;
-  top: 150px;
+  top: 130px;
   z-index: 1;
   overflow-x: scroll;
   ::-webkit-scrollbar {
@@ -93,8 +91,9 @@ const TabBtnStyled = styled.div<{active: boolean}>`
   justify-content: center;
   min-width: 100px;
   border-bottom: solid 1px ${props => (props.active ? '#1877f2' : 'none')};
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   color: ${props => (props.active ? '#1877f2' : '#a4a4a4')};
+  // font-weight: ${props => (props.active ? '700' : '500')};
   height: 53px;
   cursor: pointer;
   :hover {
