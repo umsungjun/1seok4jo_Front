@@ -1,39 +1,66 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 
 import {AiOutlineClose} from 'react-icons/ai'
 import {ImBubble} from 'react-icons/im'
+import {TbSlash} from 'react-icons/tb'
 
 interface PaymentModalProps {
   show: boolean
 }
 
-const handlePopUpclose = () => {
-  const modalBack = document.querySelector('#modalBackdrop') as HTMLElement
-
-  modalBack.style.display = 'none'
-}
-
 export default function Login({show}: PaymentModalProps) {
+  const [joinForm, setJoinForm] = useState(false)
+  const handlePopUpclose = () => {
+    const modalBack = document.querySelector('#modalBackdrop') as HTMLElement
+
+    modalBack.style.display = 'none'
+    setJoinForm(false)
+  }
   return (
     <ModalBackdrop show={show} id='modalBackdrop'>
       <ModalContent>
-        <ModalCloseTitleBox>
-          <AiOutlineClose onClick={handlePopUpclose} />
-          <ModalTitle>로그인</ModalTitle>
-        </ModalCloseTitleBox>
-        <Line />
-        <WelcomeText>Compass에 오신 것을 환영합니다.</WelcomeText>
-        <InputGroup>
-          <Input type='email' pattern='.+@gmail\.com' placeholder='example@gmail.com' required />
-          <Input type='password' placeholder='password' required />
-        </InputGroup>
-        <LoginButton>로그인</LoginButton>
-        <Hrspan>또는</Hrspan>
-        <KaKaoLoginButton>
-          <ImBubble />
-          카카오 로그인
-        </KaKaoLoginButton>
+        {joinForm ? (
+          <>
+            <ModalCloseTitleBox>
+              <CloseIcon onClick={handlePopUpclose} />
+              <ModalTitle>회원가입</ModalTitle>
+            </ModalCloseTitleBox>
+            <Line />
+            <WelcomeText>Compass에 오신 것을 환영합니다.</WelcomeText>
+            <InputGroupJoin>
+              <Input type='email' pattern='.+@gmail\.com' placeholder='example@gmail.com' required />
+              <Input type='password' placeholder='password' required />
+              <Input type='password2' placeholder='password2' required />
+              <Input type='text' placeholder='NickName' required />
+            </InputGroupJoin>
+            <LoginButton>회원가입</LoginButton>
+          </>
+        ) : (
+          <>
+            <ModalCloseTitleBox>
+              <CloseIcon onClick={handlePopUpclose} />
+              <ModalTitle>로그인</ModalTitle>
+            </ModalCloseTitleBox>
+            <Line />
+            <WelcomeText>Compass에 오신 것을 환영합니다.</WelcomeText>
+            <InputGroup>
+              <Input type='email' pattern='.+@gmail\.com' placeholder='example@gmail.com' required />
+              <Input type='password' placeholder='password' required />
+            </InputGroup>
+            <JoinFindPassBox>
+              <button onClick={() => setJoinForm(true)}>회원가입</button>
+              <TbSlash />
+              <button>비밀번호 찾기</button>
+            </JoinFindPassBox>
+            <LoginButton>로그인</LoginButton>
+            <Hrspan>또는</Hrspan>
+            <KaKaoLoginButton>
+              <ImBubble />
+              카카오 로그인
+            </KaKaoLoginButton>
+          </>
+        )}
       </ModalContent>
     </ModalBackdrop>
   )
@@ -69,18 +96,19 @@ const ModalContent = styled.div`
   align-items: center;
 
   transition: all 0.3s ease-in-out;
-  svg {
-    font-size: 1.5rem;
-    position: absolute;
-    left: 1rem;
-    top: 0.6rem;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 50%;
+`
 
-    &:hover {
-      background-color: #f7f7f7;
-    }
+const CloseIcon = styled(AiOutlineClose)`
+  font-size: 1.5rem;
+  position: absolute;
+  left: 1rem;
+  top: 0.6rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+
+  &:hover {
+    background-color: #f7f7f7;
   }
 `
 
@@ -105,6 +133,25 @@ const InputGroup = styled.section`
     border-radius: 0 0 0.5rem 0.5rem;
   }
 `
+
+const InputGroupJoin = styled.section`
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin-bottom: 2rem;
+  input:first-child {
+    border-radius: 0.5rem 0.5rem 0 0;
+    border-bottom: none;
+  }
+  input:nth-child(2) {
+    border-bottom: none;
+  }
+
+  input:last-child {
+    border-top: none;
+    border-radius: 0 0 0.5rem 0.5rem;
+  }
+`
 const Input = styled.input`
   width: 100%;
   height: 3.5rem;
@@ -116,6 +163,21 @@ const Input = styled.input`
     outline: none;
   }
 `
+
+const JoinFindPassBox = styled.div`
+  width: 80%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  align-items: center;
+
+  button {
+    border: none;
+    cursor: pointer;
+    background: none;
+  }
+`
+
 const Line = styled.hr`
   background: #f0f0f0;
   height: 1px;
@@ -132,7 +194,7 @@ const WelcomeText = styled.h2`
 `
 
 const LoginButton = styled.button`
-  margin-top: 3rem;
+  margin-top: 1rem;
   width: 80%;
   height: 3rem;
   background: #1877f2;
@@ -183,6 +245,6 @@ const KaKaoLoginButton = styled.button`
   cursor: pointer;
   border-radius: 0.5rem;
   svg {
-    position: inherit;
+    margin-right: 1rem;
   }
 `

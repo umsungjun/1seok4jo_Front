@@ -42,7 +42,7 @@ export default function Header() {
     <HeaderSection>
       <LogoBox>
         <SlCompass />
-        <LogoText>Compass</LogoText>
+        <Logo to='/'>Compass</Logo>
       </LogoBox>
       <SearchBox>
         <SearchSelect onClick={handleSearchSelect}>{searchSelect}</SearchSelect>
@@ -69,10 +69,10 @@ export default function Header() {
         <LoginText onClick={handleLogin}>로그인</LoginText>
       ) : (
         <LoginBox>
-          <NotificationsLink to='/notifications'>
+          <Notifications>
             <AiOutlineBell />
             <Count>10</Count>
-          </NotificationsLink>
+          </Notifications>
           <UserButton onClick={handleOpenUserUl}>
             <RxHamburgerMenu />
             <UserImg src='https://a0.muscache.com/defaults/user_pic-36x36.png?im_w=240' alt='userImg' />
@@ -103,6 +103,7 @@ const HeaderSection = styled.section`
   width: 100%;
   box-sizing: border-box;
   z-index: 10;
+  background: #fff;
 `
 
 const LogoBox = styled.div`
@@ -115,7 +116,7 @@ const LogoBox = styled.div`
   }
 `
 
-const LogoText = styled.span`
+const Logo = styled(Link)`
   font-size: 1.5rem;
   margin-left: 0.5rem;
 `
@@ -225,13 +226,14 @@ const LoginBox = styled.div`
   align-items: center;
 `
 
-const NotificationsLink = styled(Link)`
+const Notifications = styled.div`
   position: relative;
   margin-right: 1rem;
   border-radius: 1rem;
   padding: 0.2rem;
   transition: background-color 0.3s ease-in-out;
   color: #1877f2;
+  cursor: pointer;
   svg {
     font-size: 2rem;
   }

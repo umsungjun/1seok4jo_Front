@@ -1,7 +1,7 @@
 import {useState} from 'react'
 // import styled from 'styled-components'
-import styled from '@emotion/styled'
 import {FcSportsMode} from 'react-icons/fc'
+import styled from 'styled-components'
 
 export default function ThemeSlide() {
   const [category, setCategory] = useState('')
