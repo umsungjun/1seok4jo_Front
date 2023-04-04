@@ -186,9 +186,7 @@ const feedLists = [
 ]
 
 const PostListStyled = styled.div`
-  position: relative;
-  top: 200px;
-  // border: 1px solid red;
+  margin-top: 3rem;
   display: flex;
   flex-wrap: wrap;
   width: 100%;
