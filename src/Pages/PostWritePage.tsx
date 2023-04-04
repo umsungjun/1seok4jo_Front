@@ -4,12 +4,16 @@ import PageTitle from '../Common/PageTitle'
 import styled from 'styled-components'
 import ThemeSlide from '../Common/ThemeSlide'
 import DaumPostcode from 'react-daum-postcode'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
 import {FaMapMarkerAlt} from 'react-icons/fa'
 
 export default function PostWritePage() {
   const [address, setAddress] = useState('')
   const [isOpenPost, setIsOpenPost] = useState(false)
+  const [startDate, setStartDate] = useState(new Date())
+  const [finishDate, setFinishDate] = useState(new Date())
   const onChangeOpenPost = () => {
     setIsOpenPost(!isOpenPost)
   }
@@ -28,9 +32,32 @@ export default function PostWritePage() {
         <Title># 테마</Title>
         <ThemeSlide />
         <ContentBox>
+          <Title># 날짜</Title>
+          <DateBox>
+            <DateText>시작 :</DateText>
+            <DatePickerBox>
+              <DatePicker
+                dateFormat='yyyy년 MM월 dd일'
+                selected={startDate}
+                onChange={date => date && setStartDate(date)}
+              />
+            </DatePickerBox>
+            <Wave>~</Wave>
+            <DateText>종료 :</DateText>
+            <DatePickerBox>
+              <DatePicker
+                dateFormat='yyyy년 MM월 dd일'
+                selected={finishDate}
+                onChange={date => date && setFinishDate(date)}
+              />
+            </DatePickerBox>
+          </DateBox>
+        </ContentBox>
+        <ContentBox>
           <Title># 제목</Title>
           <TitleInput type='text' maxLength={20} placeholder='# 제목을 입력하세요 (최대 20자)' required />
         </ContentBox>
+
         <ContentBox>
           <Title># 주소</Title>
           <AddresBox>
@@ -83,7 +110,7 @@ const TitleInput = styled.input`
   border-bottom: 1px solid #c0c0c0;
   flex: 1 1 0;
   font-size: 1.5rem;
-  width: 25%;
+  width: 20rem;
   margin-top: 3rem;
 
   &:focus {
@@ -104,12 +131,50 @@ const AddresBox = styled.div`
   }
 `
 
+const DateBox = styled.div`
+  display: flex;
+  margin-top: 3rem;
+`
+
+const DatePickerBox = styled.div`
+  width: 10rem;
+  display: flex;
+  align-items: center;
+  input {
+    font-size: 1rem;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:hover {
+      color: #1877fe;
+    }
+  }
+`
+
+const Wave = styled.span`
+  display: flex;
+  align-items: center;
+  font-size: 1.3rem;
+  margin-right: 2rem;
+`
+
+const DateText = styled.span`
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+`
+
 const AddresInput = styled.input`
   border: none;
   border-bottom: 1px solid #c0c0c0;
   flex: 1 1 0;
   font-size: 1.5rem;
-  width: 25%;
+  width: 20rem;
   margin-top: 3rem;
   &:focus {
     outline: none;
