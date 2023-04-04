@@ -19,7 +19,8 @@ const Section = styled.section`
   display: flex;
   flex-direction: column;
   position: relative;
-  margin-top: 3rem;
+  padding-top: 10rem;
+  margin-bottom: 5rem;
 `
 
 const Title = styled.div`

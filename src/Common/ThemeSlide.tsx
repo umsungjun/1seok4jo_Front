@@ -88,7 +88,8 @@ const TabBtnStyled = styled.div<{active: boolean}>`
   align-items: center;
   justify-content: center;
   min-width: 100px;
-  border-bottom: solid 1px ${props => (props.active ? '#1877f2' : 'none')};
+  border: solid 0.15rem ${props => (props.active ? '#1877f2' : 'none')};
+  border-radius: 3rem;
   font-size: 1.5rem;
   color: ${props => (props.active ? '#1877f2' : '#a4a4a4')};
   // font-weight: ${props => (props.active ? '700' : '500')};

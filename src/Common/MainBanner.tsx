@@ -1,3 +1,4 @@
+import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 import banner1 from '../Assets/MainPage/banner-1.png'
 import banner2 from '../Assets/MainPage/banner-2.png'
@@ -23,7 +24,7 @@ export default function MainBanner() {
       image: banner2,
       name: '렛츠코레일',
       link: 'https://www.letskorail.com/',
-      content: '꽃길따라 KTX타고 여행가자',
+      content: '꽃길따라 KTX타고 여행가자!',
       subcontent: '렛츠코레일 홈페이지 바로가기',
     },
     {
@@ -49,7 +50,7 @@ export default function MainBanner() {
     spaceBetween: 30,
     speed: 700,
     autoplay: {
-      delay: 3000,
+      delay: 5000,
       disableOnInteraction: false,
     },
     className: 'picture-swiper',
@@ -66,6 +67,8 @@ export default function MainBanner() {
                 <img src={data.image} alt={data.name} />
                 <TextContentStyled>
                   <div>{data.content}</div>
+                  {/* <div>{data.subcontent}</div> */}
+                  <Link to={data.link}>{data.subcontent}</Link>
                 </TextContentStyled>
               </SwiperImage>
             </div>
@@ -81,14 +84,28 @@ const BannerSwiper = styled.div`
   border-bottom: 1px solid lightgray;
 `
 const SwiperImage = styled.div`
+  position: relative;
   img {
     width: 100%;
-    height: 30rem;
+    height: 35rem;
     object-fit: cover;
   }
 `
 const TextContentStyled = styled.div`
+  position: absolute;
+  bottom: 5%;
+  right: 3%;
+  width: 30rem;
+  height: 7rem;
   background-color: white;
-  width: 2rem;
-  height: 1rem;
+  opacity: 0.65;
+  border-radius: 1rem;
+  padding: 2rem;
+  div {
+    font-size: 3rem;
+    font-align: left;
+    color: black;
+    opacity: 1;
+    margin-bottom: 1rem;
+  }
 `
