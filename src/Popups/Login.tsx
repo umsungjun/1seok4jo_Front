@@ -10,15 +10,13 @@ interface PaymentModalProps {
 }
 
 export default function Login({show}: PaymentModalProps) {
-  const [joinForm, setJoinForm] = useState(true)
-
+  const [joinForm, setJoinForm] = useState(false)
   const handlePopUpclose = () => {
     const modalBack = document.querySelector('#modalBackdrop') as HTMLElement
 
     modalBack.style.display = 'none'
     setJoinForm(false)
   }
-
   return (
     <ModalBackdrop show={show} id='modalBackdrop'>
       <ModalContent>
@@ -33,7 +31,7 @@ export default function Login({show}: PaymentModalProps) {
             <InputGroupJoin>
               <Input type='email' pattern='.+@gmail\.com' placeholder='example@gmail.com' required />
               <Input type='password' placeholder='password' required />
-              <Input type='password' placeholder='password2' required />
+              <Input type='password2' placeholder='password2' required />
               <Input type='text' placeholder='NickName' required />
             </InputGroupJoin>
             <LoginButton>회원가입</LoginButton>

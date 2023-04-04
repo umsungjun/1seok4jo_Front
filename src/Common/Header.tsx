@@ -42,7 +42,7 @@ export default function Header() {
     <HeaderSection>
       <LogoBox>
         <SlCompass />
-        <LogoText>Compass</LogoText>
+        <Logo to='/'>Compass</Logo>
       </LogoBox>
       <SearchBox>
         <SearchSelect onClick={handleSearchSelect}>{searchSelect}</SearchSelect>
@@ -116,7 +116,7 @@ const LogoBox = styled.div`
   }
 `
 
-const LogoText = styled.span`
+const Logo = styled(Link)`
   font-size: 1.5rem;
   margin-left: 0.5rem;
 `

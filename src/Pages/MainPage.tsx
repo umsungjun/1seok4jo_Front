@@ -1,5 +1,14 @@
 import React from 'react'
+import MainBanner from '../Common/MainBanner'
+import ThemeSlide from '../Common/ThemeSlide'
+import PostList from '../Common/PostList'
 
 export default function MainPage() {
-  return <div>메인입니다!</div>
+  return (
+    <>
+      <MainBanner />
+      <ThemeSlide />
+      <PostList />
+    </>
+  )
 }
