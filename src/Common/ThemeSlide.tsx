@@ -68,9 +68,8 @@ const themeSlide = [
 
 // 탭
 const TabBtnWrapStyled = styled.div`
-  position: relative;
-  top: 130px;
-  z-index: 1;
+  margin-top: 2rem;
+  overflow-x: scroll;
   overflow-x: scroll;
   ::-webkit-scrollbar {
     display: none;
