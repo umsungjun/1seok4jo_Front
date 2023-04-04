@@ -217,6 +217,7 @@ const SearchButton = styled.button`
 const LoginText = styled.span`
   cursor: pointer;
   min-width: 9rem;
+  text-align: right;
 `
 
 const LoginBox = styled.div`
