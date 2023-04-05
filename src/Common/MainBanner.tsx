@@ -80,7 +80,7 @@ export default function MainBanner() {
   )
 }
 
-const BannerSwiper = styled.div`
+const BannerSwiper = styled.section`
   padding-top: 5rem;
   border-bottom: 1px solid lightgray;
 `
@@ -92,7 +92,7 @@ const SwiperImage = styled.div`
     object-fit: cover;
   }
 `
-const TextContentStyled = styled.div`
+const TextContentStyled = styled.section`
   position: absolute;
   bottom: 5%;
   right: 3%;
