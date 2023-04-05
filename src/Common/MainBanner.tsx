@@ -67,8 +67,9 @@ export default function MainBanner() {
                 <img src={data.image} alt={data.name} />
                 <TextContentStyled>
                   <div>{data.content}</div>
-                  {/* <div>{data.subcontent}</div> */}
-                  <Link to={data.link}>{data.subcontent}</Link>
+                  <Link to={data.link} target='_blank'>
+                    {data.subcontent}
+                  </Link>
                 </TextContentStyled>
               </SwiperImage>
             </div>
