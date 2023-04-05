@@ -69,10 +69,11 @@ const themeSlide = [
 // 탭
 const TabBtnWrapStyled = styled.div`
   margin-top: 2rem;
+  padding-bottom: 1rem;
   overflow-x: scroll;
-  ::-webkit-scrollbar {
-    display: none;
-  }
+  // ::-webkit-scrollbar {
+  //   display: none;
+  // }
   ul {
     display: flex;
     margin: 0 30px;
