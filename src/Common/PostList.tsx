@@ -204,6 +204,10 @@ const PostListStyled = styled.ul`
 const FeedStyled = styled.li`
   list-style: none;
   cursor: pointer;
+  // &:hover {
+  //   transform: scale(1.1);
+  // }
+  // 호버액션 넣을까말까
   img {
     width: 18.75rem;
     height: 18.75rem;
