@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
+import {useNavigate} from 'react-router-dom'
 import feed1 from '../Assets/MainPage/feed-1.png'
 import feed2 from '../Assets/MainPage/feed-2.png'
 import feed3 from '../Assets/MainPage/feed-3.png'
@@ -17,10 +18,15 @@ import {Button} from '@mui/material'
 export default function PostList() {
   const [isActive, setIsActive] = useState(false)
 
+  const navigate = useNavigate()
+  const handleClick = () => {
+    navigate(`/PostDetail`)
+  }
+
   return (
     <PostListStyled>
       {feedLists.map((data, index) => (
-        <FeedStyled key={index}>
+        <FeedStyled key={index} onClick={handleClick}>
           {/* <button type='button'>
             <BsSuitHeart
               onClick={() => setIsActive(current => !current)}
@@ -185,40 +191,45 @@ const feedLists = [
   },
 ]
 
-const PostListStyled = styled.div`
-  position: relative;
-  top: 200px;
-  // border: 1px solid red;
+const PostListStyled = styled.ul`
+  margin-top: 3rem;
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
   width: 100%;
-  margin-left: 30px;
 `
 
-const FeedStyled = styled.div`
-  margin-right: 30px;
+const FeedStyled = styled.li`
+  list-style: none;
+  cursor: pointer;
+  // &:hover {
+  //   transform: scale(1.1);
+  // }
+  // 호버액션 넣을까말까
   img {
-    width: 300px;
-    height: 300px;
+    width: 18.75rem;
+    height: 18.75rem;
     object-fit: cover;
-    border-radius: 20px;
+    border-radius: 1.25rem;
   }
   .text {
     display: flex;
     justify-content: space-between;
-    margin: 10px 0 20px 0;
+    margin: 0.625rem 0 1.25rem 0;
   }
 `
-const FeedInfoStyled = styled.div`
+const FeedInfoStyled = styled.label`
   div {
-    margin: 8px;
+    margin: 0.5rem;
   }
   span {
     display: flex;
     justify-content: space-between;
   }
   .title {
-    font-size: 1.2rem;
+    font-size: 19.2px;
   }
   .date {
     font-size: 0.9rem;
@@ -229,20 +240,19 @@ const FeedLikeStyled = styled.div`
   font-weight: semi-bold;
   font-size: 1.5rem;
   display: flex;
-  justify-content: flex-end;
-  // border: 1px solid red;
+  flex-direction: row;
 `
 const LikeButtonStyled = styled.button`
   border: none;
   background-color: transparent;
   padding: 0;
-  width: 30px;
-  height: 30px;
+  width: 1.875rem;
+  height: 1.875rem;
   cursor: pointer;
   color: red;
-  margin-right: 10px;
+  margin-right: 0.625rem;
   svg {
-    width: 25px;
-    height: 25px;
+    width: 1.5rem;
+    height: 1.5rem;
   }
 `

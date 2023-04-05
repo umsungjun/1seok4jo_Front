@@ -67,13 +67,13 @@ const themeSlide = [
 ]
 
 // 탭
-const TabBtnWrapStyled = styled.div`
+const TabBtnWrapStyled = styled.section`
   margin-top: 2rem;
+  padding-bottom: 1rem;
   overflow-x: scroll;
-  overflow-x: scroll;
-  ::-webkit-scrollbar {
-    display: none;
-  }
+  // ::-webkit-scrollbar {
+  //   display: none;
+  // }
   ul {
     display: flex;
     margin: 0 30px;
@@ -84,15 +84,16 @@ const TabBtnWrapStyled = styled.div`
 `
 
 // 탭 버튼
-const TabBtnStyled = styled.div<{active: boolean}>`
+const TabBtnStyled = styled.button<{active: boolean}>`
   display: flex;
   align-items: center;
   justify-content: center;
   min-width: 100px;
-  border-bottom: solid 1px ${props => (props.active ? '#1877f2' : 'none')};
+  border: solid 0.15rem ${props => (props.active ? '#1877f2' : 'transparent')};
+  background-color: transparent;
+  border-radius: 3rem;
   font-size: 1.5rem;
   color: ${props => (props.active ? '#1877f2' : '#a4a4a4')};
-  // font-weight: ${props => (props.active ? '700' : '500')};
   height: 53px;
   cursor: pointer;
   :hover {
