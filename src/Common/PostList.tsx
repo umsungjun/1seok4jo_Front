@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
+import {useNavigate} from 'react-router-dom'
 import feed1 from '../Assets/MainPage/feed-1.png'
 import feed2 from '../Assets/MainPage/feed-2.png'
 import feed3 from '../Assets/MainPage/feed-3.png'
@@ -17,10 +18,15 @@ import {Button} from '@mui/material'
 export default function PostList() {
   const [isActive, setIsActive] = useState(false)
 
+  const navigate = useNavigate()
+  const handleClick = () => {
+    navigate(`/PostDetail`)
+  }
+
   return (
     <PostListStyled>
       {feedLists.map((data, index) => (
-        <FeedStyled key={index}>
+        <FeedStyled key={index} onClick={handleClick}>
           {/* <button type='button'>
             <BsSuitHeart
               onClick={() => setIsActive(current => !current)}
@@ -197,6 +203,7 @@ const PostListStyled = styled.ul`
 
 const FeedStyled = styled.li`
   list-style: none;
+  cursor: pointer;
   img {
     width: 18.75rem;
     height: 18.75rem;
@@ -209,7 +216,7 @@ const FeedStyled = styled.li`
     margin: 0.625rem 0 1.25rem 0;
   }
 `
-const FeedInfoStyled = styled.div`
+const FeedInfoStyled = styled.label`
   div {
     margin: 0.5rem;
   }
@@ -229,7 +236,7 @@ const FeedLikeStyled = styled.div`
   font-weight: semi-bold;
   font-size: 1.5rem;
   display: flex;
-  justify-content: flex-end;
+  flex-direction: row;
 `
 const LikeButtonStyled = styled.button`
   border: none;
