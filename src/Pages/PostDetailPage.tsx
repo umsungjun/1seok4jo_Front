@@ -1,6 +1,6 @@
-import React from 'react'
-import {useState} from 'react'
+import {useEffect} from 'react'
 import styled from 'styled-components'
+import MapContainer from '../Common/MapContainer'
 import banner1 from '../Assets/MainPage/banner-1.png'
 import banner2 from '../Assets/MainPage/banner-2.png'
 import banner3 from '../Assets/MainPage/banner-3.png'
@@ -9,6 +9,10 @@ import banner5 from '../Assets/MainPage/banner-5.png'
 import sangchu from '../Assets/sangchu.png'
 
 export default function PostDetailPage() {
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   const detailImage = [
     {
       image: banner1,
@@ -61,8 +65,7 @@ export default function PostDetailPage() {
               </ProfileImage>
               <NickName>hasangchu</NickName>
             </ProfileInfo>
-            정글을 그대로 느낄수 있는 숙소입니다. 숙소 이곳저곳 디테일이 훌륭하며 개인 pool의 온도도 적절합니다. 다만
-            음식과 와이파이는 조금 아쉬워요. 저녁엔 반려견 sangchu가 지키고 있어 든든합니다. 즐거운 여행이었습니다.
+            자연을 그대로 느낄수 있습니다. 반려견 sangchu와 함께 너무나도 즐거운 여행이었습니다.
           </PostArea>
         </ContentBox>
         <HashtagTitle>
@@ -70,6 +73,10 @@ export default function PostDetailPage() {
           <Hashtag>#여행 #사진 # 가족여행</Hashtag>
         </HashtagTitle>
       </Body>
+      <Bottom>
+        <CommentBox></CommentBox>
+        <MapContainer />
+      </Bottom>
     </Detail>
   )
 }
@@ -99,6 +106,7 @@ const Image = styled.div`
     grid-row: 1 / span 2;
     height: 30rem;
   }
+  background-color: #c0c0c0;
   img {
     width: 100%;
     height: 100%;
@@ -108,7 +116,7 @@ const Image = styled.div`
 const Body = styled.section`
   padding: 5rem 0;
   width: 100%;
-  // border: 1px solid red;
+  border-bottom: 1px solid #c0c0c0;
 `
 const Info = styled.div`
   display: flex;
@@ -164,4 +172,16 @@ const Hashtag = styled.h3`
   color: gray;
   padding-top: 2rem;
   font-size: 1.2rem;
+`
+
+const Bottom = styled.section`
+  margin-top: 3rem;
+  display: flex;
+  height: 80rem;
+  border: 1px solid red;
+`
+const CommentBox = styled.section`
+  width: 50rem;
+  height: 100rem;
+  border: 1px solid red;
 `
