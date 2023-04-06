@@ -97,13 +97,15 @@ const Image = styled.div`
 `
 
 const Body = styled.section`
-  margin-top: 2rem;
+  padding: 5rem 0;
   width: 90%;
+  // border: 1px solid red;
 `
 
 const Info = styled.section`
   display: flex;
-  margin-bottom: 1rem;
+  justify-content: space-between;
+  margin-bottom: 2rem;
 `
 const Text = styled.h2``
 const Status = styled.div`
@@ -112,15 +114,13 @@ const Status = styled.div`
 const ContentBox = styled.section`
   max-height: 50rem;
   margin-bottom: 3rem;
+  display: flex;
 `
 
 const TextArea = styled.textarea`
   font-size: 1.3rem;
   padding: 1rem;
   width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: 3rem;
   height: 15rem;
   border-radius: 1rem;
   background-color: #f0f0f0;
@@ -132,4 +132,5 @@ const Suggest = styled.h3``
 
 const Hashtag = styled.h5`
   color: gray;
+  padding-top: 2rem;
 `
