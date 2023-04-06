@@ -6,6 +6,7 @@ import banner2 from '../Assets/MainPage/banner-2.png'
 import banner3 from '../Assets/MainPage/banner-3.png'
 import banner4 from '../Assets/MainPage/banner-4.png'
 import banner5 from '../Assets/MainPage/banner-5.png'
+import sangchu from '../Assets/sangchu.png'
 
 export default function PostDetailPage() {
   const detailImage = [
@@ -53,12 +54,21 @@ export default function PostDetailPage() {
           <Status>댓글 21개 좋아요 10</Status>
         </Info>
         <ContentBox>
-          <TextArea readOnly />
+          <PostArea>
+            <ProfileInfo>
+              <ProfileImage>
+                <img src={sangchu} alt='하상츄' />
+              </ProfileImage>
+              <NickName>hasangchu</NickName>
+            </ProfileInfo>
+            정글을 그대로 느낄수 있는 숙소입니다. 숙소 이곳저곳 디테일이 훌륭하며 개인 pool의 온도도 적절합니다. 다만
+            음식과 와이파이는 조금 아쉬워요. 저녁엔 반려견 sangchu가 지키고 있어 든든합니다. 즐거운 여행이었습니다.
+          </PostArea>
         </ContentBox>
-        <Suggest>
-          <Title># 이런 분들에게 추천합니다</Title>
+        <HashtagTitle>
+          <Suggest># 이런 분들에게 추천합니다</Suggest>
           <Hashtag>#여행 #사진 # 가족여행</Hashtag>
-        </Suggest>
+        </HashtagTitle>
       </Body>
     </Detail>
   )
@@ -95,42 +105,63 @@ const Image = styled.div`
     object-fit: cover;
   }
 `
-
 const Body = styled.section`
   padding: 5rem 0;
-  width: 90%;
+  width: 100%;
   // border: 1px solid red;
 `
-
-const Info = styled.section`
+const Info = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 2rem;
 `
-const Text = styled.h2``
-const Status = styled.div`
-  font-size: 16px;
+const Text = styled.h2`
+  font-size: 1.5rem;
+`
+const Status = styled.h2`
+  font-size: 1rem;
 `
 const ContentBox = styled.section`
   max-height: 50rem;
   margin-bottom: 3rem;
   display: flex;
 `
-
-const TextArea = styled.textarea`
-  font-size: 1.3rem;
-  padding: 1rem;
+const ProfileInfo = styled.div`
+  display: flex;
+  margin-bottom: 2rem;
+`
+const ProfileImage = styled.div`
+  width: 3rem;
+  height: 3rem;
+  border-radius: 5rem;
+  background-color: #c0c0c0;
+  img {
+    width: 3rem;
+    height: 3rem;
+    object-fit: cover;
+    border-radius: 5rem;
+  }
+`
+const NickName = styled.span`
+  font-size: 1rem;
+  padding: 1rem 0 0 1rem;
+`
+const PostArea = styled.section`
+  font-size: 1.1rem;
+  padding: 1.3rem;
   width: 100%;
   height: 15rem;
   border-radius: 1rem;
   background-color: #f0f0f0;
-  border: none;
-  resize: none;
+`
+const HashtagTitle = styled.div``
+
+const Suggest = styled.h2`
+  font-size: 1.5rem;
 `
 
-const Suggest = styled.h3``
-
-const Hashtag = styled.h5`
+const Hashtag = styled.h3`
   color: gray;
   padding-top: 2rem;
+  font-size: 1.2rem;
 `
