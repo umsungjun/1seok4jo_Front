@@ -47,6 +47,19 @@ export default function PostDetailPage() {
           </Image>
         ))}
       </ImageArea>
+      <Body>
+        <Info>
+          <Text>강릉 / 2023-01.05 ~ 2023.01.09</Text>
+          <Status>댓글 21개 좋아요 10</Status>
+        </Info>
+        <ContentBox>
+          <TextArea readOnly />
+        </ContentBox>
+        <Suggest>
+          <Title># 이런 분들에게 추천합니다</Title>
+          <Hashtag>#여행 #사진 # 가족여행</Hashtag>
+        </Suggest>
+      </Body>
     </Detail>
   )
 }
@@ -81,4 +94,42 @@ const Image = styled.div`
     height: 100%;
     object-fit: cover;
   }
+`
+
+const Body = styled.section`
+  margin-top: 2rem;
+  width: 90%;
+`
+
+const Info = styled.section`
+  display: flex;
+  margin-bottom: 1rem;
+`
+const Text = styled.h2``
+const Status = styled.div`
+  font-size: 16px;
+`
+const ContentBox = styled.section`
+  max-height: 50rem;
+  margin-bottom: 3rem;
+`
+
+const TextArea = styled.textarea`
+  font-size: 1.3rem;
+  padding: 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+  height: 15rem;
+  border-radius: 1rem;
+  background-color: #f0f0f0;
+  border: none;
+  resize: none;
+`
+
+const Suggest = styled.h3``
+
+const Hashtag = styled.h5`
+  color: gray;
 `
