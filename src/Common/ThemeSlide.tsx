@@ -4,7 +4,7 @@ import {FcSportsMode} from 'react-icons/fc'
 import styled from 'styled-components'
 
 export default function ThemeSlide() {
-  const [category, setCategory] = useState('')
+  const [category, setCategory] = useState('레저')
 
   return (
     <TabBtnWrapStyled>
