@@ -41,7 +41,7 @@ export default function MyPageBanner() {
 }
 
 const Section = styled.section`
-  padding: 7rem 5rem;
+  padding-top: 7rem;
   display: flex;
   flex-direction: column;
 `
