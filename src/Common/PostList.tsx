@@ -9,11 +9,8 @@ import feed5 from '../Assets/MainPage/feed-5.png'
 import feed6 from '../Assets/MainPage/feed-6.png'
 import feed7 from '../Assets/MainPage/feed-7.png'
 import feed8 from '../Assets/MainPage/feed-8.png'
-import {BsSuitHeart, BsSuitHeartFill} from 'react-icons/bs'
 import {BsFillSuitHeartFill} from 'react-icons/bs'
 // import LikeButton from './LikeButton'
-import useInfiniteScroll from 'react-infinite-scroll-hook'
-import {Button} from '@mui/material'
 
 export default function PostList() {
   const [isActive, setIsActive] = useState(false)
