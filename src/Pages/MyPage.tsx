@@ -5,20 +5,16 @@ import PostList from '../Common/PostList'
 
 export default function MyPage() {
   return (
-    <Section>
+    <>
       <MyPageBanner />
       <TypeSelectBox>
         <TypeSelect>작성 글</TypeSelect>
         <TypeSelect>좋아요</TypeSelect>
       </TypeSelectBox>
       <PostList />
-    </Section>
+    </>
   )
 }
-
-const Section = styled.section`
-  padding: 0 5rem;
-`
 
 const TypeSelectBox = styled.div`
   width: 100%;
@@ -27,7 +23,7 @@ const TypeSelectBox = styled.div`
   justify-content: space-around;
   align-items: center;
   border-radius: 1rem;
-  padding: 1rem 0;
+  padding: 1rem 2rem;
   box-sizing: border-box;
 `
 
