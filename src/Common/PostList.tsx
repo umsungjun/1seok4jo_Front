@@ -191,11 +191,12 @@ const feedLists = [
 const PostListStyled = styled.ul`
   margin-top: 3rem;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 3.5rem;
+  flex-flow: row wrap;
+  padding: 0px 5rem;
   width: 100%;
+  box-sizing: border-box;
+  justify-content: center;
+  gap: 3.7rem;
 `
 
 const FeedStyled = styled.li`
