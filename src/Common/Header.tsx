@@ -77,7 +77,7 @@ export default function Header() {
             }}
           >
             <AiOutlineBell />
-            <Count>10</Count>
+            <Count />
           </Notifications>
           {notification && <Notification setNotification={setNotification} />}
           <UserButton onClick={handleOpenUserUl}>
@@ -247,18 +247,19 @@ const Notifications = styled.div`
 
   &:hover {
     background-color: #f7f7f7;
+    color: #1877fe;
   }
 `
 
 const Count = styled.span`
   position: absolute;
-  background: #ff385c;
-  color: #fff;
+  background: rgb(24, 119, 254);
+  color: rgb(255, 255, 255);
   font-size: 0.8rem;
   padding: 0.2rem;
   border-radius: 50%;
-  right: -2px;
-  top: -3px;
+  right: 0.2rem;
+  top: 0.3rem;
 `
 const UserButton = styled.button`
   display: flex;
