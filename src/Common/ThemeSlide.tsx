@@ -2,11 +2,21 @@ import {useState} from 'react'
 // import styled from 'styled-components'
 import {FcSportsMode} from 'react-icons/fc'
 import styled from 'styled-components'
+import Wakesurfing from '../Assets/MainPage/wakesurfing.png'
+import Restaurant from '../Assets/MainPage/restaurant.png'
+import Nature from '../Assets/MainPage/nature.png'
+import Culture from '../Assets/MainPage/culture.png'
+import Shopping from '../Assets/MainPage/shopping.png'
+import Family from '../Assets/MainPage/family.png'
+import Cute from '../Assets/MainPage/cute.png'
+import Health from '../Assets/MainPage/health.png'
+import Religion from '../Assets/MainPage/religion.png'
+import Activity from '../Assets/MainPage/activity.png'
 
 export default function ThemeSlide() {
   const [category, setCategory] = useState('레저')
 
-  const handleCategoty = (categoryStr: string, e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleCategory = (categoryStr: string, e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     setCategory(categoryStr)
   }
@@ -17,10 +27,12 @@ export default function ThemeSlide() {
         {themeSlide.map((data, index) => (
           <li key={index}>
             <TabBtnStyled
+              type='submit'
               active={category === `${data.category}` ? true : false}
-              onClick={e => handleCategoty(data.category, e)}
+              onClick={e => handleCategory(data.category, e)}
             >
-              {data.category}
+              <img src={data.icon} alt={data.category} />
+              <span>{data.category}</span>
             </TabBtnStyled>
           </li>
         ))}
@@ -31,42 +43,43 @@ export default function ThemeSlide() {
 
 const themeSlide = [
   {
+    icon: Wakesurfing,
     category: '레저',
   },
   {
-    icon: {FcSportsMode},
+    icon: Restaurant,
     category: '맛집',
   },
   {
-    icon: {FcSportsMode},
+    icon: Nature,
     category: '자연',
   },
   {
-    icon: {FcSportsMode},
+    icon: Culture,
     category: '문화',
   },
   {
-    icon: {FcSportsMode},
+    icon: Shopping,
     category: '쇼핑',
   },
   {
-    icon: {FcSportsMode},
+    icon: Family,
     category: '가족',
   },
   {
-    icon: {FcSportsMode},
+    icon: Cute,
     category: '반려동물',
   },
   {
-    icon: {FcSportsMode},
+    icon: Health,
     category: '건강',
   },
   {
-    icon: {FcSportsMode},
+    icon: Religion,
     category: '종교',
   },
   {
-    icon: {FcSportsMode},
+    icon: Activity,
     category: '체험',
   },
 ]
@@ -102,14 +115,20 @@ const TabBtnStyled = styled.button<{active: boolean}>`
   align-items: center;
   justify-content: center;
   min-width: 100px;
-  border: solid 0.15rem ${props => (props.active ? '#1877f2' : 'transparent')};
   background-color: transparent;
   border-radius: 3rem;
   font-size: 1.5rem;
+  padding: 1rem;
+  border: solid 0.15rem ${props => (props.active ? '#1877f2' : 'transparent')};
   color: ${props => (props.active ? '#1877f2' : '#a4a4a4')};
-  height: 53px;
+  height: 3.3125rem;
   cursor: pointer;
   :hover {
     color: #1877f2;
+  }
+  img {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-right: 0.5rem;
   }
 `
