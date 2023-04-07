@@ -9,32 +9,10 @@ import banner5 from '../Assets/MainPage/banner-5.png'
 import sangchu from '../Assets/sangchu.png'
 
 export default function PostDetailPage() {
+  //페이지 로딩시 상단부터 노출되도록
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
-
-  const detailImage = [
-    {
-      image: banner1,
-      name: '한국관광공사',
-    },
-    {
-      image: banner2,
-      name: '렛츠코레일',
-    },
-    {
-      image: banner3,
-      name: '가족여행카페',
-    },
-    {
-      image: banner4,
-      name: '비짓서울',
-    },
-    {
-      image: banner5,
-      name: '비짓서울',
-    },
-  ]
 
   return (
     <Detail>
@@ -80,6 +58,36 @@ export default function PostDetailPage() {
     </Detail>
   )
 }
+
+const detailImage = [
+  {
+    image: banner1,
+    name: '한국관광공사',
+  },
+  {
+    image: banner2,
+    name: '렛츠코레일',
+  },
+  {
+    image: banner3,
+    name: '가족여행카페',
+  },
+  {
+    image: banner4,
+    name: '비짓서울',
+  },
+  {
+    image: banner5,
+    name: '비짓서울',
+  },
+]
+
+const commentBox = [
+  {
+    user: 'hasangchu',
+    comment: '자연을 그대로 느낄수 있습니다. 반려견 sangchu와 함께 너무나도 즐거운 여행이었습니다.',
+  },
+]
 
 const Detail = styled.section`
   padding: 10rem 5rem 0 5rem;

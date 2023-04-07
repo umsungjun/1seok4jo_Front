@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import React, {useEffect} from 'react'
+import {useEffect, useRef} from 'react'
+import marker from '../Assets/sangchu.png'
 
 declare global {
   interface Window {
@@ -7,25 +8,42 @@ declare global {
   }
 }
 
-export default function MapContainer() {
-  useEffect(() => {
-    const container = document.getElementById('map') //지도를 담을 영역의 DOM 레퍼런스
-    let options = {
-      //지도를 생성할 때 필요한 기본 옵션
-      center: new window.kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
-      level: 5, //지도의 레벨(확대, 축소 정도)
-    }
+export default function Map() {
+  const {kakao} = window
+  const mapRef = useRef<HTMLDivElement>(null) // mapRef와 연결할 엘리먼트는 div이기 때문에 <HTMLDivElement>로 타입을 지정
 
-    let map = new window.kakao.maps.Map(container, options) //지도 생성 및 객체 리턴
+  useEffect(() => {
+    const mapContainer = mapRef.current
+    const options = {
+      center: new kakao.maps.LatLng(37.506502, 127.053617),
+      level: 5,
+    }
+    // 지도 객체 생성
+    const map = new kakao.maps.Map(mapContainer, options)
+
+    console.log(mapContainer)
+    new kakao.maps.Marker({
+      map: map,
+      position: new kakao.maps.LatLng(37.506502, 127.053617),
+      // image: icon,
+    }).setMap(map)
   }, [])
+
+  // const icon = new kakao.maps.MarkerImage({marker}, new kakao.maps.Size(31, 35), {
+  //   offset: new kakao.maps.Point(16, 34),
+  //   alt: '마커 이미지 예제',
+  //   shape: 'poly',
+  //   coords: '1,20,1,9,5,2,10,0,21,0,27,3,30,9,30,20,17,33,14,33',
+  // })
+
   return (
-    <MapSection>
-      <div id='map' style={{width: '30rem', height: '30rem'}} />
-    </MapSection>
+    <>
+      <MapSection ref={mapRef}></MapSection>
+    </>
   )
 }
 
 const MapSection = styled.div`
-  position: sticky;
-  top: 100rem;
+  width: 30rem;
+  height: 40rem;
 `
