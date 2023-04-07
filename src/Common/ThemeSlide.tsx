@@ -4,7 +4,7 @@ import {FcSportsMode} from 'react-icons/fc'
 import styled from 'styled-components'
 
 export default function ThemeSlide() {
-  const [category, setCategory] = useState('')
+  const [category, setCategory] = useState('레저')
 
   return (
     <TabBtnWrapStyled>
@@ -46,14 +46,6 @@ const themeSlide = [
   },
   {
     icon: {FcSportsMode},
-    category: '체험',
-  },
-  {
-    icon: {FcSportsMode},
-    category: '종교',
-  },
-  {
-    icon: {FcSportsMode},
     category: '가족',
   },
   {
@@ -63,6 +55,14 @@ const themeSlide = [
   {
     icon: {FcSportsMode},
     category: '건강',
+  },
+  {
+    icon: {FcSportsMode},
+    category: '종교',
+  },
+  {
+    icon: {FcSportsMode},
+    category: '체험',
   },
 ]
 
