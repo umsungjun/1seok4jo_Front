@@ -13,7 +13,7 @@ export default function ThemeSlide() {
 
   return (
     <TabBtnWrapStyled>
-      <ul>
+      <TabBtnUl>
         {themeSlide.map((data, index) => (
           <li key={index}>
             <TabBtnStyled
@@ -24,7 +24,7 @@ export default function ThemeSlide() {
             </TabBtnStyled>
           </li>
         ))}
-      </ul>
+      </TabBtnUl>
     </TabBtnWrapStyled>
   )
 }
@@ -76,16 +76,24 @@ const TabBtnWrapStyled = styled.section`
   margin-top: 2rem;
   padding-bottom: 1rem;
   overflow-x: scroll;
+  display: flex;
+  justify-content: center;
   // ::-webkit-scrollbar {
   //   display: none;
   // }
   ul {
     display: flex;
-    margin: 0 30px;
   }
   ul li + li {
     margin-left: 30px;
   }
+`
+
+const TabBtnUl = styled.ul`
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  padding: 0 3rem;
 `
 
 // 탭 버튼
