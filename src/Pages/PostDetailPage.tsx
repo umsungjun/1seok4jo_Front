@@ -52,7 +52,20 @@ export default function PostDetailPage() {
         </HashtagTitle>
       </Body>
       <Bottom>
-        <CommentBox></CommentBox>
+        <CommentBox>
+          {commentBox.map((data, index) => (
+            <Comment key={index}>
+              <UserProfile>
+                <img src={sangchu} alt='하상츄' />
+                <UserInfo>
+                  <div>{data.user}</div>
+                  <div>{data.date}</div>
+                </UserInfo>
+              </UserProfile>
+              <div>{data.comment}</div>
+            </Comment>
+          ))}
+        </CommentBox>
         <MapContainer />
       </Bottom>
     </Detail>
@@ -86,6 +99,42 @@ const commentBox = [
   {
     user: 'hasangchu',
     comment: '자연을 그대로 느낄수 있습니다. 반려견 sangchu와 함께 너무나도 즐거운 여행이었습니다.',
+    date: '2022년 10월',
+  },
+  {
+    user: 'ha',
+    comment: '너무 좋아보여요~',
+    date: '2022년 10월',
+  },
+  {
+    user: 'sang',
+    comment: '정말 꿈같은 곳이네요!',
+    date: '2022년 10월',
+  },
+  {
+    user: 'yee',
+    comment: '빨리 가고싶어요~~~',
+    date: '2022년 10월',
+  },
+  {
+    user: 'um',
+    comment: '이번 여름에 가고싶네요~',
+    date: '2022년 10월',
+  },
+  {
+    user: 'sung',
+    comment: '슈퍼',
+    date: '2022년 10월',
+  },
+  {
+    user: 'jun',
+    comment: '편의점',
+    date: '2022년 10월',
+  },
+  {
+    user: '1seok4jo',
+    comment: '자연을 그대로 느낄수 있습니다. 반려견 sangchu와 함께 너무나도 즐거운 여행이었습니다.',
+    date: '2022년 10월',
   },
 ]
 
@@ -186,10 +235,27 @@ const Bottom = styled.section`
   margin-top: 3rem;
   display: flex;
   height: 80rem;
-  border: 1px solid red;
+  // border: 1px solid red;
 `
 const CommentBox = styled.section`
   width: 50rem;
   height: 100rem;
-  border: 1px solid red;
+  display: block;
+`
+const Comment = styled.li`
+  display: block;
+`
+
+const UserProfile = styled.div`
+  img {
+    width: 3rem;
+    height: 3rem;
+    background-color: #c0c0c0;
+    border-radius: 5rem;
+  }
+
+  display: flex;
+`
+const UserInfo = styled.div`
+  display: block;
 `

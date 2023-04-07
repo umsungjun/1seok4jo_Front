@@ -46,4 +46,6 @@ export default function Map() {
 const MapSection = styled.div`
   width: 30rem;
   height: 40rem;
+  border-radius: 0.5rem;
+  margin-left: 2rem;
 `
