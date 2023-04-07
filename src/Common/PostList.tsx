@@ -197,7 +197,7 @@ const PostListStyled = styled.ul`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 2rem;
+  gap: 3.5rem;
   width: 100%;
 `
 
