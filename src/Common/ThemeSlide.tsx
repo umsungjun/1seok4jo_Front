@@ -6,6 +6,11 @@ import styled from 'styled-components'
 export default function ThemeSlide() {
   const [category, setCategory] = useState('레저')
 
+  const handleCategoty = (categoryStr: string, e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    setCategory(categoryStr)
+  }
+
   return (
     <TabBtnWrapStyled>
       <ul>
@@ -13,7 +18,7 @@ export default function ThemeSlide() {
           <li key={index}>
             <TabBtnStyled
               active={category === `${data.category}` ? true : false}
-              onClick={() => setCategory(`${data.category}`)}
+              onClick={e => handleCategoty(data.category, e)}
             >
               {data.category}
             </TabBtnStyled>
