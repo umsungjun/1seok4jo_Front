@@ -75,7 +75,7 @@ const themeSlide = [
 const TabBtnWrapStyled = styled.section`
   margin-top: 2rem;
   padding-bottom: 1rem;
-  overflow-x: scroll;
+  // overflow-x: scroll;
   display: flex;
   justify-content: center;
   // ::-webkit-scrollbar {
