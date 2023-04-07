@@ -153,7 +153,6 @@ const Buttons = styled.div`
   display: flex;
 `
 const ImageArea = styled.section`
-  height: 30rem;
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
   gap: 0.5rem;
@@ -161,7 +160,7 @@ const ImageArea = styled.section`
 const Image = styled.div`
   :nth-child(1) {
     grid-row: 1 / span 2;
-    height: 30rem;
+    height: 39rem;
   }
   background-color: #c0c0c0;
   img {
@@ -239,8 +238,9 @@ const Bottom = styled.section`
 `
 const CommentBox = styled.section`
   width: 50rem;
-  height: 100rem;
-  display: block;
+  height: 40rem;
+  overflow: scroll;
+  overflow-x: hidden;
 `
 const Comment = styled.li`
   display: block;
