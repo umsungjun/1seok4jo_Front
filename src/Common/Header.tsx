@@ -1,5 +1,5 @@
 import styled, {keyframes} from 'styled-components'
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 import {Link} from 'react-router-dom'
 
 import {SlCompass} from 'react-icons/sl'
@@ -7,6 +7,7 @@ import {GoSearch} from 'react-icons/go'
 import {AiOutlineBell} from 'react-icons/ai'
 import {RxHamburgerMenu} from 'react-icons/rx'
 import Login from '../Popups/Login'
+import Notification from '../Popups/Notification'
 
 export default function Header() {
   const [searchSelect, setSerachSelect] = useState('검색')
@@ -14,6 +15,7 @@ export default function Header() {
   const [token, setToken] = useState(true) // TODO 로그인 상태
   const [userUlList, setUserUlList] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
+  const [notification, setNotification] = useState(false)
 
   const handleSearchSelect = () => {
     setSelectUl(true)
@@ -69,10 +71,15 @@ export default function Header() {
         <LoginText onClick={handleLogin}>로그인</LoginText>
       ) : (
         <LoginBox>
-          <Notifications>
+          <Notifications
+            onMouseEnter={() => {
+              setNotification(true)
+            }}
+          >
             <AiOutlineBell />
             <Count>10</Count>
           </Notifications>
+          {notification && <Notification setNotification={setNotification} />}
           <UserButton onClick={handleOpenUserUl}>
             <RxHamburgerMenu />
             <UserImg src='https://a0.muscache.com/defaults/user_pic-36x36.png?im_w=240' alt='userImg' />
@@ -224,6 +231,7 @@ const LoginText = styled.span`
 const LoginBox = styled.div`
   display: flex;
   align-items: center;
+  position: relative;
 `
 
 const Notifications = styled.div`
@@ -232,7 +240,6 @@ const Notifications = styled.div`
   border-radius: 1rem;
   padding: 0.2rem;
   transition: background-color 0.3s ease-in-out;
-  color: #1877f2;
   cursor: pointer;
   svg {
     font-size: 2rem;
