@@ -2,21 +2,22 @@ import {useState} from 'react'
 // import styled from 'styled-components'
 import {FcSportsMode} from 'react-icons/fc'
 import styled from 'styled-components'
-import Wakesurfing from '../Assets/MainPage/wakesurfing.png'
-import Restaurant from '../Assets/MainPage/restaurant.png'
-import Nature from '../Assets/MainPage/nature.png'
-import Culture from '../Assets/MainPage/culture.png'
-import Shopping from '../Assets/MainPage/shopping.png'
-import Family from '../Assets/MainPage/family.png'
-import Cute from '../Assets/MainPage/cute.png'
-import Health from '../Assets/MainPage/health.png'
-import Religion from '../Assets/MainPage/religion.png'
-import Activity from '../Assets/MainPage/activity.png'
+import {
+  MdOutlineSportsHandball,
+  MdOutlineFoodBank,
+  MdOutlineNaturePeople,
+  MdSportsTennis,
+  MdFamilyRestroom,
+} from 'react-icons/md'
+import {TbPhotoHeart} from 'react-icons/tb'
+import {HiShoppingBag} from 'react-icons/hi'
+import {FaDog} from 'react-icons/fa'
+import {GiStrong} from 'react-icons/gi'
 
 export default function ThemeSlide() {
   const [category, setCategory] = useState('레저')
 
-  const handleCategory = (categoryStr: string, e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleCategoty = (categoryStr: string, e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     setCategory(categoryStr)
   }
@@ -27,12 +28,11 @@ export default function ThemeSlide() {
         {themeSlide.map((data, index) => (
           <li key={index}>
             <TabBtnStyled
-              type='submit'
               active={category === `${data.category}` ? true : false}
-              onClick={e => handleCategory(data.category, e)}
+              onClick={e => handleCategoty(data.category, e)}
             >
-              <img src={data.icon} alt={data.category} />
-              <span>{data.category}</span>
+              {data.icon}
+              {data.category}
             </TabBtnStyled>
           </li>
         ))}
@@ -43,44 +43,44 @@ export default function ThemeSlide() {
 
 const themeSlide = [
   {
-    icon: Wakesurfing,
     category: '레저',
+    icon: <MdOutlineSportsHandball />,
   },
   {
-    icon: Restaurant,
     category: '맛집',
+    icon: <MdOutlineFoodBank />,
   },
   {
-    icon: Nature,
     category: '자연',
+    icon: <MdOutlineNaturePeople />,
   },
   {
-    icon: Culture,
     category: '문화',
+    icon: <MdSportsTennis />,
   },
   {
-    icon: Shopping,
     category: '쇼핑',
+    icon: <HiShoppingBag />,
   },
   {
-    icon: Family,
     category: '가족',
+    icon: <MdFamilyRestroom />,
   },
   {
-    icon: Cute,
     category: '반려동물',
+    icon: <FaDog />,
   },
   {
-    icon: Health,
     category: '건강',
+    icon: <GiStrong />,
   },
   {
-    icon: Religion,
     category: '종교',
+    icon: <TbPhotoHeart />,
   },
   {
-    icon: Activity,
     category: '체험',
+    icon: <MdFamilyRestroom />,
   },
 ]
 
@@ -115,20 +115,14 @@ const TabBtnStyled = styled.button<{active: boolean}>`
   align-items: center;
   justify-content: center;
   min-width: 100px;
+  border: solid 0.15rem ${props => (props.active ? '#1877f2' : 'transparent')};
   background-color: transparent;
   border-radius: 3rem;
   font-size: 1.5rem;
-  padding: 1rem;
-  border: solid 0.15rem ${props => (props.active ? '#1877f2' : 'transparent')};
   color: ${props => (props.active ? '#1877f2' : '#a4a4a4')};
-  height: 3.3125rem;
+  height: 53px;
   cursor: pointer;
   :hover {
     color: #1877f2;
-  }
-  img {
-    width: 2.5rem;
-    height: 2.5rem;
-    margin-right: 0.5rem;
   }
 `

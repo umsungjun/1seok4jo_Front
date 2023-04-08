@@ -1,10 +1,6 @@
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
-import banner1 from '../Assets/MainPage/banner-1.png'
 import banner2 from '../Assets/MainPage/banner-2.png'
-import banner3 from '../Assets/MainPage/banner-3.png'
-import banner4 from '../Assets/MainPage/banner-4.png'
-import banner5 from '../Assets/MainPage/banner-5.png'
 import {Swiper, SwiperSlide} from 'swiper/react'
 import SwiperCore, {Navigation, Pagination, Autoplay} from 'swiper'
 import 'swiper/css'
@@ -14,7 +10,8 @@ SwiperCore.use([Navigation, Pagination, Autoplay]) // *
 export default function MainBanner() {
   const bannerSwiper = [
     {
-      image: banner1,
+      image:
+        'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcfyPvC%2FbtqZyuA1DM9%2FIFkzDDJ7zUtiM6EggKj8s0%2Fimg.png',
       name: '한국관광공사',
       link: 'https://www.visitkorea.or.kr/',
       content: '한국 여행 정보 여기서 알아보자!',
@@ -29,14 +26,14 @@ export default function MainBanner() {
     },
     {
       image:
-        'https://png.pngtree.com/thumb_back/fw800/back_our/20190620/ourmid/pngtree-happy-family-to-travel-image_174190.jpg',
+        'https://www.agoda.com/wp-content/uploads/2019/03/Day-trips-from-Seoul-South-Korea-Suwon-Hwaseong-Fortress.jpg',
       name: '가족여행카페',
       link: 'https://cafe.naver.com/travelwithkids/',
-      content: '아이와 함께 여행을~',
+      content: '가족여행 정보는 여기서',
       subcontent: '가족여행 카페 링크 바로가기',
     },
     {
-      image: banner4,
+      image: 'https://i.ytimg.com/vi/eVFMDMpY36o/maxresdefault.jpg',
       name: '비짓서울',
       link: 'https://www.visitseoul.net/index',
       content: 'Welcome To Seoul',
@@ -89,7 +86,7 @@ const SwiperImage = styled.div`
   position: relative;
   img {
     width: 100%;
-    height: 35rem;
+    height: 50rem;
     object-fit: cover;
   }
 `
