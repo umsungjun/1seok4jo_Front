@@ -1,16 +1,24 @@
-import {useEffect} from 'react'
+import {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import MapContainer from '../Common/MapContainer'
 import banner2 from '../Assets/MainPage/banner-2.png'
 import sangchu from '../Assets/sangchu.png'
-import Example from '../Common/WebShare'
 import {RWebShare} from 'react-web-share'
+import {FiShare} from 'react-icons/fi'
+import {BsSuitHeart} from 'react-icons/bs'
+import {BsSuitHeartFill} from 'react-icons/bs'
 
 const PostDetailPage: React.FC = () => {
   //페이지 로딩시 상단부터 노출되도록
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
+  const [isLiked, setIsLiked] = useState(false)
+
+  const handleClick = () => {
+    setIsLiked(!isLiked)
+  }
 
   const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
 
@@ -27,9 +35,16 @@ const PostDetailPage: React.FC = () => {
             }}
             onClick={() => console.log('shared successfully!')}
           >
-            <button>공유하기</button>
+            <ShareButton>
+              <FiShare />
+              공유하기
+            </ShareButton>
           </RWebShare>
-          <button>좋아요</button>
+
+          <LikeButton type='submit'>
+            {isLiked ? <BsSuitHeartFill onClick={handleClick} /> : <BsSuitHeart onClick={handleClick} />}
+            좋아요
+          </LikeButton>
         </Buttons>
       </Header>
       <ImageArea>
@@ -204,7 +219,30 @@ const Title = styled.h1`
 `
 const Buttons = styled.div`
   display: flex;
+  button {
+    display: flex;
+    background-color: #fff;
+    border: 1px solid transparent;
+    font-size: 1.25rem;
+    cursor: pointer;
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      margin-right: 0.5rem;
+    }
+  }
 `
+
+const ShareButton = styled.button`
+  margin-right: 1rem;
+`
+
+const LikeButton = styled.button`
+  svg {
+    fill: red;
+  }
+`
+
 const ImageArea = styled.section`
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
