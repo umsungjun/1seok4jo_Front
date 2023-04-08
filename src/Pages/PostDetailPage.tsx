@@ -1,25 +1,34 @@
 import {useEffect} from 'react'
 import styled from 'styled-components'
 import MapContainer from '../Common/MapContainer'
-import banner1 from '../Assets/MainPage/banner-1.png'
 import banner2 from '../Assets/MainPage/banner-2.png'
-import banner3 from '../Assets/MainPage/banner-3.png'
-import banner4 from '../Assets/MainPage/banner-4.png'
-import banner5 from '../Assets/MainPage/banner-5.png'
 import sangchu from '../Assets/sangchu.png'
+import Example from '../Common/WebShare'
+import {RWebShare} from 'react-web-share'
 
-export default function PostDetailPage() {
+const PostDetailPage: React.FC = () => {
   //페이지 로딩시 상단부터 노출되도록
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
+  const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
 
   return (
     <Detail>
       <Header>
         <Title>휴양지로 너무 좋습니다!</Title>
         <Buttons>
-          <button>공유하기</button>
+          <RWebShare
+            data={{
+              text: 'Like humans, flamingos make friends for life',
+              url: currentUrl,
+              title: 'Flamingos',
+            }}
+            onClick={() => console.log('shared successfully!')}
+          >
+            <button>공유하기</button>
+          </RWebShare>
           <button>좋아요</button>
         </Buttons>
       </Header>
@@ -179,6 +188,8 @@ const commentBox = [
     date: '2022년 10월',
   },
 ]
+
+export default PostDetailPage
 
 const Detail = styled.section`
   padding: 10rem 5rem 0 5rem;

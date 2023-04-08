@@ -23,6 +23,7 @@
     "react-infinite-scroll-hook": "^4.1.1",
     "react-kakao-maps-sdk": "^1.1.8",
     "react-router-dom": "^6.10.0",
+    "react-web-share": "^2.0.2",
     "styled-components": "^5.3.9",
     "swiper": "^9.2.0"
   },
