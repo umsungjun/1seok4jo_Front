@@ -41,10 +41,9 @@ export default function MyPageBanner() {
 }
 
 const Section = styled.section`
-  padding-top: 7rem;
   display: flex;
   flex-direction: column;
-  padding: 0 5rem;
+  padding: 7rem 5rem 0rem;
 `
 
 const ProfileWrapper = styled.div`

@@ -33,6 +33,7 @@ export default function PostWritePage() {
   }
 
   const handlePostInfo = (e: React.FormEvent<HTMLFormElement>) => {
+    // console.log(e)
     e.preventDefault()
     navigate('/MyPage')
   }
@@ -81,17 +82,13 @@ export default function PostWritePage() {
           <DateBox>
             <DateText>시작 :</DateText>
             <DatePickerBox>
-              <DatePicker
-                dateFormat='yyyy년 MM월 dd일'
-                selected={startDate}
-                onChange={date => date && setStartDate(date)}
-              />
+              <DatePicker dateFormat='yyyy.MM.dd' selected={startDate} onChange={date => date && setStartDate(date)} />
             </DatePickerBox>
             <Wave>~</Wave>
             <DateText>종료 :</DateText>
             <DatePickerBox>
               <DatePicker
-                dateFormat='yyyy년 MM월 dd일'
+                dateFormat='yyyy.MM.dd'
                 selected={finishDate}
                 onChange={date => date && setFinishDate(date)}
               />
