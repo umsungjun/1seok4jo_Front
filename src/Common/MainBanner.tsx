@@ -28,7 +28,8 @@ export default function MainBanner() {
       subcontent: '렛츠코레일 홈페이지 바로가기',
     },
     {
-      image: banner3,
+      image:
+        'https://png.pngtree.com/thumb_back/fw800/back_our/20190620/ourmid/pngtree-happy-family-to-travel-image_174190.jpg',
       name: '가족여행카페',
       link: 'https://cafe.naver.com/travelwithkids/',
       content: '아이와 함께 여행을~',
