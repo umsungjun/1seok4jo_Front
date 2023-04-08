@@ -58,7 +58,7 @@ export default function PostWritePage() {
       return
     }
 
-    if (e.keyCode === 13) {
+    if (e.key === 'Enter') {
       const inputElement = e.target as HTMLInputElement
       const inputValue = inputElement.value
       setHashtag(prevHashtags => [...prevHashtags, `#${inputValue}`])
@@ -72,7 +72,7 @@ export default function PostWritePage() {
   }
 
   return (
-    <form onSubmit={handlePostInfo} onKeyPress={e => e.key === 'Enter' && e.preventDefault()}>
+    <form onSubmit={handlePostInfo} onKeyUp={e => e.key === 'Enter' && e.preventDefault()}>
       <PageTitle title='Writing post' sub='나의 여행 경험을 다른 사람들에게 들려주세요.' />
       <Section>
         <Title># 테마</Title>
