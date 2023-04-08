@@ -74,7 +74,8 @@ export default function PostDetailPage() {
 
 const detailImage = [
   {
-    image: banner1,
+    image:
+      'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcfyPvC%2FbtqZyuA1DM9%2FIFkzDDJ7zUtiM6EggKj8s0%2Fimg.png',
     name: '한국관광공사',
   },
   {
@@ -82,15 +83,16 @@ const detailImage = [
     name: '렛츠코레일',
   },
   {
-    image: banner3,
+    image:
+      'https://www.agoda.com/wp-content/uploads/2019/03/Day-trips-from-Seoul-South-Korea-Suwon-Hwaseong-Fortress.jpg',
     name: '가족여행카페',
   },
   {
-    image: banner4,
+    image: 'https://i.ytimg.com/vi/eVFMDMpY36o/maxresdefault.jpg',
     name: '비짓서울',
   },
   {
-    image: banner5,
+    image: 'https://i.ytimg.com/vi/eVFMDMpY36o/maxresdefault.jpg',
     name: '비짓서울',
   },
 ]

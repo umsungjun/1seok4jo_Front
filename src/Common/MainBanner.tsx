@@ -18,7 +18,7 @@ export default function MainBanner() {
       subcontent: '한국관광공사 홈페이지 바로가기',
     },
     {
-      image: banner2,
+      image: 'https://img.smlounge.co.kr/upload/NPFILE/202202/480727.jpg',
       name: '렛츠코레일',
       link: 'https://www.letskorail.com/',
       content: '꽃길따라 KTX타고 여행가자!',
