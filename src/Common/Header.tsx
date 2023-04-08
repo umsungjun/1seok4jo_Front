@@ -10,7 +10,7 @@ import Login from '../Popups/Login'
 import Notification from '../Popups/Notification'
 
 export default function Header() {
-  const [searchSelect, setSerachSelect] = useState('검색')
+  const [searchSelect, setSearchSelect] = useState('검색')
   const [selectUl, setSelectUl] = useState(false)
   const [token, setToken] = useState(true) // TODO 로그인 상태
   const [userUlList, setUserUlList] = useState(false)
@@ -23,7 +23,7 @@ export default function Header() {
 
   const handleSearchValue = (e: React.MouseEvent<HTMLLIElement>) => {
     setSelectUl(false)
-    setSerachSelect(e.currentTarget.innerText)
+    setSearchSelect(e.currentTarget.innerText)
   }
 
   const handleOpenUserUl = () => {
