@@ -2,6 +2,17 @@ import {useState} from 'react'
 // import styled from 'styled-components'
 import {FcSportsMode} from 'react-icons/fc'
 import styled from 'styled-components'
+import {
+  MdOutlineSportsHandball,
+  MdOutlineFoodBank,
+  MdOutlineNaturePeople,
+  MdSportsTennis,
+  MdFamilyRestroom,
+} from 'react-icons/md'
+import {TbPhotoHeart} from 'react-icons/tb'
+import {HiShoppingBag} from 'react-icons/hi'
+import {FaDog} from 'react-icons/fa'
+import {GiStrong} from 'react-icons/gi'
 
 export default function ThemeSlide() {
   const [category, setCategory] = useState('레저')
@@ -20,6 +31,7 @@ export default function ThemeSlide() {
               active={category === `${data.category}` ? true : false}
               onClick={e => handleCategoty(data.category, e)}
             >
+              {data.icon}
               {data.category}
             </TabBtnStyled>
           </li>
@@ -32,42 +44,43 @@ export default function ThemeSlide() {
 const themeSlide = [
   {
     category: '레저',
+    icon: <MdOutlineSportsHandball />,
   },
   {
-    icon: {FcSportsMode},
     category: '맛집',
+    icon: <MdOutlineFoodBank />,
   },
   {
-    icon: {FcSportsMode},
     category: '자연',
+    icon: <MdOutlineNaturePeople />,
   },
   {
-    icon: {FcSportsMode},
     category: '문화',
+    icon: <MdSportsTennis />,
   },
   {
-    icon: {FcSportsMode},
     category: '쇼핑',
+    icon: <HiShoppingBag />,
   },
   {
-    icon: {FcSportsMode},
     category: '가족',
+    icon: <MdFamilyRestroom />,
   },
   {
-    icon: {FcSportsMode},
     category: '반려동물',
+    icon: <FaDog />,
   },
   {
-    icon: {FcSportsMode},
     category: '건강',
+    icon: <GiStrong />,
   },
   {
-    icon: {FcSportsMode},
     category: '종교',
+    icon: <TbPhotoHeart />,
   },
   {
-    icon: {FcSportsMode},
     category: '체험',
+    icon: <MdFamilyRestroom />,
   },
 ]
 

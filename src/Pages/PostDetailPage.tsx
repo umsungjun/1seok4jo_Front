@@ -136,6 +136,46 @@ const commentBox = [
     comment: '자연을 그대로 느낄수 있습니다. 반려견 sangchu와 함께 너무나도 즐거운 여행이었습니다.',
     date: '2022년 10월',
   },
+  {
+    user: 'hasangchu',
+    comment: '자연을 그대로 느낄수 있습니다. 반려견 sangchu와 함께 너무나도 즐거운 여행이었습니다.',
+    date: '2022년 10월',
+  },
+  {
+    user: 'ha',
+    comment: '너무 좋아보여요~',
+    date: '2022년 10월',
+  },
+  {
+    user: 'sang',
+    comment: '정말 꿈같은 곳이네요!',
+    date: '2022년 10월',
+  },
+  {
+    user: 'yee',
+    comment: '빨리 가고싶어요~~~',
+    date: '2022년 10월',
+  },
+  {
+    user: 'um',
+    comment: '이번 여름에 가고싶네요~',
+    date: '2022년 10월',
+  },
+  {
+    user: 'sung',
+    comment: '슈퍼',
+    date: '2022년 10월',
+  },
+  {
+    user: 'jun',
+    comment: '편의점',
+    date: '2022년 10월',
+  },
+  {
+    user: '1seok4jo',
+    comment: '자연을 그대로 느낄수 있습니다. 반려견 sangchu와 함께 너무나도 즐거운 여행이었습니다.',
+    date: '2022년 10월',
+  },
 ]
 
 const Detail = styled.section`
@@ -195,23 +235,23 @@ const ProfileInfo = styled.div`
   margin-bottom: 2rem;
 `
 const ProfileImage = styled.div`
-  width: 3rem;
-  height: 3rem;
+  width: 5rem;
+  height: 5rem;
   border-radius: 5rem;
   background-color: #c0c0c0;
   img {
-    width: 3rem;
-    height: 3rem;
+    width: 5rem;
+    height: 5rem;
     object-fit: cover;
     border-radius: 5rem;
   }
 `
 const NickName = styled.span`
-  font-size: 1rem;
+  font-size: 1.3rem;
   padding: 1rem 0 0 1rem;
 `
 const PostArea = styled.section`
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   padding: 1.3rem;
   width: 100%;
   height: 15rem;
@@ -233,29 +273,38 @@ const Hashtag = styled.h3`
 const Bottom = styled.section`
   margin-top: 3rem;
   display: flex;
+  justify-content: space-between;
   height: 80rem;
-  // border: 1px solid red;
 `
 const CommentBox = styled.section`
-  width: 50rem;
-  height: 40rem;
+  width: 60rem;
+  height: 50rem;
   overflow: scroll;
   overflow-x: hidden;
+  border: 1px solid #c0c0c0;
+  border-radius: 3rem;
+  padding: 2rem;
+  box-sizing: border-box;
 `
 const Comment = styled.li`
   display: block;
+  margin-bottom: 3rem;
+  font-size: 1.2rem;
 `
 
 const UserProfile = styled.div`
+  display: flex;
+  margin-bottom: 1.5rem;
   img {
-    width: 3rem;
-    height: 3rem;
+    width: 4rem;
+    height: 4rem;
     background-color: #c0c0c0;
     border-radius: 5rem;
+    margin-right: 1.5rem;
   }
-
-  display: flex;
 `
 const UserInfo = styled.div`
-  display: block;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 `
