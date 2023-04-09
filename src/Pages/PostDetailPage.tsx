@@ -103,7 +103,7 @@ const detailImage = [
     name: '한국관광공사',
   },
   {
-    image: banner2,
+    image: 'https://i.ytimg.com/vi/eVFMDMpY36o/maxresdefault.jpg',
     name: '렛츠코레일',
   },
   {

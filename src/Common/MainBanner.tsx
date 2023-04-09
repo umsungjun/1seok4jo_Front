@@ -1,6 +1,5 @@
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
-import banner2 from '../Assets/MainPage/banner-2.png'
 import {Swiper, SwiperSlide} from 'swiper/react'
 import SwiperCore, {Navigation, Pagination, Autoplay} from 'swiper'
 import 'swiper/css'
