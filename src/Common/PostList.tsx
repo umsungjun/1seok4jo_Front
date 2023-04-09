@@ -9,31 +9,41 @@ import feed5 from '../Assets/MainPage/feed-5.png'
 import feed6 from '../Assets/MainPage/feed-6.png'
 import feed7 from '../Assets/MainPage/feed-7.png'
 import feed8 from '../Assets/MainPage/feed-8.png'
-import {BsFillSuitHeartFill} from 'react-icons/bs'
-// import LikeButton from './LikeButton'
+import {BsFillSuitHeartFill, BsSuitHeart, BsSuitHeartFill} from 'react-icons/bs'
+import PostModal from '../Modal/PostModal'
 
-export default function PostList() {
-  const [isActive, setIsActive] = useState(false)
+const PostList = () => {
+  const [isLiked, setIsLiked] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false)
 
   const navigate = useNavigate()
   const handleClick = () => {
     navigate(`/PostDetail`)
   }
 
+  const handleLikeClick = () => {
+    setIsLiked(!isLiked)
+  }
+
+  // 모달 핸들링
+  const handleOpenModal = () => {
+    setModalOpen(true)
+  }
+  const handleCloseModal = () => {
+    setModalOpen(false)
+  }
+
   return (
     <PostListStyled>
       {feedLists.map((data, index) => (
         <FeedStyled key={index} onClick={handleClick}>
-          {/* <button type='button'>
-            <BsSuitHeart
-              onClick={() => setIsActive(current => !current)}
-              style={{
-                color: isActive ? 'red' : 'gray',
-              }}
-            />
-          </button> */}
+          {/* <PostModal isOpen={modalOpen} onClose={handleCloseModal}>
+            <div>test</div>
+          </PostModal> */}
           <img src={data.image} alt={data.name} />
-
+          {/* <button type='button'>
+            {isLiked ? <BsSuitHeartFill onClick={handleLikeClick} /> : <BsSuitHeart onClick={handleLikeClick} />}
+          </button> */}
           <div className='text'>
             <FeedInfoStyled>
               <div className='title'>{data.title}</div>
@@ -187,6 +197,8 @@ const feedLists = [
     likes: '5',
   },
 ]
+
+export default PostList
 
 const PostListStyled = styled.ul`
   margin-top: 3rem;

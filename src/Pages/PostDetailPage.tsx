@@ -57,7 +57,7 @@ const PostDetailPage: React.FC = () => {
       <Body>
         <Info>
           <Text>강릉 / 2023-01.05 ~ 2023.01.09</Text>
-          <Status>댓글 21개 좋아요 10</Status>
+          <Status>댓글 21개 · 좋아요 10</Status>
         </Info>
         <ContentBox>
           <PostArea>
