@@ -1,15 +1,8 @@
 import {useState} from 'react'
 // import styled from 'styled-components'
-import {FcSportsMode} from 'react-icons/fc'
 import styled from 'styled-components'
-import {
-  MdOutlineSportsHandball,
-  MdOutlineFoodBank,
-  MdOutlineNaturePeople,
-  MdSportsTennis,
-  MdFamilyRestroom,
-} from 'react-icons/md'
-import {TbPhotoHeart} from 'react-icons/tb'
+import {MdOutlineSportsHandball, MdOutlineFoodBank, MdSportsTennis, MdFamilyRestroom} from 'react-icons/md'
+import {TbPhotoHeart, TbCross, TbTrees} from 'react-icons/tb'
 import {HiShoppingBag} from 'react-icons/hi'
 import {FaDog} from 'react-icons/fa'
 import {GiStrong} from 'react-icons/gi'
@@ -17,7 +10,7 @@ import {GiStrong} from 'react-icons/gi'
 export default function ThemeSlide() {
   const [category, setCategory] = useState('레저')
 
-  const handleCategoty = (categoryStr: string, e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleCategory = (categoryStr: string, e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     setCategory(categoryStr)
   }
@@ -29,7 +22,7 @@ export default function ThemeSlide() {
           <li key={index}>
             <TabBtnStyled
               active={category === `${data.category}` ? true : false}
-              onClick={e => handleCategoty(data.category, e)}
+              onClick={e => handleCategory(data.category, e)}
             >
               {data.icon}
               {data.category}
@@ -52,11 +45,11 @@ const themeSlide = [
   },
   {
     category: '자연',
-    icon: <MdOutlineNaturePeople />,
+    icon: <TbTrees />,
   },
   {
     category: '문화',
-    icon: <MdSportsTennis />,
+    icon: <TbPhotoHeart />,
   },
   {
     category: '쇼핑',
@@ -76,11 +69,11 @@ const themeSlide = [
   },
   {
     category: '종교',
-    icon: <TbPhotoHeart />,
+    icon: <TbCross />,
   },
   {
     category: '체험',
-    icon: <MdFamilyRestroom />,
+    icon: <MdSportsTennis />,
   },
 ]
 
@@ -124,5 +117,10 @@ const TabBtnStyled = styled.button<{active: boolean}>`
   cursor: pointer;
   :hover {
     color: #1877f2;
+  }
+  svg {
+    width: 1.8rem;
+    height: 1.8rem;
+    padding-right: 0.5rem;
   }
 `

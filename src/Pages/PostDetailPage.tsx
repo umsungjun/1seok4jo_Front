@@ -1,26 +1,50 @@
-import {useEffect} from 'react'
+import {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import MapContainer from '../Common/MapContainer'
-import banner1 from '../Assets/MainPage/banner-1.png'
 import banner2 from '../Assets/MainPage/banner-2.png'
-import banner3 from '../Assets/MainPage/banner-3.png'
-import banner4 from '../Assets/MainPage/banner-4.png'
-import banner5 from '../Assets/MainPage/banner-5.png'
 import sangchu from '../Assets/sangchu.png'
+import {RWebShare} from 'react-web-share'
+import {FiShare} from 'react-icons/fi'
+import {BsSuitHeart} from 'react-icons/bs'
+import {BsSuitHeartFill} from 'react-icons/bs'
 
-export default function PostDetailPage() {
+const PostDetailPage: React.FC = () => {
   //페이지 로딩시 상단부터 노출되도록
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
+  const [isLiked, setIsLiked] = useState(false)
+
+  const handleClick = () => {
+    setIsLiked(!isLiked)
+  }
+
+  const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
 
   return (
     <Detail>
       <Header>
         <Title>휴양지로 너무 좋습니다!</Title>
         <Buttons>
-          <button>공유하기</button>
-          <button>좋아요</button>
+          <RWebShare
+            data={{
+              text: 'Like humans, flamingos make friends for life',
+              url: currentUrl,
+              title: 'Flamingos',
+            }}
+            onClick={() => console.log('shared successfully!')}
+          >
+            <ShareButton>
+              <FiShare />
+              공유하기
+            </ShareButton>
+          </RWebShare>
+
+          <LikeButton type='submit'>
+            {isLiked ? <BsSuitHeartFill onClick={handleClick} /> : <BsSuitHeart onClick={handleClick} />}
+            좋아요
+          </LikeButton>
         </Buttons>
       </Header>
       <ImageArea>
@@ -33,7 +57,7 @@ export default function PostDetailPage() {
       <Body>
         <Info>
           <Text>강릉 / 2023-01.05 ~ 2023.01.09</Text>
-          <Status>댓글 21개 좋아요 10</Status>
+          <Status>댓글 21개 · 좋아요 10</Status>
         </Info>
         <ContentBox>
           <PostArea>
@@ -74,7 +98,8 @@ export default function PostDetailPage() {
 
 const detailImage = [
   {
-    image: banner1,
+    image:
+      'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcfyPvC%2FbtqZyuA1DM9%2FIFkzDDJ7zUtiM6EggKj8s0%2Fimg.png',
     name: '한국관광공사',
   },
   {
@@ -82,15 +107,16 @@ const detailImage = [
     name: '렛츠코레일',
   },
   {
-    image: banner3,
+    image:
+      'https://www.agoda.com/wp-content/uploads/2019/03/Day-trips-from-Seoul-South-Korea-Suwon-Hwaseong-Fortress.jpg',
     name: '가족여행카페',
   },
   {
-    image: banner4,
+    image: 'https://i.ytimg.com/vi/eVFMDMpY36o/maxresdefault.jpg',
     name: '비짓서울',
   },
   {
-    image: banner5,
+    image: 'https://i.ytimg.com/vi/eVFMDMpY36o/maxresdefault.jpg',
     name: '비짓서울',
   },
 ]
@@ -178,6 +204,8 @@ const commentBox = [
   },
 ]
 
+export default PostDetailPage
+
 const Detail = styled.section`
   padding: 10rem 5rem 0 5rem;
 `
@@ -191,7 +219,30 @@ const Title = styled.h1`
 `
 const Buttons = styled.div`
   display: flex;
+  button {
+    display: flex;
+    background-color: #fff;
+    border: 1px solid transparent;
+    font-size: 1.25rem;
+    cursor: pointer;
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      margin-right: 0.5rem;
+    }
+  }
 `
+
+const ShareButton = styled.button`
+  margin-right: 1rem;
+`
+
+const LikeButton = styled.button`
+  svg {
+    fill: red;
+  }
+`
+
 const ImageArea = styled.section`
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
