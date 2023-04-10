@@ -7,8 +7,8 @@ const MessagePage = () => {
     <Message>
       <Inbox>
         <InboxUl>
-          {MessageList.map(inbox => (
-            <InboxLi key={inbox.user}>
+          {MessageList.map((inbox, index) => (
+            <InboxLi key={index}>
               <InboxLiImg src={inbox.profile} />
               <InboxLiUser>{inbox.user}</InboxLiUser>
             </InboxLi>
