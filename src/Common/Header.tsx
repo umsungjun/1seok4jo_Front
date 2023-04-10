@@ -8,6 +8,9 @@ import {AiOutlineBell} from 'react-icons/ai'
 import {RxHamburgerMenu} from 'react-icons/rx'
 import Login from '../Popups/Login'
 import Notification from '../Popups/Notification'
+import {users} from '../Mock/users'
+
+const {email, password, nickName, myPage} = users[0]
 
 export default function Header() {
   const [searchSelect, setSearchSelect] = useState('검색')
@@ -36,8 +39,6 @@ export default function Header() {
 
   const handleLogin = () => {
     setShowLoginModal(true)
-    const modalBack = document.querySelector('#modalBackdrop') as HTMLElement
-    modalBack.style.display = 'block'
   }
 
   return (
@@ -82,20 +83,20 @@ export default function Header() {
           {notification && <Notification setNotification={setNotification} />}
           <UserButton onClick={handleOpenUserUl}>
             <RxHamburgerMenu />
-            <UserImg src='https://a0.muscache.com/defaults/user_pic-36x36.png?im_w=240' alt='userImg' />
+            <UserImg src={myPage.profile} alt='userImg' />
             {userUlList && (
               <UserUl>
                 <UserLiLink to='PostWrite'>글쓰기</UserLiLink>
                 <UserLiLink to='Message'>메시지함</UserLiLink>
                 <UserLiLink to='MyPage'>마이페이지</UserLiLink>
-                <UserLiButton>회원정보 수정</UserLiButton>
+                <UserLiLink to='ProfileEdit'>회원정보 수정</UserLiLink>
                 <UserLiButton onClick={handleLogout}>로그아웃</UserLiButton>
               </UserUl>
             )}
           </UserButton>
         </LoginBox>
       )}
-      <Login show={showLoginModal} />
+      <Login show={showLoginModal} setShowLoginModal={setShowLoginModal} />
     </HeaderSection>
   )
 }
