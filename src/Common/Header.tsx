@@ -88,7 +88,7 @@ export default function Header() {
                 <UserLiLink to='PostWrite'>글쓰기</UserLiLink>
                 <UserLiLink to='Message'>메시지함</UserLiLink>
                 <UserLiLink to='MyPage'>마이페이지</UserLiLink>
-                <UserLiButton>회원정보 수정</UserLiButton>
+                <UserLiLink to='ProfileEdit'>회원정보 수정</UserLiLink>
                 <UserLiButton onClick={handleLogout}>로그아웃</UserLiButton>
               </UserUl>
             )}
