@@ -7,46 +7,50 @@ import {TbSlash} from 'react-icons/tb'
 
 interface PaymentModalProps {
   show: boolean
+  setShowLoginModal: (value: boolean) => void
 }
 
-export default function Login({show}: PaymentModalProps) {
+export default function Login({show, setShowLoginModal}: PaymentModalProps) {
   const [joinForm, setJoinForm] = useState(false)
-  const handlePopUpclose = () => {
-    const modalBack = document.querySelector('#modalBackdrop') as HTMLElement
 
-    modalBack.style.display = 'none'
-    setJoinForm(false)
-  }
   return (
-    <ModalBackdrop show={show} id='modalBackdrop'>
+    <ModalBackdrop show={show}>
       <ModalContent>
         {joinForm ? (
           <>
             <ModalCloseTitleBox>
-              <CloseIcon onClick={handlePopUpclose} />
+              <CloseIcon
+                onClick={() => {
+                  setShowLoginModal(false), setJoinForm(false)
+                }}
+              />
               <ModalTitle>회원가입</ModalTitle>
             </ModalCloseTitleBox>
             <Line />
             <WelcomeText>Compass에 오신 것을 환영합니다.</WelcomeText>
             <InputGroupJoin>
-              <Input type='email' pattern='.+@gmail\.com' placeholder='example@gmail.com' required />
-              <Input type='password' placeholder='password' required />
-              <Input type='password2' placeholder='password2' required />
-              <Input type='text' placeholder='NickName' required />
+              <Input type='email' pattern='.+@gmail\.com' placeholder='이메일' required />
+              <Input type='password' placeholder='비밀 번호' required />
+              <Input type='password2' placeholder='비밀 번호 확인' required />
+              <Input type='text' placeholder='닉네임' required />
             </InputGroupJoin>
             <LoginButton>회원가입</LoginButton>
           </>
         ) : (
           <>
             <ModalCloseTitleBox>
-              <CloseIcon onClick={handlePopUpclose} />
+              <CloseIcon
+                onClick={() => {
+                  setShowLoginModal(false), setJoinForm(false)
+                }}
+              />
               <ModalTitle>로그인</ModalTitle>
             </ModalCloseTitleBox>
             <Line />
             <WelcomeText>Compass에 오신 것을 환영합니다.</WelcomeText>
             <InputGroup>
-              <Input type='email' pattern='.+@gmail\.com' placeholder='example@gmail.com' required />
-              <Input type='password' placeholder='password' required />
+              <Input type='email' pattern='.+@gmail\.com' placeholder='이메일' required />
+              <Input type='password' placeholder='비밀 번호' required />
             </InputGroup>
             <JoinFindPassBox>
               <button onClick={() => setJoinForm(true)}>회원가입</button>

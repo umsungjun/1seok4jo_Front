@@ -1,39 +1,39 @@
-import React, {useState} from 'react'
 import styled, {keyframes} from 'styled-components'
+import {users} from '../Mock/users'
 
 export default function MyPageBanner() {
-  const [editUl, setEditUl] = useState(false)
+  // const [editUl, setEditUl] = useState(false)
+  // const handleEditOn = () => {
+  //   setEditUl(true)
+  // }
+
+  // const handleEditOff = () => {
+  //   setEditUl(false)
+  // }
+  const {email, password, nickName, myPage} = users[0]
   const logined = true
-
-  const handleEditOn = () => {
-    setEditUl(true)
-  }
-
-  const handleEditOff = () => {
-    setEditUl(false)
-  }
 
   return (
     <Section>
       {logined ? (
-        <ProfileWrapper>
-          <ProfileImg src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyVFUA_3HIX1imDdXcf51nRNyibm6cxC1FXw&usqp=CAU' />
-          <Name>KiKI</Name>
-          <Text>안녕하세요 저는 바다를 좋아하는 여행가 입니다!</Text>
-          <EditButton onMouseEnter={handleEditOn}>편집하기</EditButton>
-          {editUl && (
+        <ProfileWrapper background={myPage.background}>
+          <ProfileImg src={myPage.profile} />
+          <Name>{nickName}</Name>
+          <Text>{myPage.ment}</Text>
+          {/* <EditButton onMouseEnter={handleEditOn} >편집하기</EditButton> */}
+          {/* {editUl && (
             <EditUl onMouseLeave={handleEditOff}>
               <EditLi value='title'>프로필</EditLi>
               <EditLi value='detail'>배경</EditLi>
             </EditUl>
-          )}
+          )} */}
         </ProfileWrapper>
       ) : (
-        <ProfileWrapper>
-          <ProfileImg src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyVFUA_3HIX1imDdXcf51nRNyibm6cxC1FXw&usqp=CAU' />
+        <ProfileWrapper background={myPage.background}>
+          <ProfileImg src={myPage.profile} />
           <Name>KiKI</Name>
           <Text>안녕하세요 저는 바다를 좋아하는 여행가 입니다!</Text>
-          <MessageButton onMouseEnter={handleEditOn}>메세지 하기</MessageButton>
+          <MessageButton>메세지 하기</MessageButton> {/* onMouseEnter={handleEditOn} */}
         </ProfileWrapper>
       )}
     </Section>
@@ -46,7 +46,11 @@ const Section = styled.section`
   padding: 7rem 5rem 0rem;
 `
 
-const ProfileWrapper = styled.div`
+interface ProfileWrapperProps {
+  background: string
+}
+
+const ProfileWrapper = styled.div<ProfileWrapperProps>`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -55,7 +59,7 @@ const ProfileWrapper = styled.div`
   box-sizing: border-box;
   width: 100%;
   height: 30rem;
-  background-image: url('https://blog.kakaocdn.net/dn/d2gF6H/btqXTm0xV6r/RoCwErZI7yKZYRbybrAouk/img.jpg');
+  background-image: url(${props => props.background});
   background-size: cover;
   background-position: center;
   border-radius: 1rem;
