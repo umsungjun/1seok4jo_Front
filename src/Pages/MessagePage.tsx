@@ -1,8 +1,12 @@
 import styled from 'styled-components'
 import sangchu from '../Assets/sangchu.png'
 import SpeechBubble from '../Common/SpeechBubble'
+import Chat from '../Common/Chat'
 
 const MessagePage = () => {
+  const handleSubmit = (input: string) => {
+    console.log(`test: ${input}`)
+  }
   return (
     <Message>
       <Inbox>
@@ -16,13 +20,10 @@ const MessagePage = () => {
         </InboxUl>
       </Inbox>
       <Channel>
-        {/* {MessageList.map(inbox => ( */}
         <Box>
-          <SpeechBubble text='강릉 여행 어떠셨나요?' position='left' />
-          <SpeechBubble text='너무 좋았습니다~!' position='right' />
+          <SpeechBubble text='안녕하세요!' position='left' isUser={false} />
+          <Chat />
         </Box>
-        {/* ))} */}
-        <Input></Input>
       </Channel>
     </Message>
   )
@@ -163,11 +164,7 @@ const Channel = styled.section`
 
 const Box = styled.div`
   width: 100%;
-`
-
-const Input = styled.input`
-  position: absolute;
-  bottom: 3rem;
-  width: 100%;
-  height: 3rem;
+  // height: 60vh;
+  // overflow: scroll;
+  // overflow-x: hidden;
 `
