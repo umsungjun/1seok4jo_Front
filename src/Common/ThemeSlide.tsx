@@ -18,8 +18,8 @@ export default function ThemeSlide() {
   return (
     <TabBtnWrapStyled>
       <TabBtnUl>
-        {themeSlide.map((data, index) => (
-          <li key={index}>
+        {themeSlide.map(data => (
+          <li key={data.category}>
             <TabBtnStyled
               active={category === `${data.category}` ? true : false}
               onClick={e => handleCategory(data.category, e)}
