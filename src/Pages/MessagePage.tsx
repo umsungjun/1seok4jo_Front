@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import sangchu from '../Assets/sangchu.png'
-import SpeechBubble from '../Common/SpeechBubble'
-import Chat from '../Common/Chat'
+import SpeechBubble from '../Component/SpeechBubble'
+import Chat from '../Component/Chat'
 
 const MessagePage = () => {
   const handleSubmit = (input: string) => {

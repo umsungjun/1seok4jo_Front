@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react'
 import styled from 'styled-components'
-import MapContainer from '../Common/MapContainer'
+import MapContainer from '../Component/MapContainer'
 import sangchu from '../Assets/sangchu.png'
 import {RWebShare} from 'react-web-share'
 import {FiShare} from 'react-icons/fi'
