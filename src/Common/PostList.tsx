@@ -205,9 +205,8 @@ const PostListStyled = styled.ul`
   flex-flow: row wrap;
   padding: 0px 5rem;
   width: 100%;
-  box-sizing: border-box;
-  justify-content: center;
-  gap: 3.7rem;
+  justify-content: space-between;
+  gap: 1rem;
 `
 
 const FeedStyled = styled.li`

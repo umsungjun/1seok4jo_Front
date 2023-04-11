@@ -11,6 +11,7 @@ export default function ProfileEditPage() {
 
   const [changePassword, setChangePassword] = useState<boolean>(false)
   const [profilePreview, setProfilePreview] = useState<string>(myPage.profile)
+  const [profileBackgroundPreview, setProfileBackgroundPreview] = useState<string>(myPage.background)
 
   const handlePasswordChange = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -31,19 +32,45 @@ export default function ProfileEditPage() {
     }
   }
 
+  const handleProfileBackgroundImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0]
+
+    if (file) {
+      const reader = new FileReader()
+
+      reader.onload = () => {
+        setProfileBackgroundPreview(reader.result as string)
+      }
+
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const handleEditForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    console.log(e)
+  }
+
   return (
     <>
       <MyPageBanner />
-      <PageTitle>회원정보 수정</PageTitle>
-      <EditForm>
+
+      <EditForm onSubmit={handleEditForm} onKeyUp={e => e.key === 'Enter' && e.preventDefault()}>
+        <PageTitle>회원정보 수정</PageTitle>
         <Content>
           <Title># 이메일</Title>
           <Input value={email} type='email' readOnly />
         </Content>
         <Content>
           <Title># 비밀번호</Title>
-          <Input type='password' />
-          <PassWordChange onClick={e => handlePasswordChange(e)}>*비밀번호 변경</PassWordChange>
+          <Input type='password' required />
+          <PassWordChange
+            onClick={e => {
+              handlePasswordChange(e)
+            }}
+          >
+            *비밀번호 변경
+          </PassWordChange>
         </Content>
         <Content>
           <Title># 닉네임</Title>
@@ -51,16 +78,30 @@ export default function ProfileEditPage() {
         </Content>
         <Content>
           <Title># 나를 소개하는 한 줄</Title>
-          <Input type='text' maxLength={40} placeholder='나를 소개하는 한줄을 작성해주세요.(최대 40자)' />
+          <Input type='text' maxLength={40} placeholder={myPage.ment} />
         </Content>
         <Content>
           <Title># 프로필 이미지</Title>
           <ProfileImgBox>
-            <ProfileImg src={profilePreview} alt='Preview' />
-            <ProfileImgLabel htmlFor='profileImg'>이미지 선택</ProfileImgLabel>
+            <ProfileImg src={profilePreview} alt='ProfileImg' />
+            <ImgLabel htmlFor='profileImg'>이미지 선택</ImgLabel>
             <InputImg id='profileImg' type='file' accept='.jpg, .jpeg, .png' onChange={handleProfileImageChange} />
           </ProfileImgBox>
         </Content>
+        <Content>
+          <Title># 배경 이미지</Title>
+          <ProfileImgBox>
+            <ProfileBackgroundImg src={profileBackgroundPreview} alt='ProfileBackgroundImg' />
+            <ImgLabel htmlFor='profileBackgroundImg'>배경이미지 선택</ImgLabel>
+            <InputImg
+              id='profileBackgroundImg'
+              type='file'
+              accept='.jpg, .jpeg, .png'
+              onChange={handleProfileBackgroundImageChange}
+            />
+          </ProfileImgBox>
+        </Content>
+        <SubmitInput type='submit' value={'작성 완료'} />
       </EditForm>
       <ChangePassword show={changePassword} setChangePassword={setChangePassword} />
     </>
@@ -76,13 +117,11 @@ const EditForm = styled.form`
   width: 92%;
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
+  margin: 4rem auto;
   background: rgb(247, 247, 247);
-  margin-top: 2rem;
   border-radius: 1rem;
-  padding: 0 2rem 2rem 2rem;
+  padding: 0px 2rem 2rem;
   box-sizing: border-box;
-  margin-bottom: 4rem;
 `
 
 const Content = styled.div`
@@ -95,11 +134,12 @@ const Title = styled.h2`
   font-size: 1.5rem;
   margin-right: 2rem;
   width: 15rem;
+  text-align: center;
 `
 
 const Input = styled.input`
   font-size: 1.3rem;
-  width: 30rem;
+  width: 27rem;
   border: none;
   padding: 0.8rem 0.8rem 0.8rem 1.3rem;
   border-radius: 1.5rem;
@@ -124,24 +164,51 @@ const ProfileImgBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: #fff;
+  border-radius: 1rem;
 `
 
 const ProfileImg = styled.img`
-  width: 10rem;
-  height: 10rem;
+  width: 12rem;
+  height: 12rem;
   border-radius: 50%;
+  padding: 0.5rem;
+`
+
+const ProfileBackgroundImg = styled.img`
+  width: 100%;
+  height: 25rem;
+  border-radius: 1rem;
+  padding: 0.3rem;
 `
 
 const InputImg = styled.input`
   display: none;
 `
 
-const ProfileImgLabel = styled.label`
+const ImgLabel = styled.label`
   cursor: pointer;
   font-size: 1.2rem;
-  margin-top: 1.5rem;
-
+  height: 2rem;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  border-dasharray: 100px;
   &:hover {
     color: #1877f2;
+    background: #fff;
+    border-color: #1877fe;
   }
+`
+const SubmitInput = styled.input`
+  margin-top: 5rem;
+  margin-left: auto;
+  padding: 0.7rem 1.5rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #fff;
+  background: #1877f2;
+  border: none;
+  border-radius: 0.5rem;
 `
