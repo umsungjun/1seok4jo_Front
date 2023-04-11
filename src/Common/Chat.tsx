@@ -1,5 +1,6 @@
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 import styled from 'styled-components'
+import {ImAttachment} from 'react-icons/im'
 
 interface ChatBubbleProps {
   text: string
@@ -14,16 +15,38 @@ interface Props {}
 const Chat: React.FC<Props> = () => {
   const [inputValue, setInputValue] = useState('')
   const [chatHistory, setChatHistory] = useState<string[]>([])
+  const [file, setFile] = useState<File | null>(null)
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log('inputValue', inputValue)
     setChatHistory([...chatHistory, inputValue])
     setInputValue('')
+    // if (file) {
+    //   // file을 서버로 업로드하는 코드 작성
+    // }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value)
+  }
+
+  // 파일 업로드
+
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const handleUpload = () => {
+    if (inputRef.current) {
+      inputRef.current.click()
+    }
+  }
+
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (files && files.length > 0) {
+      setFile(files[0])
+    }
+    console.log(files)
   }
 
   return (
@@ -35,6 +58,11 @@ const Chat: React.FC<Props> = () => {
       </ChatBox>
 
       <ChatForm onSubmit={handleSubmit}>
+        <label onClick={handleUpload} htmlFor='fileInput'>
+          <ImAttachment />
+        </label>
+        <input type='file' id='fileInput' onChange={handleFileInputChange} style={{display: 'none'}} />
+
         <input type='text' value={inputValue} onChange={handleChange} />
         <button type='submit'>전송</button>
       </ChatForm>
@@ -72,4 +100,32 @@ const ChatBox = styled.div`
 
 const ChatForm = styled.form`
   width: 100%;
+  display: flex;
+  justify-content: space-around;
+  label {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    svg {
+      width: 1.8rem;
+      height: 1.8rem;
+    }
+  }
+  input {
+    width: 80%;
+    height: 3rem;
+    border-radius: 1rem;
+    text-indent: 1.2rem;
+    font-size: 1.2rem;
+  }
+  button {
+    width: 10%;
+    height: 3rem;
+    color: #fff;
+    font-size: 1.2rem;
+    background-color: #1877f2;
+    border: transparent;
+    border-radius: 1rem;
+  }
 `
