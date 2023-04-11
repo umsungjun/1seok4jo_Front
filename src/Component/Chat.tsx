@@ -1,11 +1,18 @@
 import React, {useState, useRef} from 'react'
 import styled from 'styled-components'
+import sangchu from '../Assets/sangchu.png'
 import {ImAttachment} from 'react-icons/im'
 import type {ChatBubbleProps} from '../Interface/interface'
 import type {Props} from '../Interface/interface'
 
 const ChatBubble: React.FC<ChatBubbleProps> = ({text}) => {
-  return <div>{text}</div>
+  return (
+    <NewChat>
+      <div className='date'>2022년 10월</div>
+      <div className='new-text'>{text}</div>
+      <img src={sangchu} alt='유저프로필' />
+    </NewChat>
+  )
 }
 
 const Chat: React.FC<Props> = () => {
@@ -47,7 +54,7 @@ const Chat: React.FC<Props> = () => {
   const isInputEmpty = inputValue.trim() === ''
 
   return (
-    <section>
+    <ChatContainer>
       <ChatBox>
         {chatHistory.map((chat, index) => (
           <ChatBubble key={index} text={chat} />
@@ -65,42 +72,34 @@ const Chat: React.FC<Props> = () => {
           전송
         </button>
       </ChatForm>
-    </section>
+    </ChatContainer>
   )
 }
 export default Chat
 
+const ChatContainer = styled.section``
 const ChatBox = styled.div`
+  padding: 0 3rem;
   width: 100%;
   height: 60vh;
   overflow: scroll;
   overflow-x: hidden;
-  border-bottom: 1px solid #c0c0c0;
   padding-bottom: 2rem;
   margin-bottom: 3rem;
-
-  div {
-    position: relative;
-    width: 20rem;
-    height: auto;
-    padding: 1rem;
-    border-radius: 10px;
-    background-color: #1877f2;
-    border: transparent;
-    font-size: 1.2rem;
-    line-height: 1.5;
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-    margin-bottom: 1rem;
-    color: #fff;
+  img {
+    width: 3rem;
+    height: 3rem;
   }
 `
 
 const ChatForm = styled.form`
   width: 100%;
+  position: relative;
+  bottom: 3em;
   display: flex;
   justify-content: space-around;
+  border-top: 1px solid #c0c0c0;
+  padding-top: 2rem;
   label {
     cursor: pointer;
     display: flex;
@@ -132,5 +131,38 @@ const ChatForm = styled.form`
       color: #fff;
       cursor: not-allowed;
     }
+  }
+`
+
+const NewChat = styled.div`
+  display: flex;
+  margin-bottom: 2rem;
+  margin-top: 3rem;
+
+  .date {
+    margin-left: auto;
+    margin-right: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .new-text {
+    position: relative;
+    width: 20rem;
+    height: auto;
+    padding: 1rem;
+    border-radius: 10px;
+    background-color: #1877f2;
+    border: transparent;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    color: #fff;
+  }
+  img {
+    border-radius: 5rem;
+    margin-left: 1rem;
   }
 `

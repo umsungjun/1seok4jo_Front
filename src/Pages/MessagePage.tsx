@@ -67,7 +67,6 @@ const InboxLiUser = styled.div`
 const Channel = styled.section`
   width: 70%;
   height: 100vh;
-  padding: 5rem;
   border-left: 5px solid #c0c0c0;
   overflow: scroll;
   overflow-x: hidden;
@@ -75,6 +74,7 @@ const Channel = styled.section`
 
 const Box = styled.div`
   width: 100%;
+  padding: 0rem;
   // height: 60vh;
   // overflow: scroll;
   // overflow-x: hidden;
