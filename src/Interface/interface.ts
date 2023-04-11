@@ -31,3 +31,15 @@ export interface PostFeedInterface {
   date: string
   likes: string
 }
+
+// users
+export interface UserInterface {
+  email: string
+  password: string
+  nickName: string
+  myPage: {
+    profile: string
+    background: string
+    ment: string
+  }
+}
