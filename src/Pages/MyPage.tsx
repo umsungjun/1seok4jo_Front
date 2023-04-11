@@ -1,7 +1,7 @@
 import React from 'react'
 import MyPageBanner from '../Common/MyPageBanner'
 import styled from 'styled-components'
-import PostList from '../Common/PostList'
+import PostList from '../Component/PostList'
 
 export default function MyPage() {
   return (
