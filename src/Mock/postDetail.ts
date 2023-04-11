@@ -1,27 +1,43 @@
 export const DetailImage = [
   {
     image:
-      'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcfyPvC%2FbtqZyuA1DM9%2FIFkzDDJ7zUtiM6EggKj8s0%2Fimg.png',
-    name: '한국관광공사',
-  },
-  {
-    image: 'https://i.ytimg.com/vi/eVFMDMpY36o/maxresdefault.jpg',
-    name: '렛츠코레일',
+      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/469d34b5.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+    name: '썬쿠루즈-1',
   },
   {
     image:
-      'https://www.agoda.com/wp-content/uploads/2019/03/Day-trips-from-Seoul-South-Korea-Suwon-Hwaseong-Fortress.jpg',
-    name: '가족여행카페',
+      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/c3ba03ec.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+    name: '썬쿠르즈-2',
   },
   {
-    image: 'https://i.ytimg.com/vi/eVFMDMpY36o/maxresdefault.jpg',
-    name: '비짓서울',
+    image:
+      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/99becabd.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+    name: '썬쿠르즈-3',
   },
   {
-    image: 'https://i.ytimg.com/vi/eVFMDMpY36o/maxresdefault.jpg',
-    name: '비짓서울',
+    image:
+      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/00a4f6bf.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+    name: '썬쿠르즈-4',
+  },
+  {
+    image:
+      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/0e1e21e5.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+    name: '썬쿠르즈-5',
   },
 ]
+
+export const PostDetailInfo = {
+  user: 'hasangchu',
+  title: '바다가 바로 보여서 정말 끝내줍니다!',
+  location: '강릉',
+  startDate: '2023-01.05',
+  endDate: '2023.01.09',
+  post: '휴양지로 너무 좋습니다. 강릉에 가시는 분들은 꼭 가보세요!',
+  comment: '3',
+  likes: '100',
+}
+
+export const HashtagList = ['강릉', '가족', '휴양지']
 
 export const CommentBoxList = [
   {

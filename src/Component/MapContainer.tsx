@@ -15,7 +15,7 @@ export default function Map() {
   useEffect(() => {
     const mapContainer = mapRef.current
     const options = {
-      center: new kakao.maps.LatLng(37.506502, 127.053617),
+      center: new kakao.maps.LatLng(37.6834634, 129.0438501),
       level: 5,
     }
     // 지도 객체 생성

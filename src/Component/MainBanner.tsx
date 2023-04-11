@@ -6,6 +6,7 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 SwiperCore.use([Navigation, Pagination, Autoplay]) // *
 import {bannerSwiper} from '../Mock/mainBanner'
+import {FaExternalLinkAlt} from 'react-icons/fa'
 
 export default function MainBanner() {
   const slide_settings = {
@@ -32,6 +33,7 @@ export default function MainBanner() {
                 <TextContentStyled>
                   <div>{data.content}</div>
                   <Link to={data.link} target='_blank'>
+                    <FaExternalLinkAlt />
                     {data.subContent}
                   </Link>
                 </TextContentStyled>
@@ -60,17 +62,31 @@ const TextContentStyled = styled.section`
   position: absolute;
   bottom: 5%;
   right: 3%;
-  width: 30rem;
-  height: 7rem;
-  background-color: white;
-  opacity: 0.65;
+  width: 37rem;
+  height: 12rem;
+  background-color: rgba(239, 239, 240, 0.5);
   border-radius: 1rem;
   padding: 2rem;
+  white-space: pre-line;
   div {
     font-size: 3rem;
+    font-weight: bold;
     font-align: left;
     color: black;
-    opacity: 1;
+    z-index: 1;
     margin-bottom: 1rem;
+  }
+  svg {
+    padding-right: 0.5rem;
+  }
+  a {
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: flex-end;
+    margin: auto;
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
   }
 `
