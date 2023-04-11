@@ -5,12 +5,35 @@ import sangchu from '../Assets/sangchu.png'
 interface SpeechBubbleProps {
   text: string
   position: 'left' | 'right'
+  isUser: boolean
 }
 
-const SpeechBubble: React.FC<SpeechBubbleProps> = ({text, position}) => {
+interface MyComponentState {
+  speechBubbleProps: SpeechBubbleProps[]
+}
+
+class MyComponent extends React.Component<{}, MyComponentState> {
+  state: MyComponentState = {
+    speechBubbleProps: [],
+  }
+
+  addSpeechBubble = (text: string, isUser: boolean) => {
+    const newSpeechBubble: SpeechBubbleProps = {
+      text: text,
+      position: isUser ? 'right' : 'left',
+      isUser: isUser,
+    }
+
+    this.setState(prevState => ({
+      speechBubbleProps: [...prevState.speechBubbleProps, newSpeechBubble],
+    }))
+  }
+}
+
+const SpeechBubble: React.FC<SpeechBubbleProps> = ({text, isUser}) => {
   return (
     <Bubble>
-      <div className={`speech-bubble ${position}`}>{text}</div>
+      <div className={`speech-bubble ${isUser ? 'user' : 'bot'}`}>{text}</div>
       {/* <div className={`date ${position}`}>2022년 10월</div> */}
     </Bubble>
   )
@@ -39,25 +62,7 @@ const Bubble = styled.div`
     display: flex;
     align-items: center;
   }
-
-  // .speech-bubble:before {
-  //   content: '';
-  //   position: absolute;
-  //   border-style: solid;
-  //   border-width: 15px 15px 0 0;
-  //   border-color: #fff transparent transparent transparent;
-  //   top: 100%;
-  //   left: 50%;
-  //   transform: translateX(-50%);
-  // }
-
   .speech-bubble.left {
     margin-right: auto;
-  }
-
-  .speech-bubble.right {
-    margin-left: auto;
-    background-color: #1877f2;
-    color: white;
   }
 `

@@ -1,8 +1,12 @@
 import styled from 'styled-components'
 import sangchu from '../Assets/sangchu.png'
 import SpeechBubble from '../Common/SpeechBubble'
+import Chat from '../Common/Chat'
 
 const MessagePage = () => {
+  const handleSubmit = (input: string) => {
+    console.log(`test: ${input}`)
+  }
   return (
     <Message>
       <Inbox>
@@ -16,13 +20,10 @@ const MessagePage = () => {
         </InboxUl>
       </Inbox>
       <Channel>
-        {/* {MessageList.map(inbox => ( */}
         <Box>
-          <SpeechBubble text='강릉 여행 어떠셨나요?' position='left' />
-          <SpeechBubble text='너무 좋았습니다~!' position='right' />
+          <SpeechBubble text='안녕하세요!' position='left' isUser={false} />
+          <Chat />
         </Box>
-        {/* ))} */}
-        <Input></Input>
       </Channel>
     </Message>
   )
@@ -73,43 +74,43 @@ const MessageList = [
     profile: 'https://avatarfiles.alphacoders.com/337/337515.png',
   },
   {
-    user: 'user1',
+    user: 'user8',
     message: '안녕하세요',
     date: '2022년 10월',
     profile: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRttkqmIlP0nsDqi0EcJvAOSn48rpY_wF8kdg&usqp=CAU',
   },
   {
-    user: 'user2',
+    user: 'user9',
     message: '안녕하세요',
     date: '2022년 10월',
     profile: 'https://avatarfiles.alphacoders.com/337/337515.png',
   },
   {
-    user: 'user3',
+    user: 'user10',
     message: '안녕하세요',
     date: '2022년 10월',
     profile: 'https://pbs.twimg.com/profile_images/1149685638641397764/A9WroJHp_400x400.png',
   },
   {
-    user: 'user4',
+    user: 'user11',
     message: '안녕하세요',
     date: '2022년 10월',
     profile: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4vm1xUrUraOZl7sCS1yixp5n4_D6sEeZ1rg&usqp=CAU',
   },
   {
-    user: 'user5',
+    user: 'user12',
     message: '안녕하세요',
     date: '2022년 10월',
     profile: 'https://i.pinimg.com/originals/ae/b2/4b/aeb24b7dd0ee7b98f8f0c45fc06a373e.png',
   },
   {
-    user: 'user6',
+    user: 'user13',
     message: '안녕하세요',
     date: '2022년 10월',
     profile: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzs051kQDAbJqDFnedPIyjCF5OBhskFfAh6g&usqp=CAU',
   },
   {
-    user: 'user7',
+    user: 'user14',
     message: '안녕하세요',
     date: '2022년 10월',
     profile: 'https://avatarfiles.alphacoders.com/337/337515.png',
@@ -163,11 +164,7 @@ const Channel = styled.section`
 
 const Box = styled.div`
   width: 100%;
-`
-
-const Input = styled.input`
-  position: absolute;
-  bottom: 3rem;
-  width: 100%;
-  height: 3rem;
+  // height: 60vh;
+  // overflow: scroll;
+  // overflow-x: hidden;
 `

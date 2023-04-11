@@ -9,31 +9,31 @@ SwiperCore.use([Navigation, Pagination, Autoplay]) // *
 export default function MainBanner() {
   const bannerSwiper = [
     {
+      name: '한국관광공사',
       image:
         'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcfyPvC%2FbtqZyuA1DM9%2FIFkzDDJ7zUtiM6EggKj8s0%2Fimg.png',
-      name: '한국관광공사',
       link: 'https://www.visitkorea.or.kr/',
       content: '한국 여행 정보 여기서 알아보자!',
       subcontent: '한국관광공사 홈페이지 바로가기',
     },
     {
-      image: 'https://img.smlounge.co.kr/upload/NPFILE/202202/480727.jpg',
       name: '렛츠코레일',
+      image: 'https://img.smlounge.co.kr/upload/NPFILE/202202/480727.jpg',
       link: 'https://www.letskorail.com/',
       content: '꽃길따라 KTX타고 여행가자!',
       subcontent: '렛츠코레일 홈페이지 바로가기',
     },
     {
+      name: '가족여행카페',
       image:
         'https://www.agoda.com/wp-content/uploads/2019/03/Day-trips-from-Seoul-South-Korea-Suwon-Hwaseong-Fortress.jpg',
-      name: '가족여행카페',
       link: 'https://cafe.naver.com/travelwithkids/',
       content: '가족여행 정보는 여기서',
       subcontent: '가족여행 카페 링크 바로가기',
     },
     {
-      image: 'https://i.ytimg.com/vi/eVFMDMpY36o/maxresdefault.jpg',
       name: '비짓서울',
+      image: 'https://i.ytimg.com/vi/eVFMDMpY36o/maxresdefault.jpg',
       link: 'https://www.visitseoul.net/index',
       content: 'Welcome To Seoul',
       subcontent: '비짓서울 링크 바로가기',
@@ -57,8 +57,8 @@ export default function MainBanner() {
   return (
     <BannerSwiper>
       <Swiper {...slide_settings}>
-        {bannerSwiper.map((data, index) => (
-          <SwiperSlide key={index}>
+        {bannerSwiper.map(data => (
+          <SwiperSlide key={data.name}>
             <div className='swiper-slide'>
               <SwiperImage>
                 <img src={data.image} alt={data.name} />
