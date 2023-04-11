@@ -5,6 +5,7 @@ import PostWritePage from './Pages/PostWritePage'
 import MyPage from './Pages/MyPage'
 import MessagePage from './Pages/MessagePage'
 import ProfileEditPage from './Pages/ProfileEditPage'
+import PostEditPage from './Pages/PostEditPage'
 
 export default function PageNavigator() {
   return (
@@ -12,6 +13,7 @@ export default function PageNavigator() {
       <Route path='/' element={<MainPage />} />
       <Route path='/PostWrite' element={<PostWritePage />} />
       <Route path='/PostDetail' element={<PostDetailPage />} />
+      <Route path='/PostEdit' element={<PostEditPage />} />
       <Route path='/MyPage' element={<MyPage />} />
       <Route path='/Message' element={<MessagePage />} />
       <Route path='/ProfileEdit' element={<ProfileEditPage />} />
