@@ -29,13 +29,6 @@ export default function Map() {
     }).setMap(map)
   }, [])
 
-  // const icon = new kakao.maps.MarkerImage({marker}, new kakao.maps.Size(31, 35), {
-  //   offset: new kakao.maps.Point(16, 34),
-  //   alt: '마커 이미지 예제',
-  //   shape: 'poly',
-  //   coords: '1,20,1,9,5,2,10,0,21,0,27,3,30,9,30,20,17,33,14,33',
-  // })
-
   return (
     <>
       <MapSection ref={mapRef}></MapSection>

@@ -1,16 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import sangchu from '../Assets/sangchu.png'
-
-interface SpeechBubbleProps {
-  text: string
-  position: 'left' | 'right'
-  isUser: boolean
-}
-
-interface MyComponentState {
-  speechBubbleProps: SpeechBubbleProps[]
-}
+import type {SpeechBubbleProps} from '../Interface/interface'
+import type {MyComponentState} from '../Interface/interface'
 
 class MyComponent extends React.Component<{}, MyComponentState> {
   state: MyComponentState = {

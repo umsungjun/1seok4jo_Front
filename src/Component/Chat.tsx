@@ -1,16 +1,12 @@
 import React, {useState, useRef} from 'react'
 import styled from 'styled-components'
 import {ImAttachment} from 'react-icons/im'
-
-interface ChatBubbleProps {
-  text: string
-}
+import type {ChatBubbleProps} from '../Interface/interface'
+import type {Props} from '../Interface/interface'
 
 const ChatBubble: React.FC<ChatBubbleProps> = ({text}) => {
   return <div>{text}</div>
 }
-
-interface Props {}
 
 const Chat: React.FC<Props> = () => {
   const [inputValue, setInputValue] = useState('')
@@ -32,7 +28,6 @@ const Chat: React.FC<Props> = () => {
   }
 
   // 파일 업로드
-
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleUpload = () => {

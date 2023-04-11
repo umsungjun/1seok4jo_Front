@@ -1,11 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-
-interface ModalProps {
-  isOpen: boolean
-  onClose: () => void
-  children: React.ReactNode
-}
+import type {ModalProps} from '../Interface/interface'
 
 const PostModal: React.FC<ModalProps> = ({isOpen, onClose, children}) => {
   return (
