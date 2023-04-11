@@ -4,7 +4,7 @@ export const bannerSwiper = [
     image:
       'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcfyPvC%2FbtqZyuA1DM9%2FIFkzDDJ7zUtiM6EggKj8s0%2Fimg.png',
     link: 'https://www.visitkorea.or.kr/',
-    content: '한국 여행 정보 여기서 \n 알아보자!',
+    content: '대한민국 구석구석 행복 여행',
     subContent: '한국관광공사 홈페이지 바로가기',
   },
   {

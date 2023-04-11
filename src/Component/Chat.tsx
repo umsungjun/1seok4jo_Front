@@ -44,6 +44,8 @@ const Chat: React.FC<Props> = () => {
     console.log(files)
   }
 
+  const isInputEmpty = inputValue.trim() === ''
+
   return (
     <section>
       <ChatBox>
@@ -59,7 +61,9 @@ const Chat: React.FC<Props> = () => {
         <input type='file' id='fileInput' onChange={handleFileInputChange} style={{display: 'none'}} />
 
         <input type='text' value={inputValue} onChange={handleChange} />
-        <button type='submit'>전송</button>
+        <button type='submit' disabled={isInputEmpty}>
+          전송
+        </button>
       </ChatForm>
     </section>
   )
@@ -122,5 +126,11 @@ const ChatForm = styled.form`
     background-color: #1877f2;
     border: transparent;
     border-radius: 1rem;
+    cursor: pointer;
+    :disabled {
+      background-color: #c0c0c0;
+      color: #fff;
+      cursor: not-allowed;
+    }
   }
 `
