@@ -15,7 +15,7 @@ export default function Map() {
   useEffect(() => {
     const mapContainer = mapRef.current
     const options = {
-      center: new kakao.maps.LatLng(37.506502, 127.053617),
+      center: new kakao.maps.LatLng(37.6834634, 129.0438501),
       level: 5,
     }
     // 지도 객체 생성
@@ -28,13 +28,6 @@ export default function Map() {
       // image: icon,
     }).setMap(map)
   }, [])
-
-  // const icon = new kakao.maps.MarkerImage({marker}, new kakao.maps.Size(31, 35), {
-  //   offset: new kakao.maps.Point(16, 34),
-  //   alt: '마커 이미지 예제',
-  //   shape: 'poly',
-  //   coords: '1,20,1,9,5,2,10,0,21,0,27,3,30,9,30,20,17,33,14,33',
-  // })
 
   return (
     <>

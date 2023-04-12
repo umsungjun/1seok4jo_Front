@@ -5,41 +5,10 @@ import SwiperCore, {Navigation, Pagination, Autoplay} from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
 SwiperCore.use([Navigation, Pagination, Autoplay]) // *
+import {bannerSwiper} from '../Mock/mainBanner'
+import {FaExternalLinkAlt} from 'react-icons/fa'
 
 export default function MainBanner() {
-  const bannerSwiper = [
-    {
-      name: '한국관광공사',
-      image:
-        'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcfyPvC%2FbtqZyuA1DM9%2FIFkzDDJ7zUtiM6EggKj8s0%2Fimg.png',
-      link: 'https://www.visitkorea.or.kr/',
-      content: '한국 여행 정보 여기서 알아보자!',
-      subcontent: '한국관광공사 홈페이지 바로가기',
-    },
-    {
-      name: '렛츠코레일',
-      image: 'https://img.smlounge.co.kr/upload/NPFILE/202202/480727.jpg',
-      link: 'https://www.letskorail.com/',
-      content: '꽃길따라 KTX타고 여행가자!',
-      subcontent: '렛츠코레일 홈페이지 바로가기',
-    },
-    {
-      name: '가족여행카페',
-      image:
-        'https://www.agoda.com/wp-content/uploads/2019/03/Day-trips-from-Seoul-South-Korea-Suwon-Hwaseong-Fortress.jpg',
-      link: 'https://cafe.naver.com/travelwithkids/',
-      content: '가족여행 정보는 여기서',
-      subcontent: '가족여행 카페 링크 바로가기',
-    },
-    {
-      name: '비짓서울',
-      image: 'https://i.ytimg.com/vi/eVFMDMpY36o/maxresdefault.jpg',
-      link: 'https://www.visitseoul.net/index',
-      content: 'Welcome To Seoul',
-      subcontent: '비짓서울 링크 바로가기',
-    },
-  ]
-
   const slide_settings = {
     slidesPerView: 1,
     centeredSlides: true,
@@ -52,7 +21,6 @@ export default function MainBanner() {
     },
     className: 'picture-swiper',
   }
-  // className='swiper-container'
 
   return (
     <BannerSwiper>
@@ -65,7 +33,8 @@ export default function MainBanner() {
                 <TextContentStyled>
                   <div>{data.content}</div>
                   <Link to={data.link} target='_blank'>
-                    {data.subcontent}
+                    <FaExternalLinkAlt />
+                    {data.subContent}
                   </Link>
                 </TextContentStyled>
               </SwiperImage>
@@ -93,17 +62,31 @@ const TextContentStyled = styled.section`
   position: absolute;
   bottom: 5%;
   right: 3%;
-  width: 30rem;
-  height: 7rem;
-  background-color: white;
-  opacity: 0.65;
+  width: 37rem;
+  height: 12rem;
+  background-color: rgba(239, 239, 240, 0.5);
   border-radius: 1rem;
   padding: 2rem;
+  white-space: pre-line;
   div {
     font-size: 3rem;
+    font-weight: bold;
     font-align: left;
     color: black;
-    opacity: 1;
+    z-index: 1;
     margin-bottom: 1rem;
+  }
+  svg {
+    padding-right: 0.5rem;
+  }
+  a {
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: flex-end;
+    margin: auto;
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
   }
 `
