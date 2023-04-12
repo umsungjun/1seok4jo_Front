@@ -19,8 +19,6 @@ const Chat: React.FC<Props> = () => {
       text: newMessageText,
       createdAt: new Date(),
     }
-    const options = {year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'}
-    const formattedDate = new Date().toLocaleString('ko-KR', options)
 
     setMessages([...messages, newMessage])
     setNewMessageText('')
@@ -59,7 +57,15 @@ const Chat: React.FC<Props> = () => {
       <ChatBox>
         {messages.map((chat, index) => (
           <NewChat key={index}>
-            <div className='date'>{chat.createdAt.toLocaleString('ko-KR')}</div>
+            <div className='date'>
+              {chat.createdAt.toLocaleString('ko-KR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+              })}
+            </div>
             <div className='new-text'>{chat.text}</div>
             <img src={sangchu} alt='유저프로필' />
           </NewChat>
