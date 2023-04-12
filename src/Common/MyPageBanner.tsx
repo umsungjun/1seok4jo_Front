@@ -34,6 +34,7 @@ export default function MyPageBanner() {
 
 const Section = styled.section`
   display: flex;
+  width: 100%;
   flex-direction: column;
   padding: 7rem 5rem 0rem;
 `
