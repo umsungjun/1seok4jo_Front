@@ -10,12 +10,11 @@ import {DetailImage} from '../Mock/postDetail'
 import {PostDetailInfo} from '../Mock/postDetail'
 import {HashtagList} from '../Mock/postDetail'
 import {CommentBoxList} from '../Mock/postDetail'
+import {scrollToTop} from '../util/scrollToTop'
 
 const PostDetailPage: React.FC = () => {
   //페이지 로딩시 상단부터 노출되도록
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+  scrollToTop()
 
   const [isLiked, setIsLiked] = useState(false)
 
