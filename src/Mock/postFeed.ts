@@ -7,6 +7,7 @@ export const PostFeed = [
     location: '강릉',
     date: '2023.01.05 - 2023.01.09',
     likes: '5',
+    nickName: 'kikI',
   },
   {
     id: 2,
@@ -16,6 +17,7 @@ export const PostFeed = [
     location: '설악산',
     date: '2023.01.05 - 2023.01.09',
     likes: '5',
+    nickName: 'test1',
   },
   {
     id: 3,
@@ -25,6 +27,7 @@ export const PostFeed = [
     location: '제주도',
     date: '2023.01.05 - 2023.01.09',
     likes: '5',
+    nickName: 'test2',
   },
   {
     id: 4,
@@ -34,6 +37,7 @@ export const PostFeed = [
     location: '제주도',
     date: '2023.01.05 - 2023.01.09',
     likes: '5',
+    nickName: 'test3',
   },
 
   {
@@ -44,6 +48,7 @@ export const PostFeed = [
     location: '강릉',
     date: '2023.01.05 - 2023.01.09',
     likes: '5',
+    nickName: 'test4',
   },
   {
     id: 6,
@@ -53,6 +58,7 @@ export const PostFeed = [
     location: '강릉',
     date: '2023.01.05 - 2023.01.09',
     likes: '5',
+    nickName: 'test5',
   },
   {
     id: 7,
@@ -62,6 +68,7 @@ export const PostFeed = [
     location: '경주',
     date: '2023.01.05 - 2023.01.09',
     likes: '5',
+    nickName: 'test6',
   },
   {
     id: 8,
@@ -72,6 +79,7 @@ export const PostFeed = [
     location: '부산',
     date: '2023.01.05 - 2023.01.09',
     likes: '5',
+    nickName: 'test7',
   },
   {
     id: 9,
@@ -82,6 +90,7 @@ export const PostFeed = [
     location: '강릉',
     date: '2023.01.05 - 2023.01.09',
     likes: '5',
+    nickName: 'test8',
   },
   {
     id: 10,
@@ -92,6 +101,7 @@ export const PostFeed = [
     location: '설악산',
     date: '2023.01.05 - 2023.01.09',
     likes: '5',
+    nickName: 'test9',
   },
   {
     id: 11,
@@ -101,6 +111,7 @@ export const PostFeed = [
     location: '제주도',
     date: '2023.01.05 - 2023.01.09',
     likes: '5',
+    nickName: 'test10',
   },
   {
     id: 12,
@@ -111,6 +122,7 @@ export const PostFeed = [
     location: '제주도',
     date: '2023.01.05 - 2023.01.09',
     likes: '5',
+    nickName: 'test11',
   },
 
   {
@@ -121,6 +133,7 @@ export const PostFeed = [
     location: '강릉',
     date: '2023.01.05 - 2023.01.09',
     likes: '5',
+    nickName: 'test12',
   },
   {
     id: 14,
@@ -131,6 +144,7 @@ export const PostFeed = [
     location: '강릉',
     date: '2023.01.05 - 2023.01.09',
     likes: '5',
+    nickName: 'test13',
   },
   {
     id: 15,
@@ -141,6 +155,7 @@ export const PostFeed = [
     location: '경주',
     date: '2023.01.05 - 2023.01.09',
     likes: '5',
+    nickName: 'test14',
   },
   {
     id: 16,
@@ -151,5 +166,6 @@ export const PostFeed = [
     location: '부산',
     date: '2023.01.05 - 2023.01.09',
     likes: '5',
+    nickName: 'test15',
   },
 ]

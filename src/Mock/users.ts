@@ -1,13 +1,4 @@
-export interface UserInterface {
-  email: string
-  password: string
-  nickName: string
-  myPage: {
-    profile: string
-    background: string
-    ment: string
-  }
-}
+import {UserInterface} from '../Interface/interface'
 
 export const users: UserInterface[] = [
   {

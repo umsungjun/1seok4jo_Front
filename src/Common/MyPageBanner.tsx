@@ -1,17 +1,14 @@
+import {useState} from 'react'
+
 import styled, {keyframes} from 'styled-components'
 import {users} from '../Mock/users'
+import SendMessage from '../Modal/SendMessage'
 
 export default function MyPageBanner() {
-  // const [editUl, setEditUl] = useState(false)
-  // const handleEditOn = () => {
-  //   setEditUl(true)
-  // }
+  const [showMessageModal, setShowMessageModal] = useState<boolean>(false)
 
-  // const handleEditOff = () => {
-  //   setEditUl(false)
-  // }
   const {email, password, nickName, myPage} = users[0]
-  const logined = true
+  const logined = false
 
   return (
     <Section>
@@ -20,22 +17,17 @@ export default function MyPageBanner() {
           <ProfileImg src={myPage.profile} />
           <Name>{nickName}</Name>
           <Text>{myPage.ment}</Text>
-          {/* <EditButton onMouseEnter={handleEditOn} >편집하기</EditButton> */}
-          {/* {editUl && (
-            <EditUl onMouseLeave={handleEditOff}>
-              <EditLi value='title'>프로필</EditLi>
-              <EditLi value='detail'>배경</EditLi>
-            </EditUl>
-          )} */}
         </ProfileWrapper>
       ) : (
         <ProfileWrapper background={myPage.background}>
           <ProfileImg src={myPage.profile} />
           <Name>KiKI</Name>
           <Text>안녕하세요 저는 바다를 좋아하는 여행가 입니다!</Text>
-          <MessageButton>메세지 하기</MessageButton> {/* onMouseEnter={handleEditOn} */}
+          <MessageButton onClick={() => setShowMessageModal(true)}>메세지 하기</MessageButton>{' '}
+          {/* onMouseEnter={handleEditOn} */}
         </ProfileWrapper>
       )}
+      <SendMessage show={showMessageModal} setShowMessageModal={setShowMessageModal} />
     </Section>
   )
 }
