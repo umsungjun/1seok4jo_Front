@@ -1,6 +1,7 @@
 // Chat
 export interface ChatBubbleProps {
   text: string
+  createdAt: Date
 }
 export interface Props {}
 

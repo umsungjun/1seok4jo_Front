@@ -4,35 +4,37 @@ import sangchu from '../Assets/sangchu.png'
 import {ImAttachment} from 'react-icons/im'
 import type {ChatBubbleProps} from '../Interface/interface'
 import type {Props} from '../Interface/interface'
-
-const ChatBubble: React.FC<ChatBubbleProps> = ({text}) => {
-  return (
-    <NewChat>
-      <div className='date'>2022년 10월</div>
-      <div className='new-text'>{text}</div>
-      <img src={sangchu} alt='유저프로필' />
-    </NewChat>
-  )
-}
+import SpeechBubble from './SpeechBubble'
 
 const Chat: React.FC<Props> = () => {
-  const [inputValue, setInputValue] = useState('')
-  const [chatHistory, setChatHistory] = useState<string[]>([])
+  const [newMessageText, setNewMessageText] = useState<string>('')
+  const [messages, setMessages] = useState<ChatBubbleProps[]>([])
+  // const [dateTime, setDateTime] = useState<Date>(new Date())
   const [file, setFile] = useState<File | null>(null)
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleNewMessageSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log('inputValue', inputValue)
-    setChatHistory([...chatHistory, inputValue])
-    setInputValue('')
+    console.log('inputValue', newMessageText)
+    const newMessage: ChatBubbleProps = {
+      text: newMessageText,
+      createdAt: new Date(),
+    }
+    const options = {year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'}
+    const formattedDate = new Date().toLocaleString('ko-KR', options)
+
+    setMessages([...messages, newMessage])
+    setNewMessageText('')
     // if (file) {
-    //   // file을 서버로 업로드하는 코드 작성
+    //   // file을 서버로 업로드하는 코드 나중에 작성
     // }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value)
+    setNewMessageText(e.target.value)
   }
+
+  // 인풋빈값일때 전송버튼 disabled
+  const isInputEmpty = newMessageText.trim() === ''
 
   // 파일 업로드
   const inputRef = useRef<HTMLInputElement>(null)
@@ -51,23 +53,26 @@ const Chat: React.FC<Props> = () => {
     console.log(files)
   }
 
-  const isInputEmpty = inputValue.trim() === ''
-
   return (
     <ChatContainer>
+      <SpeechBubble text='안녕하세요!' position='left' isUser={false} />
       <ChatBox>
-        {chatHistory.map((chat, index) => (
-          <ChatBubble key={index} text={chat} />
+        {messages.map((chat, index) => (
+          <NewChat key={index}>
+            <div className='date'>{chat.createdAt.toLocaleString('ko-KR')}</div>
+            <div className='new-text'>{chat.text}</div>
+            <img src={sangchu} alt='유저프로필' />
+          </NewChat>
         ))}
       </ChatBox>
 
-      <ChatForm onSubmit={handleSubmit}>
+      <ChatForm onSubmit={handleNewMessageSubmit}>
         <label onClick={handleUpload} htmlFor='fileInput'>
           <ImAttachment />
         </label>
         <input type='file' id='fileInput' onChange={handleFileInputChange} style={{display: 'none'}} />
 
-        <input type='text' value={inputValue} onChange={handleChange} />
+        <input type='text' value={newMessageText} onChange={handleChange} />
         <button type='submit' disabled={isInputEmpty}>
           전송
         </button>

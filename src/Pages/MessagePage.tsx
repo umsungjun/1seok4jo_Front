@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import SpeechBubble from '../Component/SpeechBubble'
 import Chat from '../Component/Chat'
 import {inboxList} from '../Mock/inboxList'
 
@@ -21,7 +20,6 @@ const MessagePage = () => {
       </Inbox>
       <Channel>
         <Box>
-          <SpeechBubble text='안녕하세요!' position='left' isUser={false} />
           <Chat />
         </Box>
       </Channel>
