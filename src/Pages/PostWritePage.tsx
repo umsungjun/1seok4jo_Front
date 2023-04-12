@@ -7,11 +7,13 @@ import DaumPostcode from 'react-daum-postcode'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import {useNavigate} from 'react-router-dom'
+import {scrollToTop} from '../util/scrollToTop'
 
 import {FaMapMarkerAlt} from 'react-icons/fa'
 import {RiCloseFill} from 'react-icons/ri'
 
 export default function PostWritePage() {
+  scrollToTop()
   const navigate = useNavigate()
 
   const [address, setAddress] = useState('')

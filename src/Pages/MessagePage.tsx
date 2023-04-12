@@ -1,8 +1,10 @@
 import styled from 'styled-components'
 import Chat from '../Component/Chat'
 import {inboxList} from '../Mock/inboxList'
+import {scrollToTop} from '../util/scrollToTop'
 
 const MessagePage = () => {
+  scrollToTop()
   const handleSubmit = (input: string) => {
     console.log(`test: ${input}`)
   }

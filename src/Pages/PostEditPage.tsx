@@ -7,8 +7,10 @@ import PageTitle from '../Common/PageTitle'
 import ThemeSlide from '../Common/ThemeSlide'
 import {FaMapMarkerAlt} from 'react-icons/fa'
 import {RiCloseFill} from 'react-icons/ri'
+import {scrollToTop} from '../util/scrollToTop'
 
 export default function PostEditPage() {
+  scrollToTop()
   const navigate = useNavigate()
 
   const [address, setAddress] = useState('')

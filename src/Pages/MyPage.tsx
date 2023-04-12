@@ -2,8 +2,10 @@ import React from 'react'
 import MyPageBanner from '../Common/MyPageBanner'
 import styled from 'styled-components'
 import PostList from '../Component/PostList'
+import {scrollToTop} from '../util/scrollToTop'
 
 export default function MyPage() {
+  scrollToTop()
   return (
     <>
       <MyPageBanner />

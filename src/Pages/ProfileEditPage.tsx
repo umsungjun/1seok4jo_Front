@@ -5,8 +5,10 @@ import styled from 'styled-components'
 import ChangePassword from '../Popups/ChangePassword'
 
 import {users} from '../Mock/users'
+import {scrollToTop} from '../util/scrollToTop'
 
 export default function ProfileEditPage() {
+  scrollToTop()
   const {email, password, nickName, myPage} = users[0]
 
   const [changePassword, setChangePassword] = useState<boolean>(false)
