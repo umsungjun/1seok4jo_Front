@@ -5,10 +5,15 @@ import {BsFillSuitHeartFill, BsSuitHeart, BsSuitHeartFill} from 'react-icons/bs'
 import {PostFeed} from '../Mock/postFeed'
 import type {PostFeedInterface} from '../Interface/interface'
 import PostModal from '../Modal/PostModal'
+import {users} from '../Mock/users'
+
+import {AiOutlineMinusCircle} from 'react-icons/ai'
+import {BsPencilSquare} from 'react-icons/bs'
 
 const PostList = () => {
   const [isLiked, setIsLiked] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
+  const [login, setLogin] = useState(users[0]) //null
 
   const navigate = useNavigate()
   const handleClick = () => {
@@ -27,17 +32,29 @@ const PostList = () => {
     setModalOpen(false)
   }
 
-  return (
+  const handleDeletePost = (e: React.MouseEvent<SVGAElement>) => {
+    e.stopPropagation()
+    console.log('삭제 클릭')
+    confirm('정말 삭제하시겠습니까?') // TODO 팝업
+  }
+
+  const handleEditPost = (e: React.MouseEvent<SVGAElement>) => {
+    e.stopPropagation()
+    console.log('편집 클릭')
+    navigate(`/PostEdit`)
+  }
+
+  return login === null ? (
     <PostListStyled>
       {PostFeed.map(data => (
         <FeedStyled key={data.id} onClick={handleClick}>
           {/* <PostModal isOpen={modalOpen} onClose={handleCloseModal}>
-            <div>test</div>
-          </PostModal> */}
+          <div>test</div>
+        </PostModal> */}
           <img src={data.image} alt={data.name} />
           {/* <button type='button'>
-            {isLiked ? <BsSuitHeartFill onClick={handleLikeClick} /> : <BsSuitHeart onClick={handleLikeClick} />}
-          </button> */}
+          {isLiked ? <BsSuitHeartFill onClick={handleLikeClick} /> : <BsSuitHeart onClick={handleLikeClick} />}
+        </button> */}
           <div className='text'>
             <FeedInfoStyled>
               <div className='title'>{data.title}</div>
@@ -55,6 +72,61 @@ const PostList = () => {
           </div>
         </FeedStyled>
       ))}
+    </PostListStyled>
+  ) : (
+    <PostListStyled>
+      {PostFeed.map(data =>
+        data.nickName === login.nickName ? (
+          <FeedStyled key={data.id} onClick={handleClick}>
+            <ImgBox>
+              <DeleteButton onClick={handleDeletePost} />
+              <img src={data.image} alt={data.name} />
+              <EditButton onClick={handleEditPost} />
+            </ImgBox>
+
+            <div className='text'>
+              <FeedInfoStyled>
+                <div className='title'>{data.title}</div>
+                <div className='location'>{data.location}</div>
+                <div className='date'>{data.date}</div>
+              </FeedInfoStyled>
+
+              <FeedLikeStyled>
+                <LikeButtonStyled>
+                  <BsFillSuitHeartFill />
+                </LikeButtonStyled>
+
+                <div>{data.likes}</div>
+              </FeedLikeStyled>
+            </div>
+          </FeedStyled>
+        ) : (
+          <FeedStyled key={data.id} onClick={handleClick}>
+            {/* <PostModal isOpen={modalOpen} onClose={handleCloseModal}>
+          <div>test</div>
+        </PostModal> */}
+            <img src={data.image} alt={data.name} />
+            {/* <button type='button'>
+          {isLiked ? <BsSuitHeartFill onClick={handleLikeClick} /> : <BsSuitHeart onClick={handleLikeClick} />}
+        </button> */}
+            <div className='text'>
+              <FeedInfoStyled>
+                <div className='title'>{data.title}</div>
+                <div className='location'>{data.location}</div>
+                <div className='date'>{data.date}</div>
+              </FeedInfoStyled>
+
+              <FeedLikeStyled>
+                <LikeButtonStyled>
+                  <BsFillSuitHeartFill />
+                </LikeButtonStyled>
+
+                <div>{data.likes}</div>
+              </FeedLikeStyled>
+            </div>
+          </FeedStyled>
+        ),
+      )}
     </PostListStyled>
   )
 }
@@ -90,6 +162,31 @@ const FeedStyled = styled.li`
     margin: 0.625rem 0 1.25rem 0;
   }
 `
+
+const ImgBox = styled.div`
+  position: relative;
+
+  svg {
+    position: absolute;
+    color: gray;
+    opacity: 0.3;
+    top: 0.5rem;
+  }
+`
+
+const DeleteButton = styled(AiOutlineMinusCircle)`
+  font-size: 2rem;
+  left: 0.5rem;
+  &:hover {
+    color: red;
+  }
+`
+
+const EditButton = styled(BsPencilSquare)`
+  font-size: 1.8rem;
+  right: 0.5rem;
+`
+
 const FeedInfoStyled = styled.label`
   div {
     margin: 0.5rem;
