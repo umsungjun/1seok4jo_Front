@@ -34,9 +34,9 @@ export default function MyPageBanner() {
 
 const Section = styled.section`
   display: flex;
-  width: 100%;
+  width: 89%;
   flex-direction: column;
-  padding: 7rem 5rem 0rem;
+  padding-top: 6rem;
 `
 
 interface ProfileWrapperProps {
