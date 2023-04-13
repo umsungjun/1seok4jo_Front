@@ -20,11 +20,7 @@ const MessagePage = () => {
           ))}
         </InboxUl>
       </Inbox>
-      <Channel>
-        <Box>
-          <Chat />
-        </Box>
-      </Channel>
+      <Chat />
     </Message>
   )
 }
@@ -33,10 +29,12 @@ export default MessagePage
 const Message = styled.section`
   padding-top: 5.2rem;
   display: flex;
+  height: 100vh;
+  // border: 5px solid black;
 `
 
 const Inbox = styled.section`
-  width: 30%;
+  width: 25%;
   height: 100vh;
   overflow: scroll;
   overflow-x: hidden;
@@ -62,20 +60,4 @@ const InboxLiUser = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-`
-
-const Channel = styled.section`
-  width: 70%;
-  height: 100vh;
-  border-left: 5px solid #c0c0c0;
-  overflow: scroll;
-  overflow-x: hidden;
-`
-
-const Box = styled.div`
-  width: 100%;
-  padding: 0rem;
-  // height: 60vh;
-  // overflow: scroll;
-  // overflow-x: hidden;
 `
