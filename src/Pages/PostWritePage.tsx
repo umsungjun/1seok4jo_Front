@@ -74,7 +74,7 @@ export default function PostWritePage() {
   }
 
   return (
-    <form onSubmit={handlePostInfo} onKeyUp={e => e.key === 'Enter' && e.preventDefault()}>
+    <PostForm onSubmit={handlePostInfo} onKeyUp={e => e.key === 'Enter' && e.preventDefault()}>
       <PageTitle title='Writing Post' sub='나의 여행 경험을 다른 사람들에게 들려주세요.' />
       <Section>
         <Title># 테마</Title>
@@ -99,8 +99,8 @@ export default function PostWritePage() {
         </ContentBox>
         <ContentBox>
           <Title># 주소</Title>
-          <AddresBox>
-            <AddresInput type='text' value={address} placeholder='# 주소' required readOnly />
+          <AddressBox>
+            <AddressInput type='text' value={address} placeholder='# 주소' required readOnly />
             <FaMapMarkerAlt onClick={onChangeOpenPost} />
             {isOpenPost ? (
               <div>
@@ -121,7 +121,7 @@ export default function PostWritePage() {
                 />
               </div>
             ) : null}
-          </AddresBox>
+          </AddressBox>
         </ContentBox>
         <ContentBox>
           <Title># 제목</Title>
@@ -160,20 +160,28 @@ export default function PostWritePage() {
               })}
             </TagBox>
             {hashtag.length >= 3 ? null : (
-              <HashTageInput placeholder='# 해쉬태그를 입력하세요 (최대 3개)' onKeyUp={handleEnterHash} />
+              <HashTagsInput placeholder='# 해쉬태그를 입력하세요 (최대 3개)' onKeyUp={handleEnterHash} />
             )}
           </HashtagBox>
         </ContentBox>
         <SubmitInput type='submit' value={'작성 완료'} />
       </Section>
-    </form>
+    </PostForm>
   )
 }
+
+const PostForm = styled.form`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 5rem;
+`
 
 const Section = styled.section`
   display: flex;
   flex-direction: column;
-  padding: 0px 20rem 5rem;
+  width: 80%;
 `
 
 const ContentBox = styled.div`
@@ -200,7 +208,7 @@ const TitleInput = styled.input`
   }
 `
 
-const AddresBox = styled.div`
+const AddressBox = styled.div`
   svg {
     font-size: 1.8rem;
     margin-left: 1rem;
@@ -250,7 +258,7 @@ const DateText = styled.span`
   font-size: 1.5rem;
 `
 
-const AddresInput = styled.input`
+const AddressInput = styled.input`
   border: none;
   border-bottom: 1px solid #c0c0c0;
   flex: 1 1 0;
@@ -266,7 +274,7 @@ const TextArea = styled.textarea`
   font-size: 1.3rem;
   padding: 1rem;
   margin-top: 3rem;
-  width: 77rem;
+  width: 100%;
   height: 15rem;
   border: 1px solid #c0c0c0;
   border-radius: 1rem;
@@ -322,7 +330,7 @@ const TagBox = styled.div`
   display: flex;
 `
 
-const HashTageInput = styled.input`
+const HashTagsInput = styled.input`
   border: none;
   width: 17rem;
   font-size: 1.2rem;
