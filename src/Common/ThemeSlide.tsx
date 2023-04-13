@@ -79,7 +79,6 @@ const themeSlide = [
 
 // 탭
 const TabBtnWrapStyled = styled.section`
-  margin-top: 2rem;
   padding-bottom: 1rem;
   // overflow-x: scroll;
   display: flex;
