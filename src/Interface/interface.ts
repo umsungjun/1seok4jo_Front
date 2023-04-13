@@ -36,7 +36,10 @@ export interface PostFeedInterface {
 // PostDetail
 export interface PostDetailInfoInterface {
   id: number
-  image: string[]
+  images: {
+    url: string
+    name: string
+  }[]
   name: string[]
   title: string
   location: string

@@ -6,6 +6,7 @@ import {PostFeed} from '../Mock/postFeed'
 import type {PostFeedInterface} from '../Interface/interface'
 import PostModal from '../Modal/PostModal'
 import {users} from '../Mock/users'
+import {PostDetailInfo} from '../Mock/postDetail'
 
 import {AiOutlineMinusCircle} from 'react-icons/ai'
 import {BsPencilSquare} from 'react-icons/bs'
@@ -16,8 +17,10 @@ const PostList = () => {
   const [login, setLogin] = useState(users[0]) //null
 
   const navigate = useNavigate()
-  const handleClick = () => {
-    navigate(`/PostDetail/:id`)
+
+  const handleClick = (id: number) => {
+    console.log('ID', id)
+    navigate(`/PostDetail/${id}`)
   }
 
   const handleLikeClick = (e: React.MouseEvent<SVGAElement>) => {
@@ -40,34 +43,38 @@ const PostList = () => {
 
   return login === null ? (
     <PostListStyled>
-      {PostFeed.map(data => (
-        <FeedStyled key={data.id} onClick={handleClick}>
-          <ImgBox>
-            <img src={data.image} alt={data.name} />
-          </ImgBox>
-          <div className='text'>
-            <FeedInfoStyled>
-              <div className='title'>{data.title}</div>
-              <div className='location'>{data.location}</div>
-              <div className='date'>{data.date}</div>
-            </FeedInfoStyled>
+      {PostFeed.map(data => {
+        const {id, title, location, date, likes, image, name} = data
 
-            <FeedLikeStyled>
-              <LikeButtonStyled>
-                <BsFillSuitHeartFill />
-              </LikeButtonStyled>
+        return (
+          <FeedStyled key={id} onClick={() => handleClick(data.id)}>
+            <ImgBox>
+              <img src={image} alt={name} />
+            </ImgBox>
+            <div className='text'>
+              <FeedInfoStyled>
+                <div className='title'>{title}</div>
+                <div className='location'>{location}</div>
+                <div className='date'>{date}</div>
+              </FeedInfoStyled>
 
-              <div>{data.likes}</div>
-            </FeedLikeStyled>
-          </div>
-        </FeedStyled>
-      ))}
+              <FeedLikeStyled>
+                <LikeButtonStyled>
+                  <BsFillSuitHeartFill />
+                </LikeButtonStyled>
+
+                <div>{likes}</div>
+              </FeedLikeStyled>
+            </div>
+          </FeedStyled>
+        )
+      })}
     </PostListStyled>
   ) : (
     <PostListStyled>
       {PostFeed.map(data =>
         data.nickName === login.nickName ? (
-          <FeedStyled key={data.id} onClick={handleClick}>
+          <FeedStyled key={data.id} onClick={() => handleClick(data.id)}>
             <ImgBox>
               <DeleteButton key={data.id} onClick={handleDeletePost} />
               <img src={data.image} alt={data.name} />
@@ -91,7 +98,7 @@ const PostList = () => {
             </div>
           </FeedStyled>
         ) : (
-          <FeedStyled key={data.id} onClick={handleClick}>
+          <FeedStyled key={data.id} onClick={() => handleClick(data.id)}>
             <ImgBox>
               <img src={data.image} alt={data.name} />
               <LikeButton key={data.id} type='submit'>

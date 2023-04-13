@@ -1,31 +1,34 @@
-// export type PostDetailInfo = {
-//   id: number
-//   image: string[]
-//   name: string[]
-//   title: string
-//   location: string
-//   startDate: string
-//   endDate: string
-//   comment: string
-//   likes: string
-//   post: string
-//   hashtags: string[]
-//   comments: string[]
-// }
-
 export const PostDetailInfo = [
   {
     id: 1,
-    image: [
-      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/469d34b5.jpg?impolicy=resizecrop&rw=1200&ra=fit',
-      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/c3ba03ec.jpg?impolicy=resizecrop&rw=1200&ra=fit',
-      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/99becabd.jpg?impolicy=resizecrop&rw=1200&ra=fit',
-      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/00a4f6bf.jpg?impolicy=resizecrop&rw=1200&ra=fit',
-      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/0e1e21e5.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+    images: [
+      {
+        url: 'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/469d34b5.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+        name: '썬쿠루즈-1',
+      },
+      {
+        url: 'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/469d34b5.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+
+        name: '썬쿠루즈-2',
+      },
+      {
+        url: 'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/c3ba03ec.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+
+        name: '썬쿠루즈-3',
+      },
+      {
+        url: 'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/00a4f6bf.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+
+        name: '썬쿠루즈-4',
+      },
+      {
+        url: 'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/0e1e21e5.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+
+        name: '썬쿠루즈-5',
+      },
     ],
-    name: ['썬쿠루즈-1', '썬쿠르즈-2', '썬쿠르즈-3', '썬쿠르즈-4', '썬쿠르즈-5'],
     user: 'hasangchu',
-    title: '바다가 바로 보여서 정말 끝내줍니다!',
+    title: '이건 테스트-1',
     location: '강릉',
     startDate: '2023-01.05',
     endDate: '2023.01.09',
@@ -35,7 +38,7 @@ export const PostDetailInfo = [
     hashtags: ['강릉', '가족', '휴양지'],
     comments: [
       {
-        nickName: 'hasangchu',
+        nickName: 'test',
         comment: '자연을 그대로 느낄수 있습니다. 반려견 sangchu와 함께 너무나도 즐거운 여행이었습니다.',
         date: '2022년 10월',
       },
@@ -78,16 +81,34 @@ export const PostDetailInfo = [
   },
   {
     id: 2,
-    image: [
-      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/469d34b5.jpg?impolicy=resizecrop&rw=1200&ra=fit',
-      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/c3ba03ec.jpg?impolicy=resizecrop&rw=1200&ra=fit',
-      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/99becabd.jpg?impolicy=resizecrop&rw=1200&ra=fit',
-      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/00a4f6bf.jpg?impolicy=resizecrop&rw=1200&ra=fit',
-      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/0e1e21e5.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+    images: [
+      {
+        url: 'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/469d34b5.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+        name: '썬쿠루즈-1',
+      },
+      {
+        url: 'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/469d34b5.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+
+        name: '썬쿠루즈-2',
+      },
+      {
+        url: 'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/c3ba03ec.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+
+        name: '썬쿠루즈-3',
+      },
+      {
+        url: 'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/00a4f6bf.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+
+        name: '썬쿠루즈-4',
+      },
+      {
+        url: 'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/0e1e21e5.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+
+        name: '썬쿠루즈-5',
+      },
     ],
-    name: ['썬쿠루즈-1', '썬쿠르즈-2', '썬쿠르즈-3', '썬쿠르즈-4', '썬쿠르즈-5'],
     user: 'hasangchu',
-    title: '바다가 바로 보여서 정말 끝내줍니다!',
+    title: '이건 테스트-2',
     location: '강릉',
     startDate: '2023-01.05',
     endDate: '2023.01.09',
@@ -140,16 +161,34 @@ export const PostDetailInfo = [
   },
   {
     id: 3,
-    image: [
-      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/469d34b5.jpg?impolicy=resizecrop&rw=1200&ra=fit',
-      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/c3ba03ec.jpg?impolicy=resizecrop&rw=1200&ra=fit',
-      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/99becabd.jpg?impolicy=resizecrop&rw=1200&ra=fit',
-      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/00a4f6bf.jpg?impolicy=resizecrop&rw=1200&ra=fit',
-      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/0e1e21e5.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+    images: [
+      {
+        url: 'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/469d34b5.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+        name: '썬쿠루즈-1',
+      },
+      {
+        url: 'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/469d34b5.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+
+        name: '썬쿠루즈-2',
+      },
+      {
+        url: 'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/c3ba03ec.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+
+        name: '썬쿠루즈-3',
+      },
+      {
+        url: 'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/00a4f6bf.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+
+        name: '썬쿠루즈-4',
+      },
+      {
+        url: 'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/0e1e21e5.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+
+        name: '썬쿠루즈-5',
+      },
     ],
-    name: ['썬쿠루즈-1', '썬쿠르즈-2', '썬쿠르즈-3', '썬쿠르즈-4', '썬쿠르즈-5'],
     user: 'hasangchu',
-    title: '바다가 바로 보여서 정말 끝내줍니다!',
+    title: '이건 테스트-3',
     location: '강릉',
     startDate: '2023-01.05',
     endDate: '2023.01.09',
@@ -202,16 +241,34 @@ export const PostDetailInfo = [
   },
   {
     id: 4,
-    image: [
-      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/469d34b5.jpg?impolicy=resizecrop&rw=1200&ra=fit',
-      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/c3ba03ec.jpg?impolicy=resizecrop&rw=1200&ra=fit',
-      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/99becabd.jpg?impolicy=resizecrop&rw=1200&ra=fit',
-      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/00a4f6bf.jpg?impolicy=resizecrop&rw=1200&ra=fit',
-      'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/0e1e21e5.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+    images: [
+      {
+        url: 'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/469d34b5.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+        name: '썬쿠루즈-1',
+      },
+      {
+        url: 'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/469d34b5.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+
+        name: '썬쿠루즈-2',
+      },
+      {
+        url: 'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/c3ba03ec.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+
+        name: '썬쿠루즈-3',
+      },
+      {
+        url: 'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/00a4f6bf.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+
+        name: '썬쿠루즈-4',
+      },
+      {
+        url: 'https://images.trvl-media.com/lodging/9000000/8490000/8486300/8486205/0e1e21e5.jpg?impolicy=resizecrop&rw=1200&ra=fit',
+
+        name: '썬쿠루즈-5',
+      },
     ],
-    name: ['썬쿠루즈-1', '썬쿠르즈-2', '썬쿠르즈-3', '썬쿠르즈-4', '썬쿠르즈-5'],
     user: 'hasangchu',
-    title: '바다가 바로 보여서 정말 끝내줍니다!',
+    title: '이건 테스트-4',
     location: '강릉',
     startDate: '2023-01.05',
     endDate: '2023.01.09',

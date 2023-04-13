@@ -11,15 +11,11 @@ import type {PostDetailInfoInterface} from '../Interface/interface'
 import {scrollToTop} from '../util/scrollToTop'
 import {useParams} from 'react-router-dom'
 
-interface Params {
-  id: string
-}
-
 const PostDetailPage = () => {
   //페이지 로딩시 상단부터 노출되도록
   scrollToTop()
 
-  const {id} = useParams<Params>()
+  const {id} = useParams()
   const [post, setPost] = useState<PostDetailInfoInterface>()
   const [isLiked, setIsLiked] = useState(false)
   const handleClick = () => {
@@ -27,6 +23,7 @@ const PostDetailPage = () => {
   }
 
   useEffect(() => {
+    console.log('id', id)
     const selectedPost = PostDetailInfo.find(post => post.id === parseInt(id))
     setPost(selectedPost)
   }, [id])
@@ -62,19 +59,19 @@ const PostDetailPage = () => {
         </Buttons>
       </Header>
       <ImageArea>
-        {post?.image?.map(data => (
+        {post?.images?.map(data => (
           <Image key={data.name}>
-            <img src={data.image} alt={data.name} />
+            <img src={data.url} alt={data.name} />
           </Image>
         ))}
       </ImageArea>
       <Body>
         <Info>
           <Text>
-            {PostDetailInfo.location} / {PostDetailInfo.startDate} ~ {PostDetailInfo.endDate}
+            {post?.location} / {post?.startDate} ~ {post?.endDate}
           </Text>
           <Status>
-            댓글 {PostDetailInfo.comment}개 · 좋아요 {PostDetailInfo.likes}
+            댓글 {post?.comment}개 · 좋아요 {post?.likes}
           </Status>
         </Info>
         <ContentBox>
@@ -83,15 +80,15 @@ const PostDetailPage = () => {
               <ProfileImage>
                 <img src={sangchu} alt='하상츄' />
               </ProfileImage>
-              <NickName>{PostDetailInfo.user}</NickName>
+              <NickName>{post?.user}</NickName>
             </ProfileInfo>
-            {PostDetailInfo.post}
+            {post?.post}
           </PostArea>
         </ContentBox>
         <HashtagTitle>
           <Suggest># 이런 분들에게 추천합니다</Suggest>
           <Hashtag>
-            {HashtagList.map((hashtag, index) => (
+            {post?.hashtags?.map((hashtag, index) => (
               <span key={index}> #{hashtag}</span>
             ))}
           </Hashtag>
@@ -99,12 +96,12 @@ const PostDetailPage = () => {
       </Body>
       <Bottom>
         <CommentBox>
-          {CommentBoxList.map(data => (
-            <Comment key={data.user}>
+          {post?.comments?.map(data => (
+            <Comment key={data.nickName}>
               <UserProfile>
                 <img src={sangchu} alt='하상츄' />
                 <UserInfo>
-                  <div>{data.user}</div>
+                  <div>{data.nickName}</div>
                   <div>{data.date}</div>
                 </UserInfo>
               </UserProfile>
