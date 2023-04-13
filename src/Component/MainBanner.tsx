@@ -55,7 +55,7 @@ const SwiperImage = styled.div`
   img {
     width: 100%;
     height: 50rem;
-    object-fit: fill;
+    object-fit: contain;
   }
 `
 const TextContentStyled = styled.section`
