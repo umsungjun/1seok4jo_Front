@@ -54,7 +54,7 @@ export default function ProfileEditPage() {
   }
 
   return (
-    <>
+    <ProfileEditPageSection>
       <MyPageBanner />
 
       <EditForm onSubmit={handleEditForm} onKeyUp={e => e.key === 'Enter' && e.preventDefault()}>
@@ -106,9 +106,15 @@ export default function ProfileEditPage() {
         <SubmitInput type='submit' value={'작성 완료'} />
       </EditForm>
       <ChangePassword show={changePassword} setChangePassword={setChangePassword} />
-    </>
+    </ProfileEditPageSection>
   )
 }
+
+const ProfileEditPageSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
 
 const PageTitle = styled.h1`
   font-size: 2rem;
@@ -116,10 +122,10 @@ const PageTitle = styled.h1`
   text-align: center;
 `
 const EditForm = styled.form`
-  width: 92%;
+  width: 89%;
   display: flex;
   flex-direction: column;
-  margin: 4rem auto;
+  margin: 3rem auto;
   background: rgb(247, 247, 247);
   border-radius: 1rem;
   padding: 0px 2rem 2rem;
@@ -181,7 +187,7 @@ const ProfileBackgroundImg = styled.img`
   width: 100%;
   height: 25rem;
   border-radius: 1rem;
-  padding: 0.3rem;
+  padding-bottom: 0.3rem;
 `
 
 const InputImg = styled.input`
@@ -194,9 +200,11 @@ const ImgLabel = styled.label`
   height: 2rem;
   display: flex;
   width: 100%;
+  -webkit-box-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
   align-items: center;
-  border-dasharray: 100px;
+  border-radius: 0 0 1rem 1rem;
   &:hover {
     color: #1877f2;
     background: #fff;
