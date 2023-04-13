@@ -56,7 +56,7 @@ const SwiperImage = styled.div`
   align-items: flex-end;
   img {
     width: 100%;
-    height: 45rem;
+    height: 41rem;
     object-fit: cover;
   }
 `

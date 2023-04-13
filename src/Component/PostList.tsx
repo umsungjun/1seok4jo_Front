@@ -129,23 +129,25 @@ export default PostList
 const PostListStyled = styled.ul`
   margin-top: 3rem;
   display: flex;
-  flex-flow: row wrap;
-  padding: 0px 5rem;
-  width: 100%;
-  justify-content: flex-start;
-  gap: 1rem;
+  flex-wrap: wrap;
+  width: 89%;
+  justify-content: space-between;
 `
 
 const FeedStyled = styled.li`
   list-style: none;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   img {
-    width: 18.75rem;
-    height: 18.75rem;
+    width: 19rem;
+    height: 19rem;
     object-fit: cover;
     border-radius: 1.25rem;
   }
   .text {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     margin: 0.625rem 0 1.25rem 0;

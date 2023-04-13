@@ -79,27 +79,27 @@ const themeSlide = [
 
 // 탭
 const TabBtnWrapStyled = styled.section`
+  margin-top: 3rem;
+  overflow: scroll hidden;
   padding-bottom: 1rem;
-  // overflow-x: scroll;
-  display: flex;
-  justify-content: center;
-  // ::-webkit-scrollbar {
-  //   display: none;
-  // }
+  width: 90%;
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 5px;
+  }
   ul {
     display: flex;
-  }
-  ul li + li {
-    margin-left: 30px;
+    justify-content: space-between;
+    gap: 2rem;
   }
 `
 
-const TabBtnUl = styled.ul`
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-  padding: 0 3rem;
-`
+const TabBtnUl = styled.ul``
 
 // 탭 버튼
 const TabBtnStyled = styled.button<{active: boolean}>`
