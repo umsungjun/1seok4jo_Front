@@ -40,7 +40,7 @@ export interface PostDetailInfoInterface {
     url: string
     name: string
   }[]
-  name: string[]
+  user: string
   title: string
   location: string
   startDate: string

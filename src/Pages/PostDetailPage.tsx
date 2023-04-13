@@ -24,7 +24,7 @@ const PostDetailPage = () => {
 
   useEffect(() => {
     console.log('id', id)
-    const selectedPost = PostDetailInfo.find(post => post.id === parseInt(id))
+    const selectedPost = PostDetailInfo.find(post => post.id === parseInt(id as string))
     setPost(selectedPost)
   }, [id])
 
