@@ -107,7 +107,7 @@ const TabBtnStyled = styled.button<{active: boolean}>`
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 100px;
+  min-width: 6.25rem;
   border: solid 0.15rem ${props => (props.active ? '#1877f2' : 'transparent')};
   background-color: transparent;
   border-radius: 3rem;

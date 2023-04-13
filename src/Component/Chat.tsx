@@ -88,11 +88,13 @@ const Chat: React.FC<Props> = () => {
 }
 export default Chat
 
-const ChatContainer = styled.section``
+const ChatContainer = styled.section`
+  position: relative;
+`
 const ChatBox = styled.div`
   padding: 0 3rem;
   width: 100%;
-  height: 60vh;
+  height: 90vh;
   overflow: scroll;
   overflow-x: hidden;
   padding-bottom: 2rem;
@@ -105,8 +107,9 @@ const ChatBox = styled.div`
 
 const ChatForm = styled.form`
   width: 100%;
-  position: relative;
-  bottom: 3em;
+  height: 10vh;
+  position: absolute;
+  bottom: 0;
   display: flex;
   justify-content: space-around;
   border-top: 1px solid #c0c0c0;

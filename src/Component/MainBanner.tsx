@@ -25,11 +25,11 @@ export default function MainBanner() {
   return (
     <BannerSwiper>
       <Swiper {...slide_settings}>
-        {bannerSwiper.map(data => (
+        {bannerSwiper.map((data, index) => (
           <SwiperSlide key={data.name}>
             <div className='swiper-slide'>
               <SwiperImage>
-                <img src={data.image} alt={data.name} />
+                <img key={index} src={data.image} alt={data.name} />
                 <TextContentStyled>
                   <div>{data.content}</div>
                   <Link to={data.link} target='_blank'>
@@ -55,7 +55,7 @@ const SwiperImage = styled.div`
   img {
     width: 100%;
     height: 50rem;
-    object-fit: cover;
+    object-fit: fill;
   }
 `
 const TextContentStyled = styled.section`

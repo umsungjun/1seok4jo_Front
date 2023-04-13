@@ -232,12 +232,21 @@ const Bottom = styled.section`
 const CommentBox = styled.section`
   width: 60rem;
   height: 50rem;
-  overflow: scroll;
+  overflow-y: scroll;
   overflow-x: hidden;
+  scroll-behavior: smooth;
   border: 1px solid #c0c0c0;
   border-radius: 3rem;
   padding: 2rem;
-  box-sizing: border-box;
+  ::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.2rem;
+    background-color: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 1rem;
+    background-color: #c0c0c0;
+  }
 `
 const Comment = styled.li`
   display: block;
