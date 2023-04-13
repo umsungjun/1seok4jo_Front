@@ -9,7 +9,6 @@ import SpeechBubble from './SpeechBubble'
 const Chat: React.FC<Props> = () => {
   const [newMessageText, setNewMessageText] = useState<string>('')
   const [messages, setMessages] = useState<ChatBubbleProps[]>([])
-  // const [dateTime, setDateTime] = useState<Date>(new Date())
   const [file, setFile] = useState<File | null>(null)
 
   const handleNewMessageSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -53,8 +52,8 @@ const Chat: React.FC<Props> = () => {
 
   return (
     <ChatContainer>
-      <SpeechBubble text='안녕하세요!' position='left' isUser={false} />
       <ChatBox>
+        <SpeechBubble text='안녕하세요!' position='left' isUser={false} />
         {messages.map((chat, index) => (
           <NewChat key={index}>
             <div className='date'>
@@ -88,12 +87,23 @@ const Chat: React.FC<Props> = () => {
 }
 export default Chat
 
-const ChatContainer = styled.section``
+const ChatContainer = styled.section`
+  position: absolute;
+  top: 8%;
+  bottom: 0;
+  left: 25%;
+  right: 0;
+  border-left: 3px solid #c0c0c0;
+  // border: 1px solid red;
+`
 const ChatBox = styled.div`
+  // border: 1px solid blue;
+  position: relative;
+  top: 0;
   padding: 0 3rem;
   width: 100%;
-  height: 60vh;
-  overflow: scroll;
+  height: 83%;
+  overflow-y: scroll;
   overflow-x: hidden;
   padding-bottom: 2rem;
   margin-bottom: 3rem;
@@ -102,17 +112,18 @@ const ChatBox = styled.div`
     height: 3rem;
   }
 `
-
 const ChatForm = styled.form`
   width: 100%;
-  position: relative;
-  bottom: 3em;
+  height: 15vh;
+  position: absolute;
+  bottom: 0;
   display: flex;
   justify-content: space-around;
   border-top: 1px solid #c0c0c0;
   padding-top: 2rem;
   label {
     cursor: pointer;
+    height: 3rem;
     display: flex;
     flex-direction: column;
     justify-content: center;

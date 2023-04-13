@@ -20,16 +20,10 @@ const PostList = () => {
     navigate(`/PostDetail`)
   }
 
-  const handleLikeClick = () => {
+  const handleLikeClick = (e: React.MouseEvent<SVGAElement>) => {
+    e.stopPropagation()
+    console.log('좋아요 클릭')
     setIsLiked(!isLiked)
-  }
-
-  // 모달 핸들링
-  const handleOpenModal = () => {
-    setModalOpen(true)
-  }
-  const handleCloseModal = () => {
-    setModalOpen(false)
   }
 
   const handleDeletePost = (e: React.MouseEvent<SVGAElement>) => {
@@ -48,13 +42,9 @@ const PostList = () => {
     <PostListStyled>
       {PostFeed.map(data => (
         <FeedStyled key={data.id} onClick={handleClick}>
-          {/* <PostModal isOpen={modalOpen} onClose={handleCloseModal}>
-          <div>test</div>
-        </PostModal> */}
-          <img src={data.image} alt={data.name} />
-          {/* <button type='button'>
-          {isLiked ? <BsSuitHeartFill onClick={handleLikeClick} /> : <BsSuitHeart onClick={handleLikeClick} />}
-        </button> */}
+          <ImgBox>
+            <img src={data.image} alt={data.name} />
+          </ImgBox>
           <div className='text'>
             <FeedInfoStyled>
               <div className='title'>{data.title}</div>
@@ -79,9 +69,9 @@ const PostList = () => {
         data.nickName === login.nickName ? (
           <FeedStyled key={data.id} onClick={handleClick}>
             <ImgBox>
-              <DeleteButton onClick={handleDeletePost} />
+              <DeleteButton key={data.id} onClick={handleDeletePost} />
               <img src={data.image} alt={data.name} />
-              <EditButton onClick={handleEditPost} />
+              <EditButton key={data.id} onClick={handleEditPost} />
             </ImgBox>
 
             <div className='text'>
@@ -102,13 +92,16 @@ const PostList = () => {
           </FeedStyled>
         ) : (
           <FeedStyled key={data.id} onClick={handleClick}>
-            {/* <PostModal isOpen={modalOpen} onClose={handleCloseModal}>
-          <div>test</div>
-        </PostModal> */}
-            <img src={data.image} alt={data.name} />
-            {/* <button type='button'>
-          {isLiked ? <BsSuitHeartFill onClick={handleLikeClick} /> : <BsSuitHeart onClick={handleLikeClick} />}
-        </button> */}
+            <ImgBox>
+              <img src={data.image} alt={data.name} />
+              <LikeButton key={data.id} type='submit'>
+                {isLiked ? (
+                  <BsFillSuitHeartFill onClick={handleLikeClick} />
+                ) : (
+                  <BsSuitHeart onClick={handleLikeClick} />
+                )}
+              </LikeButton>
+            </ImgBox>
             <div className='text'>
               <FeedInfoStyled>
                 <div className='title'>{data.title}</div>
@@ -139,17 +132,13 @@ const PostListStyled = styled.ul`
   flex-flow: row wrap;
   padding: 0px 5rem;
   width: 100%;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 1rem;
 `
 
 const FeedStyled = styled.li`
   list-style: none;
   cursor: pointer;
-  // &:hover {
-  //   transform: scale(1.1);
-  // }
-  // 호버액션 넣을까말까
   img {
     width: 18.75rem;
     height: 18.75rem;
@@ -176,15 +165,29 @@ const ImgBox = styled.div`
 
 const DeleteButton = styled(AiOutlineMinusCircle)`
   font-size: 2rem;
-  left: 0.5rem;
-  &:hover {
+  left: 0.8rem;
+  :hover {
+    opacity: 1;
     color: red;
   }
 `
 
 const EditButton = styled(BsPencilSquare)`
   font-size: 1.8rem;
-  right: 0.5rem;
+  right: 0.8rem;
+  :hover {
+    opacity: 1;
+    color: red;
+  }
+`
+
+const LikeButton = styled(BsSuitHeart)`
+  font-size: 1.8rem;
+  right: 0.8rem;
+  :hover {
+    opacity: 1;
+    color: red;
+  }
 `
 
 const FeedInfoStyled = styled.label`
