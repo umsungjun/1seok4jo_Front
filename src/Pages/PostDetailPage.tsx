@@ -6,10 +6,10 @@ import {RWebShare} from 'react-web-share'
 import {FiShare} from 'react-icons/fi'
 import {BsSuitHeart} from 'react-icons/bs'
 import {BsSuitHeartFill} from 'react-icons/bs'
-import {DetailImage} from '../Mock/postDetail'
+// import {DetailImage} from '../Mock/postDetail'
 import {PostDetailInfo} from '../Mock/postDetail'
-import {HashtagList} from '../Mock/postDetail'
-import {CommentBoxList} from '../Mock/postDetail'
+// import {HashtagList} from '../Mock/postDetail'
+// import {CommentBoxList} from '../Mock/postDetail'
 import {scrollToTop} from '../util/scrollToTop'
 
 const PostDetailPage: React.FC = () => {

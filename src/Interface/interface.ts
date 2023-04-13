@@ -33,6 +33,22 @@ export interface PostFeedInterface {
   likes: string
 }
 
+// PostDetail
+export interface PostDetailInfoInterface {
+  id: number
+  image: string[]
+  name: string[]
+  title: string
+  location: string
+  startDate: string
+  endDate: string
+  comment: string
+  likes: string
+  post: string
+  hashtags: string[]
+  comments: string[]
+}
+
 // users
 export interface UserInterface {
   email: string
