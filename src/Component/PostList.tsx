@@ -17,7 +17,7 @@ const PostList = () => {
 
   const navigate = useNavigate()
   const handleClick = () => {
-    navigate(`/PostDetail`)
+    navigate(`/PostDetail/:id`)
   }
 
   const handleLikeClick = (e: React.MouseEvent<SVGAElement>) => {

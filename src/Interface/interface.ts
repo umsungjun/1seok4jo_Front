@@ -46,7 +46,11 @@ export interface PostDetailInfoInterface {
   likes: string
   post: string
   hashtags: string[]
-  comments: string[]
+  comments: {
+    nickName: string
+    comment: string
+    date: string
+  }[]
 }
 
 // users

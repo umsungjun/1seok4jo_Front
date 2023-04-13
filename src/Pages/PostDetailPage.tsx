@@ -7,35 +7,45 @@ import {FiShare} from 'react-icons/fi'
 import {BsSuitHeart} from 'react-icons/bs'
 import {BsSuitHeartFill} from 'react-icons/bs'
 import {PostDetailInfo} from '../Mock/postDetail'
-import type {PostDetailInterface} from '../Interface/interface'
+import type {PostDetailInfoInterface} from '../Interface/interface'
 import {scrollToTop} from '../util/scrollToTop'
+import {useParams} from 'react-router-dom'
 
-type Props = {
-  id: number
+interface Params {
+  id: string
 }
 
-const PostDetailPage: React.FC<Props> = ({id}) => {
+const PostDetailPage = () => {
   //페이지 로딩시 상단부터 노출되도록
   scrollToTop()
 
-  const item = PostDetailInfo.find(data => data.id === id)
+  const {id} = useParams<Params>()
+  const [post, setPost] = useState<PostDetailInfoInterface>()
   const [isLiked, setIsLiked] = useState(false)
   const handleClick = () => {
     setIsLiked(!isLiked)
   }
 
+  useEffect(() => {
+    const selectedPost = PostDetailInfo.find(post => post.id === parseInt(id))
+    setPost(selectedPost)
+  }, [id])
+
+  if (!post) {
+    return <div>존재하지 않는 게시물입니다.</div>
+  }
   const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
 
   return (
     <Detail>
       <Header>
-        <Title>{item.title}</Title>
+        <Title>{post?.title}</Title>
         <Buttons>
           <RWebShare
             data={{
-              text: `${item.post}`,
+              text: `${post?.post}`,
               url: currentUrl,
-              title: 'Compass: ' + `${item.title}`,
+              title: 'Compass: ' + `${post?.title}`,
             }}
             onClick={() => console.log('공유 완료')}
           >
@@ -52,7 +62,7 @@ const PostDetailPage: React.FC<Props> = ({id}) => {
         </Buttons>
       </Header>
       <ImageArea>
-        {DetailImage.map(data => (
+        {post?.image?.map(data => (
           <Image key={data.name}>
             <img src={data.image} alt={data.name} />
           </Image>
