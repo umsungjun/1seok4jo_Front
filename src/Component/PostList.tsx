@@ -134,6 +134,7 @@ const PostListStyled = styled.ul`
   width: 100%;
   justify-content: flex-start;
   gap: 1rem;
+  border: 1px solid red;
 `
 
 const FeedStyled = styled.li`

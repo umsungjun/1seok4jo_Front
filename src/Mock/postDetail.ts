@@ -1,4 +1,19 @@
-export const PostDetailInfo = [
+export type PostDetailInfo = {
+  id: number
+  image: string[]
+  name: string[]
+  title: string
+  location: string
+  startDate: string
+  endDate: string
+  comment: string
+  likes: string
+  post: string
+  hashtags: string[]
+  comments: string[]
+}
+
+export const PostDetailInfo: PostDetailInfo[] = [
   {
     id: 1,
     image: [

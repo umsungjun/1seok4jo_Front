@@ -6,18 +6,20 @@ import {RWebShare} from 'react-web-share'
 import {FiShare} from 'react-icons/fi'
 import {BsSuitHeart} from 'react-icons/bs'
 import {BsSuitHeartFill} from 'react-icons/bs'
-// import {DetailImage} from '../Mock/postDetail'
 import {PostDetailInfo} from '../Mock/postDetail'
-// import {HashtagList} from '../Mock/postDetail'
-// import {CommentBoxList} from '../Mock/postDetail'
+import type {PostDetailInterface} from '../Interface/interface'
 import {scrollToTop} from '../util/scrollToTop'
 
-const PostDetailPage: React.FC = () => {
+type Props = {
+  id: number
+}
+
+const PostDetailPage: React.FC<Props> = ({id}) => {
   //페이지 로딩시 상단부터 노출되도록
   scrollToTop()
 
+  const item = PostDetailInfo.find(data => data.id === id)
   const [isLiked, setIsLiked] = useState(false)
-
   const handleClick = () => {
     setIsLiked(!isLiked)
   }
@@ -27,13 +29,13 @@ const PostDetailPage: React.FC = () => {
   return (
     <Detail>
       <Header>
-        <Title>{PostDetailInfo.title}</Title>
+        <Title>{item.title}</Title>
         <Buttons>
           <RWebShare
             data={{
-              text: `${PostDetailInfo.post}`,
+              text: `${item.post}`,
               url: currentUrl,
-              title: 'Compass: ' + `${PostDetailInfo.title}`,
+              title: 'Compass: ' + `${item.title}`,
             }}
             onClick={() => console.log('공유 완료')}
           >
