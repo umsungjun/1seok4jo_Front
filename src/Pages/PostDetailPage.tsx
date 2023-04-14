@@ -96,21 +96,23 @@ const PostDetailPage = () => {
       </Body>
       <Bottom>
         <CommentBox>
-          {post?.comments?.map(data => {
-            const {nickName, date, comment} = data
-            return (
-              <Comment key={nickName}>
-                <UserProfile>
-                  <img src={sangchu} alt='하상츄' />
-                  <UserInfo>
-                    <div>{nickName}</div>
-                    <div>{date}</div>
-                  </UserInfo>
-                </UserProfile>
-                <div>{comment}</div>
-              </Comment>
-            )
-          })}
+          <div className='scroll-box'>
+            {post?.comments?.map(data => {
+              const {nickName, date, comment} = data
+              return (
+                <Comment key={nickName}>
+                  <UserProfile>
+                    <img src={sangchu} alt='하상츄' />
+                    <UserInfo>
+                      <div>{nickName}</div>
+                      <div>{date}</div>
+                    </UserInfo>
+                  </UserProfile>
+                  <div>{comment}</div>
+                </Comment>
+              )
+            })}
+          </div>
         </CommentBox>
         <MapContainer />
       </Bottom>
@@ -242,20 +244,25 @@ const Bottom = styled.section`
 const CommentBox = styled.section`
   width: 60rem;
   height: 50rem;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
   border: 1px solid #c0c0c0;
   border-radius: 3rem;
   padding: 2rem;
-  ::-webkit-scrollbar {
-    width: 0.5rem;
-    height: 0.2rem;
-    background-color: transparent;
-  }
-  ::-webkit-scrollbar-thumb {
-    border-radius: 1rem;
-    background-color: #c0c0c0;
+
+  .scroll-box {
+    width: 56.5rem;
+    height: 45rem;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    ::-webkit-scrollbar {
+      width: 0.5rem;
+      height: 0.2rem;
+      background-color: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      border-radius: 1rem;
+      background-color: #c0c0c0;
+    }
   }
 `
 const Comment = styled.li`
