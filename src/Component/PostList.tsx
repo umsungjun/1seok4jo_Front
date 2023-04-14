@@ -8,8 +8,8 @@ import PostModal from '../Modal/PostModal'
 import {users} from '../Mock/users'
 import {PostDetailInfo} from '../Mock/postDetail'
 
-import {AiOutlineMinusCircle} from 'react-icons/ai'
-import {BsPencilSquare} from 'react-icons/bs'
+import {MdDeleteOutline} from 'react-icons/md'
+import {BiEditAlt} from 'react-icons/bi'
 
 const PostList = () => {
   const [isLiked, setIsLiked] = useState(false)
@@ -173,7 +173,7 @@ const ImgBox = styled.div`
   }
 `
 
-const DeleteButton = styled(AiOutlineMinusCircle)`
+const DeleteButton = styled(MdDeleteOutline)`
   font-size: 2rem;
   left: 0.8rem;
   :hover {
@@ -182,8 +182,8 @@ const DeleteButton = styled(AiOutlineMinusCircle)`
   }
 `
 
-const EditButton = styled(BsPencilSquare)`
-  font-size: 1.8rem;
+const EditButton = styled(BiEditAlt)`
+  font-size: 2rem;
   right: 0.8rem;
   :hover {
     opacity: 1;
