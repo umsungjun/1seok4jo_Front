@@ -1,27 +1,37 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import {useNavigate} from 'react-router-dom'
-import {BsFillSuitHeartFill, BsSuitHeart, BsSuitHeartFill} from 'react-icons/bs'
+import {BsFillSuitHeartFill, BsSuitHeart} from 'react-icons/bs'
 import {PostFeed} from '../Mock/postFeed'
-import type {PostFeedInterface} from '../Interface/interface'
-import PostModal from '../Modal/PostModal'
+
 import {users} from '../Mock/users'
-import {PostDetailInfo} from '../Mock/postDetail'
 
 import {MdDeleteOutline} from 'react-icons/md'
 import {BiEditAlt} from 'react-icons/bi'
+import SlideImg from '../Popups/SlideImg'
 
 const PostList = () => {
   const [isLiked, setIsLiked] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
   const [login, setLogin] = useState(users[0]) //null
+  const [showHandleSlideImg, setShowHandleSlideImg] = useState<boolean>(false)
+  const [slideImgs, setSlideImgs] = useState<string[]>([])
+  const [slideId, setSlideId] = useState<number>(0)
 
   const navigate = useNavigate()
 
-  const handleClick = (id: number) => {
-    console.log('ID', id)
-    navigate(`/PostDetail/${id}`)
+  const setSlideImgAndShow = (images: string[], id: number) => {
+    setSlideImgs(images)
+    setShowHandleSlideImg(true)
+    setSlideId(id)
   }
+
+  // const handleSlideImg = (images: {url: string; name: string}[]) => {
+  //   const urls = images.map(image => image.url)
+  //   setSlideImgs(urls)
+  //   setShowHandleSlideImg(true)
+  //   console.log(urls)
+  // }
 
   const handleLikeClick = (e: React.MouseEvent<SVGAElement>) => {
     e.stopPropagation()
@@ -44,12 +54,11 @@ const PostList = () => {
   return login === null ? (
     <PostListStyled>
       {PostFeed.map(data => {
-        const {id, title, location, date, likes, image, name} = data
-
+        const {id, title, location, date, likes, images, name} = data
         return (
-          <FeedStyled key={id} onClick={() => handleClick(data.id)}>
+          <FeedStyled key={id}>
             <ImgBox>
-              <img src={image} alt={name} />
+              <img src={images[0].url} alt={name} />
             </ImgBox>
             <div className='text'>
               <FeedInfoStyled>
@@ -73,15 +82,21 @@ const PostList = () => {
   ) : (
     <PostListStyled>
       {PostFeed.map(data => {
-        const {id, nickName, title, location, date, likes, image, name} = data
+        const {id, nickName, title, location, date, likes, images, name} = data
         return nickName === login.nickName ? (
-          <FeedStyled key={id} onClick={() => handleClick(id)}>
-            <ImgBox>
-              <DeleteButton key={id} onClick={handleDeletePost} />
-              <img src={image} alt={name} />
-              <EditButton key={id} onClick={handleEditPost} />
+          <FeedStyled key={id}>
+            <ImgBox
+              onClick={() =>
+                setSlideImgAndShow(
+                  images.map(image => image.url),
+                  id,
+                )
+              }
+            >
+              <DeleteButton onClick={handleDeletePost} />
+              <img src={images[0].url} alt={name} />
+              <EditButton onClick={handleEditPost} />
             </ImgBox>
-
             <div className='text'>
               <FeedInfoStyled>
                 <div className='title'>{title}</div>
@@ -97,12 +112,27 @@ const PostList = () => {
                 <div>{likes}</div>
               </FeedLikeStyled>
             </div>
+            {showHandleSlideImg && (
+              <SlideImg
+                show={showHandleSlideImg}
+                setShowHandleSlideImg={setShowHandleSlideImg}
+                imgs={slideImgs}
+                id={slideId}
+              />
+            )}
           </FeedStyled>
         ) : (
-          <FeedStyled key={id} onClick={() => handleClick(id)}>
-            <ImgBox>
-              <img src={image} alt={name} />
-              <LikeButton key={id} type='submit'>
+          <FeedStyled key={id}>
+            <ImgBox
+              onClick={() =>
+                setSlideImgAndShow(
+                  images.map(image => image.url),
+                  id,
+                )
+              }
+            >
+              <img src={images[0].url} alt={name} />
+              <LikeButton type='submit'>
                 {isLiked ? (
                   <BsFillSuitHeartFill onClick={handleLikeClick} />
                 ) : (
@@ -125,6 +155,14 @@ const PostList = () => {
                 <div>{likes}</div>
               </FeedLikeStyled>
             </div>
+            {showHandleSlideImg && (
+              <SlideImg
+                show={showHandleSlideImg}
+                setShowHandleSlideImg={setShowHandleSlideImg}
+                imgs={slideImgs}
+                id={slideId}
+              />
+            )}
           </FeedStyled>
         )
       })}
@@ -148,12 +186,7 @@ const FeedStyled = styled.li`
   display: flex;
   flex-direction: column;
   align-items: center;
-  img {
-    width: 19rem;
-    height: 19rem;
-    object-fit: cover;
-    border-radius: 1.25rem;
-  }
+
   .text {
     width: 100%;
     display: flex;
@@ -164,7 +197,12 @@ const FeedStyled = styled.li`
 
 const ImgBox = styled.div`
   position: relative;
-
+  img {
+    width: 19rem;
+    height: 19rem;
+    object-fit: cover;
+    border-radius: 1.25rem;
+  }
   svg {
     position: absolute;
     color: gray;

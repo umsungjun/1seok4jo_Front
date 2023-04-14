@@ -25,7 +25,10 @@ export interface ModalProps {
 // PostFeed
 export interface PostFeedInterface {
   id: number
-  image: string
+  images: {
+    url: string
+    name: string
+  }[]
   name: string
   title: string
   location: string
