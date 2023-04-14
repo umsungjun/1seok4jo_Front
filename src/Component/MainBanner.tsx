@@ -15,10 +15,10 @@ export default function MainBanner() {
     loop: true,
     spaceBetween: 50,
     speed: 700,
-    // autoplay: {
-    //   delay: 5000,
-    //   disableOnInteraction: true,
-    // },
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: true,
+    },
     className: 'picture-swiper',
   }
 
@@ -60,6 +60,7 @@ const SwiperImage = styled.div`
     object-fit: cover;
   }
 `
+
 const TextContentStyled = styled.section`
   position: absolute;
   display: flex;
