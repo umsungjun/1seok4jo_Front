@@ -72,20 +72,21 @@ const PostList = () => {
     </PostListStyled>
   ) : (
     <PostListStyled>
-      {PostFeed.map(data =>
-        data.nickName === login.nickName ? (
-          <FeedStyled key={data.id} onClick={() => handleClick(data.id)}>
+      {PostFeed.map(data => {
+        const {id, nickName, title, location, date, likes, image, name} = data
+        return nickName === login.nickName ? (
+          <FeedStyled key={id} onClick={() => handleClick(id)}>
             <ImgBox>
-              <DeleteButton key={data.id} onClick={handleDeletePost} />
-              <img src={data.image} alt={data.name} />
-              <EditButton key={data.id} onClick={handleEditPost} />
+              <DeleteButton key={id} onClick={handleDeletePost} />
+              <img src={image} alt={name} />
+              <EditButton key={id} onClick={handleEditPost} />
             </ImgBox>
 
             <div className='text'>
               <FeedInfoStyled>
-                <div className='title'>{data.title}</div>
-                <div className='location'>{data.location}</div>
-                <div className='date'>{data.date}</div>
+                <div className='title'>{title}</div>
+                <div className='location'>{location}</div>
+                <div className='date'>{date}</div>
               </FeedInfoStyled>
 
               <FeedLikeStyled>
@@ -93,15 +94,15 @@ const PostList = () => {
                   <BsFillSuitHeartFill />
                 </LikeButtonStyled>
 
-                <div>{data.likes}</div>
+                <div>{likes}</div>
               </FeedLikeStyled>
             </div>
           </FeedStyled>
         ) : (
-          <FeedStyled key={data.id} onClick={() => handleClick(data.id)}>
+          <FeedStyled key={id} onClick={() => handleClick(id)}>
             <ImgBox>
-              <img src={data.image} alt={data.name} />
-              <LikeButton key={data.id} type='submit'>
+              <img src={image} alt={name} />
+              <LikeButton key={id} type='submit'>
                 {isLiked ? (
                   <BsFillSuitHeartFill onClick={handleLikeClick} />
                 ) : (
@@ -111,9 +112,9 @@ const PostList = () => {
             </ImgBox>
             <div className='text'>
               <FeedInfoStyled>
-                <div className='title'>{data.title}</div>
-                <div className='location'>{data.location}</div>
-                <div className='date'>{data.date}</div>
+                <div className='title'>{title}</div>
+                <div className='location'>{location}</div>
+                <div className='date'>{date}</div>
               </FeedInfoStyled>
 
               <FeedLikeStyled>
@@ -121,12 +122,12 @@ const PostList = () => {
                   <BsFillSuitHeartFill />
                 </LikeButtonStyled>
 
-                <div>{data.likes}</div>
+                <div>{likes}</div>
               </FeedLikeStyled>
             </div>
           </FeedStyled>
-        ),
-      )}
+        )
+      })}
     </PostListStyled>
   )
 }

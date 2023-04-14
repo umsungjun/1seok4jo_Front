@@ -96,18 +96,21 @@ const PostDetailPage = () => {
       </Body>
       <Bottom>
         <CommentBox>
-          {post?.comments?.map(data => (
-            <Comment key={data.nickName}>
-              <UserProfile>
-                <img src={sangchu} alt='하상츄' />
-                <UserInfo>
-                  <div>{data.nickName}</div>
-                  <div>{data.date}</div>
-                </UserInfo>
-              </UserProfile>
-              <div>{data.comment}</div>
-            </Comment>
-          ))}
+          {post?.comments?.map(data => {
+            const {nickName, date, comment} = data
+            return (
+              <Comment key={nickName}>
+                <UserProfile>
+                  <img src={sangchu} alt='하상츄' />
+                  <UserInfo>
+                    <div>{nickName}</div>
+                    <div>{date}</div>
+                  </UserInfo>
+                </UserProfile>
+                <div>{comment}</div>
+              </Comment>
+            )
+          })}
         </CommentBox>
         <MapContainer />
       </Bottom>
