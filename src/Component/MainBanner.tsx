@@ -13,11 +13,11 @@ export default function MainBanner() {
     slidesPerView: 1,
     centeredSlides: true,
     loop: true,
-    spaceBetween: 30,
+    spaceBetween: 50,
     speed: 700,
     autoplay: {
       delay: 5000,
-      disableOnInteraction: false,
+      disableOnInteraction: true,
     },
     className: 'picture-swiper',
   }
@@ -31,7 +31,7 @@ export default function MainBanner() {
               <SwiperImage>
                 <img key={index} src={data.image} alt={data.name} />
                 <TextContentStyled>
-                  <div>{data.content}</div>
+                  <p>{data.content}</p>
                   <Link to={data.link} target='_blank'>
                     <FaExternalLinkAlt />
                     {data.subContent}
@@ -47,46 +47,45 @@ export default function MainBanner() {
 }
 
 const BannerSwiper = styled.section`
+  width: 100%;
   padding-top: 5rem;
-  border-bottom: 1px solid lightgray;
 `
 const SwiperImage = styled.div`
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
   img {
     width: 100%;
-    height: 50rem;
+    height: 41rem;
     object-fit: cover;
   }
 `
+
 const TextContentStyled = styled.section`
   position: absolute;
-  bottom: 5%;
-  right: 3%;
-  width: 37rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50rem;
   height: 12rem;
-  background-color: rgba(239, 239, 240, 0.5);
   border-radius: 1rem;
   padding: 2rem;
-  white-space: pre-line;
-  div {
+  margin-bottom: 2rem;
+  color: #fff;
+  p {
     font-size: 3rem;
     font-weight: bold;
     font-align: left;
-    color: black;
     z-index: 1;
     margin-bottom: 1rem;
   }
   svg {
-    padding-right: 0.5rem;
+    padding-right: 1rem;
   }
   a {
+    margin-top: 2rem;
     font-size: 1.5rem;
-    font-weight: bold;
     display: flex;
-    justify-content: flex-end;
-    margin: auto;
-    position: absolute;
-    bottom: 1.5rem;
-    right: 1.5rem;
+    align-items: center;
   }
 `

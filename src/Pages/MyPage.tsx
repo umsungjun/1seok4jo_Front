@@ -7,30 +7,35 @@ import {scrollToTop} from '../util/scrollToTop'
 export default function MyPage() {
   scrollToTop()
   return (
-    <>
+    <MyPageSection>
       <MyPageBanner />
       <TypeSelectBox>
         <TypeSelect>작성 글</TypeSelect>
         <TypeSelect>좋아요</TypeSelect>
       </TypeSelectBox>
       <PostList />
-    </>
+    </MyPageSection>
   )
 }
 
+const MyPageSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
 const TypeSelectBox = styled.div`
-  width: 100%;
+  width: 89%;
   margin-top: 3rem;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   border-radius: 1rem;
-  padding: 1rem 2rem;
-  box-sizing: border-box;
+  color: #fff;
 `
 
 const TypeSelect = styled.div`
-  width: 45%;
+  width: 47%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,10 +45,16 @@ const TypeSelect = styled.div`
   border-radius: 1rem;
   font-size: 1.3rem;
   min-height: 4rem;
+  background: #1877f2;
+  box-shadow: 0px 1px 5px 0px whitesmoke;
   &:hover {
-    border: 2px solid #1877fe;
+    background: #fff;
+    color: #1877f2;
+    border: 2px solid;
   }
   &:active {
-    border: 2px solid #1877fe;
+    background: #fff;
+    color: #1877f2;
+    border: 2px solid;
   }
 `
