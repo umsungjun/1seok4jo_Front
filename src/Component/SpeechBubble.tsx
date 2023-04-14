@@ -36,7 +36,7 @@ export default SpeechBubble
 
 const Bubble = styled.div`
   display: flex;
-  padding: 3rem;
+  padding: 2rem;
   img {
     width: 3rem;
     height: 3rem;

@@ -12,7 +12,7 @@ export default function PageNavigator() {
     <Routes>
       <Route path='/' element={<MainPage />} />
       <Route path='/PostWrite' element={<PostWritePage />} />
-      <Route path='/PostDetail' element={<PostDetailPage />} />
+      <Route path='/PostDetail/:id' element={<PostDetailPage />} />
       <Route path='/PostEdit' element={<PostEditPage />} />
       <Route path='/MyPage' element={<MyPage />} />
       <Route path='/Message' element={<MessagePage />} />

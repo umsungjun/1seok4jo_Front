@@ -6,34 +6,43 @@ import {RWebShare} from 'react-web-share'
 import {FiShare} from 'react-icons/fi'
 import {BsSuitHeart} from 'react-icons/bs'
 import {BsSuitHeartFill} from 'react-icons/bs'
-import {DetailImage} from '../Mock/postDetail'
 import {PostDetailInfo} from '../Mock/postDetail'
-import {HashtagList} from '../Mock/postDetail'
-import {CommentBoxList} from '../Mock/postDetail'
+import type {PostDetailInfoInterface} from '../Interface/interface'
 import {scrollToTop} from '../util/scrollToTop'
+import {useParams} from 'react-router-dom'
 
-const PostDetailPage: React.FC = () => {
+const PostDetailPage = () => {
   //페이지 로딩시 상단부터 노출되도록
   scrollToTop()
 
+  const {id} = useParams()
+  const [post, setPost] = useState<PostDetailInfoInterface>()
   const [isLiked, setIsLiked] = useState(false)
-
   const handleClick = () => {
     setIsLiked(!isLiked)
   }
 
+  useEffect(() => {
+    console.log('id', id)
+    const selectedPost = PostDetailInfo.find(post => post.id === parseInt(id as string))
+    setPost(selectedPost)
+  }, [id])
+
+  if (!post) {
+    return <div>존재하지 않는 게시물입니다.</div>
+  }
   const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
 
   return (
     <Detail>
       <Header>
-        <Title>{PostDetailInfo.title}</Title>
+        <Title>{post?.title}</Title>
         <Buttons>
           <RWebShare
             data={{
-              text: `${PostDetailInfo.post}`,
+              text: `${post?.post}`,
               url: currentUrl,
-              title: 'Compass: ' + `${PostDetailInfo.title}`,
+              title: 'Compass: ' + `${post?.title}`,
             }}
             onClick={() => console.log('공유 완료')}
           >
@@ -50,19 +59,19 @@ const PostDetailPage: React.FC = () => {
         </Buttons>
       </Header>
       <ImageArea>
-        {DetailImage.map(data => (
+        {post?.images?.map(data => (
           <Image key={data.name}>
-            <img src={data.image} alt={data.name} />
+            <img src={data.url} alt={data.name} />
           </Image>
         ))}
       </ImageArea>
       <Body>
         <Info>
           <Text>
-            {PostDetailInfo.location} / {PostDetailInfo.startDate} ~ {PostDetailInfo.endDate}
+            {post?.location} / {post?.startDate} ~ {post?.endDate}
           </Text>
           <Status>
-            댓글 {PostDetailInfo.comment}개 · 좋아요 {PostDetailInfo.likes}
+            댓글 {post?.comment}개 · 좋아요 {post?.likes}
           </Status>
         </Info>
         <ContentBox>
@@ -71,15 +80,15 @@ const PostDetailPage: React.FC = () => {
               <ProfileImage>
                 <img src={sangchu} alt='하상츄' />
               </ProfileImage>
-              <NickName>{PostDetailInfo.user}</NickName>
+              <NickName>{post?.user}</NickName>
             </ProfileInfo>
-            {PostDetailInfo.post}
+            {post?.post}
           </PostArea>
         </ContentBox>
         <HashtagTitle>
           <Suggest># 이런 분들에게 추천합니다</Suggest>
           <Hashtag>
-            {HashtagList.map((hashtag, index) => (
+            {post?.hashtags?.map((hashtag, index) => (
               <span key={index}> #{hashtag}</span>
             ))}
           </Hashtag>
@@ -87,18 +96,21 @@ const PostDetailPage: React.FC = () => {
       </Body>
       <Bottom>
         <CommentBox>
-          {CommentBoxList.map(data => (
-            <Comment key={data.user}>
-              <UserProfile>
-                <img src={sangchu} alt='하상츄' />
-                <UserInfo>
-                  <div>{data.user}</div>
-                  <div>{data.date}</div>
-                </UserInfo>
-              </UserProfile>
-              <div>{data.comment}</div>
-            </Comment>
-          ))}
+          {post?.comments?.map(data => {
+            const {nickName, date, comment} = data
+            return (
+              <Comment key={nickName}>
+                <UserProfile>
+                  <img src={sangchu} alt='하상츄' />
+                  <UserInfo>
+                    <div>{nickName}</div>
+                    <div>{date}</div>
+                  </UserInfo>
+                </UserProfile>
+                <div>{comment}</div>
+              </Comment>
+            )
+          })}
         </CommentBox>
         <MapContainer />
       </Bottom>
@@ -134,23 +146,21 @@ const Buttons = styled.div`
     }
   }
 `
-
 const ShareButton = styled.button`
   margin-right: 1rem;
 `
-
 const LikeButton = styled.button`
   svg {
     fill: red;
   }
 `
-
 const ImageArea = styled.section`
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
   gap: 0.5rem;
 `
 const Image = styled.div`
+  height: 19.25rem;
   :nth-child(1) {
     grid-row: 1 / span 2;
     height: 39rem;
