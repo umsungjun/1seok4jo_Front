@@ -183,7 +183,7 @@ const DeleteButton = styled(MdDeleteOutline)`
 `
 
 const EditButton = styled(BiEditAlt)`
-  font-size: 1.8rem;
+  font-size: 2rem;
   right: 0.8rem;
   :hover {
     opacity: 1;
