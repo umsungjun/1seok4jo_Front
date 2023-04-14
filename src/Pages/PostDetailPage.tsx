@@ -143,23 +143,21 @@ const Buttons = styled.div`
     }
   }
 `
-
 const ShareButton = styled.button`
   margin-right: 1rem;
 `
-
 const LikeButton = styled.button`
   svg {
     fill: red;
   }
 `
-
 const ImageArea = styled.section`
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
   gap: 0.5rem;
 `
 const Image = styled.div`
+  height: 19.25rem;
   :nth-child(1) {
     grid-row: 1 / span 2;
     height: 39rem;

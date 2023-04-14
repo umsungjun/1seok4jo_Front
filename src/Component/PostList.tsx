@@ -141,7 +141,7 @@ const PostListStyled = styled.ul`
   width: 100%;
   justify-content: flex-start;
   gap: 1rem;
-  border: 1px solid red;
+  // border: 1px solid red;
 `
 
 const FeedStyled = styled.li`
@@ -207,6 +207,10 @@ const FeedInfoStyled = styled.label`
     justify-content: space-between;
   }
   .title {
+    width: 13.5rem;
+    // overflow: hidden;
+    // white-space: nowrap;
+    text-overflow: ellipsis;
     font-size: 19.2px;
   }
   .date {
