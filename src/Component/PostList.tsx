@@ -57,7 +57,14 @@ const PostList = () => {
         const {id, title, location, date, likes, images, name} = data
         return (
           <FeedStyled key={id}>
-            <ImgBox>
+            <ImgBox
+              onClick={() =>
+                setSlideImgAndShow(
+                  images.map(image => image.url),
+                  id,
+                )
+              }
+            >
               <img src={images[0].url} alt={name} />
             </ImgBox>
             <div className='text'>
@@ -75,6 +82,14 @@ const PostList = () => {
                 <div>{likes}</div>
               </FeedLikeStyled>
             </div>
+            {showHandleSlideImg && (
+              <SlideImg
+                show={showHandleSlideImg}
+                setShowHandleSlideImg={setShowHandleSlideImg}
+                imgs={slideImgs}
+                id={slideId}
+              />
+            )}
           </FeedStyled>
         )
       })}
