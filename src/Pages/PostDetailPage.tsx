@@ -242,7 +242,7 @@ const Bottom = styled.section`
   height: 80rem;
 `
 const CommentBox = styled.section`
-  width: 60rem;
+  width: 50rem;
   height: 50rem;
   border: 1px solid #c0c0c0;
   border-radius: 3rem;
