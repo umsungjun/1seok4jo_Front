@@ -252,9 +252,6 @@ const MenuButton = styled(CgMenuRound)`
   font-size: 1.8rem;
   right: 0.8rem;
   color: rgba(255, 255, 255, 0.8);
-  // :hover {
-  //   stroke: rgba(255, 255, 255, 1);
-  // }
 `
 const OptionList = styled.div`
   position: relative;
@@ -300,9 +297,13 @@ const FeedInfoStyled = styled.label`
     justify-content: space-between;
   }
   .title {
-    width: 13.5rem;
+    width: 14rem;
+    height: auto;
+    overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
     font-size: 19.2px;
+    padding-top: 0.2rem;
   }
   .location {
     display: flex;
@@ -314,6 +315,7 @@ const FeedInfoStyled = styled.label`
     svg {
       font-size: 1.2rem;
       padding-right: 0.2rem;
+      color: #1877f2;
     }
   }
   .date {
@@ -323,21 +325,21 @@ const FeedInfoStyled = styled.label`
 `
 const FeedLikeStyled = styled.div`
   font-weight: semi-bold;
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   display: flex;
   flex-direction: row;
+  margin: 0.5rem;
 `
 const LikeButtonStyled = styled.button`
   border: none;
   background-color: transparent;
   padding: 0;
-  width: 1.875rem;
-  height: 1.875rem;
-  cursor: pointer;
-  color: red;
-  margin-right: 0.625rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  color: rgba(255, 0, 0, 0.7);
+  margin-right: 0.5rem;
   svg {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.2rem;
+    height: 1.2rem;
   }
 `
