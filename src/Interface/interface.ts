@@ -17,45 +17,45 @@ export interface MyComponentState {
 
 // MainBanner
 export interface MainBannerInterface {
-  name: string
-  image: string
-  link: string
-  content: string
-  subContent: string
+  readonly name: string
+  readonly image: string
+  readonly link: string
+  readonly content: string
+  readonly subContent: string
 }
 
 // PostFeed
 export interface PostFeedInterface {
-  id: number
-  images: {
+  readonly id: number
+  readonly images: {
     url: string
     name: string
   }[]
-  name: string
-  title: string
-  location: string
-  date: string
-  likes: string
-  nickName: string
+  readonly name: string
+  readonly title: string
+  readonly location: string
+  readonly date: string
+  readonly likes: string
+  readonly nickName: string
 }
 
 // PostDetail
 export interface PostDetailInfoInterface {
-  id: number
-  images: {
+  readonly id: number
+  readonly images: {
     url: string
     name: string
   }[]
-  user: string
-  title: string
-  location: string
-  startDate: string
-  endDate: string
-  comment: string
-  likes: string
-  post: string
-  hashtags: string[]
-  comments: {
+  readonly user: string
+  readonly title: string
+  readonly location: string
+  readonly startDate: string
+  readonly endDate: string
+  readonly comment: string
+  readonly likes: string
+  readonly post: string
+  readonly hashtags: string[]
+  readonly comments: {
     nickName: string
     comment: string
     date: string
@@ -64,10 +64,10 @@ export interface PostDetailInfoInterface {
 
 // InboxList
 export interface InboxListInterface {
-  user: string
-  message: string
-  date: string
-  profile: string
+  readonly user: string
+  readonly message: string
+  readonly date: string
+  readonly profile: string
 }
 
 // users
