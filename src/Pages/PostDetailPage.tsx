@@ -249,7 +249,7 @@ const CommentBox = styled.section`
   padding: 2rem;
 
   .scroll-box {
-    width: 56.5rem;
+    width: 45.5rem;
     height: 45rem;
     overflow-y: scroll;
     overflow-x: hidden;
