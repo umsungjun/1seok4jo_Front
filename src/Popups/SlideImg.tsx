@@ -26,14 +26,14 @@ export default function SlideImg({show, setShowHandleSlideImg, imgs, id}: SlideI
           <CloseIcon onClick={() => setShowHandleSlideImg(false)} />
           <ModalTitle>상세 이미지</ModalTitle>
         </ModalCloseTitleBox>
-        <Line />
+        {/* <Line /> */}
         <SlideImgBox>
           {imgs.map((url, index) => {
             return <ImgBox key={`${index}${url}`} imgUrl={url} />
           })}
         </SlideImgBox>
         <DetailLink onClick={() => handleLink(id)}>
-          <FaExternalLinkAlt /> 더 자세한 정보가 알고싶다면
+          <FaExternalLinkAlt /> 여기 더 자세히 볼게요!
         </DetailLink>
       </ModalContent>
     </ModalBackdrop>
@@ -50,7 +50,7 @@ const ModalBackdrop = styled.div<ModalProps>`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgb(122 122 122 / 2%);
+  background-color: rgb(122 122 122 / 10%);
   display: ${props => (props.show ? 'block' : 'none')};
   z-index: 999;
 `
@@ -60,14 +60,13 @@ const ModalContent = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #fff;
-  width: 100rem;
-  height: 55rem;
+  width: 70rem;
+  height: 40rem;
   z-index: 1000;
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-
   transition: all 0.3s ease-in-out;
 `
 
@@ -107,7 +106,7 @@ const SlideImgBox = styled.div`
   overflow: scroll;
   overflow-y: hidden;
   white-space: nowrap;
-  padding: 0.5rem;
+  padding-bottom: 0.5rem;
   ::-webkit-scrollbar {
     width: 5px;
     height: 10px;
@@ -127,14 +126,16 @@ const ImgBox = styled.div<ImgBoxProps>`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  width: 95rem;
+  width: 66.5rem;
   height: 100%;
   display: inline-block;
+  // border: 5px solid red;
+  border-radius: 1rem;
 `
 
 const DetailLink = styled.span`
-  margin-top: 2rem;
-  font-size: 2rem;
+  margin: 1.5rem 0;
+  font-size: 1.7rem;
   display: flex;
   align-items: center;
   &:hover {
