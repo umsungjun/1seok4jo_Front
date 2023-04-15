@@ -15,11 +15,13 @@ export interface MyComponentState {
   speechBubbleProps: SpeechBubbleProps[]
 }
 
-// PostModal
-export interface ModalProps {
-  isOpen: boolean
-  onClose: () => void
-  children: React.ReactNode
+// MainBanner
+export interface MainBannerInterface {
+  name: string
+  image: string
+  link: string
+  content: string
+  subContent: string
 }
 
 // PostFeed
@@ -34,6 +36,7 @@ export interface PostFeedInterface {
   location: string
   date: string
   likes: string
+  nickName: string
 }
 
 // PostDetail
@@ -57,6 +60,14 @@ export interface PostDetailInfoInterface {
     comment: string
     date: string
   }[]
+}
+
+// InboxList
+export interface InboxListInterface {
+  user: string
+  message: string
+  date: string
+  profile: string
 }
 
 // users

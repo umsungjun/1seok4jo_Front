@@ -1,4 +1,6 @@
-export const PostDetailInfo = [
+import type {PostDetailInfoInterface} from '../Interface/interface'
+
+export const PostDetailInfo: PostDetailInfoInterface[] = [
   {
     id: 1,
     images: [

@@ -3,22 +3,22 @@ import styled from 'styled-components'
 import {useNavigate} from 'react-router-dom'
 import {BsFillSuitHeartFill, BsSuitHeart} from 'react-icons/bs'
 import {PostFeed} from '../Mock/postFeed'
-
 import {users} from '../Mock/users'
-
-import {MdDeleteOutline} from 'react-icons/md'
-import {BiEditAlt} from 'react-icons/bi'
 import SlideImg from '../Popups/SlideImg'
+import {CgMenuRound} from 'react-icons/cg'
+import {GrLocation} from 'react-icons/gr'
+import {IoLocationSharp} from 'react-icons/io5'
 
 const PostList = () => {
   const [isLiked, setIsLiked] = useState(false)
-  const [modalOpen, setModalOpen] = useState(false)
   const [login, setLogin] = useState(users[0]) //null
   const [showHandleSlideImg, setShowHandleSlideImg] = useState<boolean>(false)
   const [slideImgs, setSlideImgs] = useState<string[]>([])
   const [slideId, setSlideId] = useState<number>(0)
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
 
   const navigate = useNavigate()
+  const menuOptions = ['삭제', '편집']
 
   const setSlideImgAndShow = (images: string[], id: number) => {
     setSlideImgs(images)
@@ -39,13 +39,20 @@ const PostList = () => {
     setIsLiked(!isLiked)
   }
 
-  const handleDeletePost = (e: React.MouseEvent<SVGAElement>) => {
+  const handleOptionClick = (e: React.MouseEvent<SVGElement>) => {
+    e.stopPropagation()
+    console.log('옵션 클릭')
+    setIsMenuOpen(!isMenuOpen)
+  }
+
+  const handleDeletePost = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     console.log('삭제 클릭')
     confirm('정말 삭제하시겠습니까?') // TODO 팝업
+    setIsMenuOpen(!isMenuOpen)
   }
 
-  const handleEditPost = (e: React.MouseEvent<SVGAElement>) => {
+  const handleEditPost = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     console.log('편집 클릭')
     navigate(`/PostEdit`)
@@ -70,7 +77,10 @@ const PostList = () => {
             <div className='text'>
               <FeedInfoStyled>
                 <div className='title'>{title}</div>
-                <div className='location'>{location}</div>
+                <div className='location'>
+                  <IoLocationSharp />
+                  <span>{location}</span>
+                </div>
                 <div className='date'>{date}</div>
               </FeedInfoStyled>
 
@@ -108,14 +118,25 @@ const PostList = () => {
                 )
               }
             >
-              <DeleteButton onClick={handleDeletePost} />
               <img src={images[0].url} alt={name} />
-              <EditButton onClick={handleEditPost} />
+              <MenuButton onClick={handleOptionClick} />
+              {isMenuOpen && (
+                <OptionList>
+                  {menuOptions.map(option => (
+                    <OptionsButton key={option} onClick={option === '삭제' ? handleDeletePost : handleEditPost}>
+                      {option}
+                    </OptionsButton>
+                  ))}
+                </OptionList>
+              )}
             </ImgBox>
             <div className='text'>
               <FeedInfoStyled>
                 <div className='title'>{title}</div>
-                <div className='location'>{location}</div>
+                <div className='location'>
+                  <IoLocationSharp />
+                  <span>{location}</span>
+                </div>
                 <div className='date'>{date}</div>
               </FeedInfoStyled>
 
@@ -158,7 +179,10 @@ const PostList = () => {
             <div className='text'>
               <FeedInfoStyled>
                 <div className='title'>{title}</div>
-                <div className='location'>{location}</div>
+                <div className='location'>
+                  <IoLocationSharp />
+                  <span>{location}</span>
+                </div>
                 <div className='date'>{date}</div>
               </FeedInfoStyled>
 
@@ -212,6 +236,7 @@ const FeedStyled = styled.li`
 
 const ImgBox = styled.div`
   position: relative;
+  height: 19rem;
   img {
     width: 19rem;
     height: 19rem;
@@ -220,39 +245,52 @@ const ImgBox = styled.div`
   }
   svg {
     position: absolute;
-    color: gray;
-    opacity: 0.3;
     top: 0.5rem;
   }
 `
-
-const DeleteButton = styled(MdDeleteOutline)`
-  font-size: 2rem;
-  left: 0.8rem;
-  :hover {
-    opacity: 1;
-    color: red;
-  }
-`
-
-const EditButton = styled(BiEditAlt)`
-  font-size: 2rem;
-  right: 0.8rem;
-  :hover {
-    opacity: 1;
-    color: red;
-  }
-`
-
-const LikeButton = styled(BsSuitHeart)`
+const MenuButton = styled(CgMenuRound)`
   font-size: 1.8rem;
   right: 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
+  // :hover {
+  //   stroke: rgba(255, 255, 255, 1);
+  // }
+`
+const OptionList = styled.div`
+  position: relative;
+  top: -88%;
+  left: 80%;
+  font-weight: bold;
+  color: white;
+`
+const OptionsButton = styled.button`
+  display: block;
+  position: relative;
+  right: 2%;
+  width: 3.3rem;
+  padding: 0.2rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid #fff;
+  font-size: 1rem;
+  color: #fff;
+  cursor: pointer;
+  :first-child {
+    border-bottom: none;
+    border-radius: 0.3rem 0.3rem 0 0;
+  }
+  :last-child {
+    border-radius: 0 0 0.3rem 0.3rem;
+  }
+`
+const LikeButton = styled(BsSuitHeart)`
+  font-size: 1.5rem;
+  right: 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
   :hover {
     opacity: 1;
     color: red;
   }
 `
-
 const FeedInfoStyled = styled.label`
   div {
     margin: 0.5rem;
@@ -263,10 +301,20 @@ const FeedInfoStyled = styled.label`
   }
   .title {
     width: 13.5rem;
-    // overflow: hidden;
-    // white-space: nowrap;
     text-overflow: ellipsis;
     font-size: 19.2px;
+  }
+  .location {
+    display: flex;
+    span {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    svg {
+      font-size: 1.2rem;
+      padding-right: 0.2rem;
+    }
   }
   .date {
     font-size: 0.9rem;

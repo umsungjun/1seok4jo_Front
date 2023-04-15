@@ -1,4 +1,6 @@
-export const PostFeed = [
+import type {PostFeedInterface} from '../Interface/interface'
+
+export const PostFeed: PostFeedInterface[] = [
   {
     id: 1,
     images: [
