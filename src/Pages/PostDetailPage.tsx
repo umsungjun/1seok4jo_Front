@@ -117,7 +117,7 @@ const PostDetailPage = () => {
         </CommentBox>
         <MapContainer />
       </Bottom>
-      <h4>같은 테마의 이런 곳은 어떤가요?</h4>
+      <h4>같은 테마의 이런 곳은 어떨까요?</h4>
       <PostDetailFeed />
     </Detail>
   )
@@ -245,7 +245,7 @@ const Hashtag = styled.h3`
 const Bottom = styled.section`
   margin-top: 3rem;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   height: auto;
   padding-bottom: 8rem;
   border-bottom: 1px solid #c0c0c0;

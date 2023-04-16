@@ -215,7 +215,7 @@ const PostListStyled = styled.ul`
   display: flex;
   flex-wrap: wrap;
   width: 89%;
-  justify-content: space-around;
+  justify-content: space-between;
 `
 
 const FeedStyled = styled.li`
