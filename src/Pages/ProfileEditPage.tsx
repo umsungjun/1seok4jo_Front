@@ -65,14 +65,16 @@ export default function ProfileEditPage() {
         </Content>
         <Content>
           <Title># 비밀번호</Title>
-          <Input type='password' required />
-          <PassWordChange
-            onClick={e => {
-              handlePasswordChange(e)
-            }}
-          >
-            *비밀번호 변경
-          </PassWordChange>
+          <PasswordBox>
+            <Input type='password' required />
+            <PassWordChange
+              onClick={e => {
+                handlePasswordChange(e)
+              }}
+            >
+              *비밀번호 변경
+            </PassWordChange>
+          </PasswordBox>
         </Content>
         <Content>
           <Title># 닉네임</Title>
@@ -147,7 +149,7 @@ const Title = styled.h2`
 
 const Input = styled.input`
   font-size: 1.3rem;
-  width: 27rem;
+  width: 25rem;
   border: none;
   padding: 0.8rem 0.8rem 0.8rem 1.3rem;
   border-radius: 1.5rem;
@@ -165,6 +167,19 @@ const PassWordChange = styled.button`
 
   &:hover {
     color: #1877f2;
+  }
+
+  @media (max-width: 960px) {
+    margin-top: 1rem;
+    text-align: right;
+  }
+`
+
+const PasswordBox = styled.div`
+  display: flex;
+
+  @media (max-width: 960px) {
+    flex-direction: column;
   }
 `
 
