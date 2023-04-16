@@ -210,7 +210,7 @@ const PostList = () => {
 
 export default PostList
 
-export const PostListStyled = styled.ul`
+const PostListStyled = styled.ul`
   margin-top: 3rem;
   display: flex;
   flex-wrap: wrap;

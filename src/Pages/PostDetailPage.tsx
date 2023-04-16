@@ -1,8 +1,7 @@
 import {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import MapContainer from '../Component/MapContainer'
-import PostList from '../Component/PostList'
-import {PostListStyled} from '../Component/PostList'
+import {PostListStyled} from '../Component/PostDetailFeed'
 import PostDetailFeed from '../Component/PostDetailFeed'
 import sangchu from '../Assets/sangchu.png'
 import {RWebShare} from 'react-web-share'
@@ -119,9 +118,7 @@ const PostDetailPage = () => {
         <MapContainer />
       </Bottom>
       <h4>같은 테마의 이런 곳은 어떤가요?</h4>
-      <PostSuggestion>
-        <PostList />
-      </PostSuggestion>
+      <PostDetailFeed />
     </Detail>
   )
 }
@@ -298,8 +295,4 @@ const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-`
-
-const PostSuggestion = styled(PostListStyled)`
-  margin-top: 0rem;
 `

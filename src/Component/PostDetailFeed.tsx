@@ -2,18 +2,35 @@ import React, {useState} from 'react'
 import styled from 'styled-components'
 import {useNavigate} from 'react-router-dom'
 import {BsFillSuitHeartFill, BsSuitHeart} from 'react-icons/bs'
-import {PostFeed} from '../Mock/postFeed'
+import {detailPostFeed} from '../Mock/detailPostFeed'
 import {users} from '../Mock/users'
+import SlideImg from '../Popups/SlideImg'
 import {CgMenuRound} from 'react-icons/cg'
 import {IoLocationSharp} from 'react-icons/io5'
 
 const PostDetailFeed = () => {
   const [isLiked, setIsLiked] = useState(false)
   const [login, setLogin] = useState(users[0]) //null
+  const [showHandleSlideImg, setShowHandleSlideImg] = useState<boolean>(false)
+  const [slideImgs, setSlideImgs] = useState<string[]>([])
+  const [slideId, setSlideId] = useState<number>(0)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
 
   const navigate = useNavigate()
   const menuOptions = ['삭제', '편집']
+
+  const setSlideImgAndShow = (images: string[], id: number) => {
+    setSlideImgs(images)
+    setShowHandleSlideImg(true)
+    setSlideId(id)
+  }
+
+  // const handleSlideImg = (images: {url: string; name: string}[]) => {
+  //   const urls = images.map(image => image.url)
+  //   setSlideImgs(urls)
+  //   setShowHandleSlideImg(true)
+  //   console.log(urls)
+  // }
 
   const handleLikeClick = (e: React.MouseEvent<SVGAElement>) => {
     e.stopPropagation()
@@ -42,10 +59,20 @@ const PostDetailFeed = () => {
 
   return login === null ? (
     <PostListStyled>
-      {PostFeed.map(data => {
+      {detailPostFeed.map(data => {
         const {id, title, location, date, likes, images, name} = data
         return (
           <FeedStyled key={id}>
+            <ImgBox
+              onClick={() =>
+                setSlideImgAndShow(
+                  images.map(image => image.url),
+                  id,
+                )
+              }
+            >
+              <img src={images[0].url} alt={name} />
+            </ImgBox>
             <div className='text'>
               <FeedInfoStyled>
                 <div className='title'>{title}</div>
@@ -64,28 +91,44 @@ const PostDetailFeed = () => {
                 <div>{likes}</div>
               </FeedLikeStyled>
             </div>
+            {showHandleSlideImg && (
+              <SlideImg
+                show={showHandleSlideImg}
+                setShowHandleSlideImg={setShowHandleSlideImg}
+                imgs={slideImgs}
+                id={slideId}
+              />
+            )}
           </FeedStyled>
         )
       })}
     </PostListStyled>
   ) : (
     <PostListStyled>
-      {PostFeed.map(data => {
+      {detailPostFeed.map(data => {
         const {id, nickName, title, location, date, likes, images, name} = data
         return nickName === login.nickName ? (
           <FeedStyled key={id}>
-            <img src={images[0].url} alt={name} />
-            <MenuButton onClick={handleOptionClick} />
-            {isMenuOpen && (
-              <OptionList>
-                {menuOptions.map(option => (
-                  <OptionsButton key={option} onClick={option === '삭제' ? handleDeletePost : handleEditPost}>
-                    {option}
-                  </OptionsButton>
-                ))}
-              </OptionList>
-            )}
-
+            <ImgBox
+              onClick={() =>
+                setSlideImgAndShow(
+                  images.map(image => image.url),
+                  id,
+                )
+              }
+            >
+              <img src={images[0].url} alt={name} />
+              <MenuButton onClick={handleOptionClick} />
+              {isMenuOpen && (
+                <OptionList>
+                  {menuOptions.map(option => (
+                    <OptionsButton key={option} onClick={option === '삭제' ? handleDeletePost : handleEditPost}>
+                      {option}
+                    </OptionsButton>
+                  ))}
+                </OptionList>
+              )}
+            </ImgBox>
             <div className='text'>
               <FeedInfoStyled>
                 <div className='title'>{title}</div>
@@ -104,14 +147,34 @@ const PostDetailFeed = () => {
                 <div>{likes}</div>
               </FeedLikeStyled>
             </div>
+            {showHandleSlideImg && (
+              <SlideImg
+                show={showHandleSlideImg}
+                setShowHandleSlideImg={setShowHandleSlideImg}
+                imgs={slideImgs}
+                id={slideId}
+              />
+            )}
           </FeedStyled>
         ) : (
           <FeedStyled key={id}>
-            <img src={images[0].url} alt={name} />
-            <LikeButton type='submit'>
-              {isLiked ? <BsFillSuitHeartFill onClick={handleLikeClick} /> : <BsSuitHeart onClick={handleLikeClick} />}
-            </LikeButton>
-
+            <ImgBox
+              onClick={() =>
+                setSlideImgAndShow(
+                  images.map(image => image.url),
+                  id,
+                )
+              }
+            >
+              <img src={images[0].url} alt={name} />
+              <LikeButton type='submit'>
+                {isLiked ? (
+                  <BsFillSuitHeartFill onClick={handleLikeClick} />
+                ) : (
+                  <BsSuitHeart onClick={handleLikeClick} />
+                )}
+              </LikeButton>
+            </ImgBox>
             <div className='text'>
               <FeedInfoStyled>
                 <div className='title'>{title}</div>
@@ -130,6 +193,14 @@ const PostDetailFeed = () => {
                 <div>{likes}</div>
               </FeedLikeStyled>
             </div>
+            {showHandleSlideImg && (
+              <SlideImg
+                show={showHandleSlideImg}
+                setShowHandleSlideImg={setShowHandleSlideImg}
+                imgs={slideImgs}
+                id={slideId}
+              />
+            )}
           </FeedStyled>
         )
       })}
@@ -139,11 +210,11 @@ const PostDetailFeed = () => {
 
 export default PostDetailFeed
 
-const PostListStyled = styled.ul`
-  margin-top: 3rem;
+export const PostListStyled = styled.ul`
+  margin: 3rem 0;
   display: flex;
   flex-wrap: wrap;
-  width: 89%;
+  width: 100%;
   justify-content: space-around;
 `
 
