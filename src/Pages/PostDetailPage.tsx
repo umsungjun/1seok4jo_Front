@@ -14,7 +14,6 @@ import {useParams} from 'react-router-dom'
 const PostDetailPage = () => {
   //페이지 로딩시 상단부터 노출되도록
   scrollToTop()
-
   const {id} = useParams()
   const [post, setPost] = useState<PostDetailInfoInterface>()
   const [isLiked, setIsLiked] = useState(false)
