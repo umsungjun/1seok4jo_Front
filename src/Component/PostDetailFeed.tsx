@@ -2,13 +2,13 @@ import React, {useState} from 'react'
 import styled from 'styled-components'
 import {useNavigate} from 'react-router-dom'
 import {BsFillSuitHeartFill, BsSuitHeart} from 'react-icons/bs'
-import {PostFeed} from '../Mock/postFeed'
+import {detailPostFeed} from '../Mock/detailPostFeed'
 import {users} from '../Mock/users'
 import SlideImg from '../Popups/SlideImg'
 import {CgMenuRound} from 'react-icons/cg'
 import {IoLocationSharp} from 'react-icons/io5'
 
-const PostList = () => {
+const PostDetailFeed = () => {
   const [isLiked, setIsLiked] = useState(false)
   const [login, setLogin] = useState(users[0]) //null
   const [showHandleSlideImg, setShowHandleSlideImg] = useState<boolean>(false)
@@ -59,7 +59,7 @@ const PostList = () => {
 
   return login === null ? (
     <PostListStyled>
-      {PostFeed.map(data => {
+      {detailPostFeed.map(data => {
         const {id, title, location, date, likes, images, name} = data
         return (
           <FeedStyled key={id}>
@@ -105,7 +105,7 @@ const PostList = () => {
     </PostListStyled>
   ) : (
     <PostListStyled>
-      {PostFeed.map(data => {
+      {detailPostFeed.map(data => {
         const {id, nickName, title, location, date, likes, images, name} = data
         return nickName === login.nickName ? (
           <FeedStyled key={id}>
@@ -208,13 +208,13 @@ const PostList = () => {
   )
 }
 
-export default PostList
+export default PostDetailFeed
 
-const PostListStyled = styled.ul`
-  margin-top: 3rem;
+export const PostListStyled = styled.ul`
+  margin: 3rem 0;
   display: flex;
   flex-wrap: wrap;
-  width: 89%;
+  width: 100%;
   justify-content: space-around;
 `
 
