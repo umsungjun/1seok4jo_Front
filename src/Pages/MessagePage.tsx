@@ -34,6 +34,7 @@ const Message = styled.section`
 
 const Inbox = styled.section`
   width: 20%;
+  min-width: 20rem;
   overflow: scroll;
   overflow-x: hidden;
 

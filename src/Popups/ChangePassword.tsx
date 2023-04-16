@@ -20,9 +20,9 @@ export default function ChangePassword({show, setChangePassword}: ChangePassword
         <Line />
         <Text>{text}</Text>
         <InputGroupJoin>
-          <Input type='password' placeholder='Current PassWord' required />
-          <Input type='password' placeholder='New Password' required />
-          <Input type='password' placeholder='New Password2' required />
+          <Input type='password' placeholder='현재 비밀번호' required />
+          <Input type='password' placeholder='새 비밀번호' required />
+          <Input type='password' placeholder='새 비밀번호 확인' required />
         </InputGroupJoin>
         <FindPass onClick={() => SetText('초기화 된 비밀번호가 등록된 메일로 발송되었습니다.')}>
           비밀번호 초기화
