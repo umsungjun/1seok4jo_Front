@@ -242,14 +242,14 @@ const Bottom = styled.section`
   height: 80rem;
 `
 const CommentBox = styled.section`
-  width: 60rem;
+  width: 50rem;
   height: 50rem;
   border: 1px solid #c0c0c0;
   border-radius: 3rem;
   padding: 2rem;
 
   .scroll-box {
-    width: 56.5rem;
+    width: 45.5rem;
     height: 45rem;
     overflow-y: scroll;
     overflow-x: hidden;

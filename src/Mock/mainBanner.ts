@@ -1,4 +1,6 @@
-export const bannerSwiper = [
+import type {MainBannerInterface} from '../Interface/interface'
+
+export const bannerSwiper: MainBannerInterface[] = [
   {
     name: '비짓서울',
     image: 'https://www.visitseoul.net/comm/getImage?srvcId=VS_MAIN_TYPE_0&parentSn=161&fileTy=IMG&fileNo=8',

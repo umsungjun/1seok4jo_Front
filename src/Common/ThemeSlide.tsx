@@ -25,7 +25,7 @@ export default function ThemeSlide() {
               onClick={e => handleCategory(data.category, e)}
             >
               {data.icon}
-              {data.category}
+              <span>{data.category}</span>
             </TabBtnStyled>
           </li>
         ))}
@@ -95,7 +95,7 @@ const TabBtnWrapStyled = styled.section`
   ul {
     display: flex;
     justify-content: space-between;
-    gap: 2rem;
+    // gap: 2rem;
   }
 `
 
@@ -106,20 +106,24 @@ const TabBtnStyled = styled.button<{active: boolean}>`
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 6.25rem;
+  width: 7.5rem;
+  height: 3.3rem;
   border: solid 0.2rem ${props => (props.active ? '#1877f2' : 'transparent')};
   background-color: transparent;
   border-radius: 3rem;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   color: ${props => (props.active ? '#1877f2' : '#a4a4a4')};
-  height: 53px;
   cursor: pointer;
   :hover {
     color: #1877f2;
   }
   svg {
-    width: 1.8rem;
-    height: 1.8rem;
+    width: 1.7rem;
+    height: 1.7rem;
     padding-right: 0.5rem;
+  }
+  span {
+    position: relative;
+    top: 2%;
   }
 `

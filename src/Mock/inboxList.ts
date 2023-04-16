@@ -1,4 +1,6 @@
-export const inboxList = [
+import type {InboxListInterface} from '../Interface/interface'
+
+export const inboxList: InboxListInterface[] = [
   {
     user: 'user1',
     message: '안녕하세요',
