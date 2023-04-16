@@ -1,6 +1,9 @@
 import {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import MapContainer from '../Component/MapContainer'
+import PostList from '../Component/PostList'
+import {PostListStyled} from '../Component/PostList'
+import PostDetailFeed from '../Component/PostDetailFeed'
 import sangchu from '../Assets/sangchu.png'
 import {RWebShare} from 'react-web-share'
 import {FiShare} from 'react-icons/fi'
@@ -115,6 +118,10 @@ const PostDetailPage = () => {
         </CommentBox>
         <MapContainer />
       </Bottom>
+      <h4>같은 테마의 이런 곳은 어떤가요?</h4>
+      <PostSuggestion>
+        <PostList />
+      </PostSuggestion>
     </Detail>
   )
 }
@@ -123,6 +130,10 @@ export default PostDetailPage
 
 const Detail = styled.section`
   padding: 10rem 5rem 0 5rem;
+  h4 {
+    font-size: 2rem;
+    padding-top: 5rem;
+  }
 `
 const Header = styled.section`
   display: flex;
@@ -237,8 +248,10 @@ const Hashtag = styled.h3`
 const Bottom = styled.section`
   margin-top: 3rem;
   display: flex;
-  justify-content: space-between;
-  height: 80rem;
+  justify-content: space-around;
+  height: auto;
+  padding-bottom: 8rem;
+  border-bottom: 1px solid #c0c0c0;
 `
 const CommentBox = styled.section`
   width: 50rem;
@@ -285,4 +298,8 @@ const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+`
+
+const PostSuggestion = styled(PostListStyled)`
+  margin-top: 0rem;
 `
