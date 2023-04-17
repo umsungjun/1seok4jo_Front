@@ -17,7 +17,6 @@ interface SlideImgProps {
 }
 
 export default function SlideImg({show, setShowHandleSlideImg, imgs, id}: SlideImgProps) {
-  const [swiper, setSwiper] = useState(null)
   const [scrollbar, setScrollbar] = useState<{
     el: string
     hide: boolean
@@ -26,15 +25,9 @@ export default function SlideImg({show, setShowHandleSlideImg, imgs, id}: SlideI
     hide: false,
   })
   const popupRef = useRef<HTMLDivElement>(null)
-  // const slideRef = useRef<Swiper>(null)
 
   const prevRef = React.useRef<HTMLDivElement>(null)
   const nextRef = React.useRef<HTMLDivElement>(null)
-
-  const handlePopup = (e: React.MouseEvent<HTMLDivElement>) => {
-    setShowHandleSlideImg(true)
-    e.stopPropagation()
-  }
 
   const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
     if (popupRef.current && !popupRef.current.contains(e.target as Node)) {
@@ -60,8 +53,12 @@ export default function SlideImg({show, setShowHandleSlideImg, imgs, id}: SlideI
   }
   return (
     <ModalBackdrop show={show} onClick={handleClickOutside}>
-      <ModalContent ref={popupRef} onClick={handlePopup}>
-        <Swiper {...slide_settings} scrollbar={scrollbar}>
+      <ModalContent ref={popupRef} onClick={e => e.stopPropagation()}>
+        <Swiper
+          {...slide_settings}
+          scrollbar={scrollbar}
+          // navigation={{prevEl: prevRef.current, nextEl: nextRef.current}}
+        >
           {imgs.map((url, index) => (
             <SwiperSlide key={`${index}${url}`}>
               <div className='swiper-slide'>
@@ -157,24 +154,8 @@ const NavigationArrow = styled.div`
     color: #a0a0a0;
     :hover {
       opacity: 1;
+      scale: 1.1;
     }
-  }
-  .swiper-button-prev {
-    width: 3rem;
-    height: 3rem;
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  .swiper-button-next {
-    width: 3rem;
-    height: 3rem;
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
   }
 `
 const DetailLink = styled.div`
