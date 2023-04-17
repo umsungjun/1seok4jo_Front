@@ -8,9 +8,7 @@ export default function SearchDetailPage() {
 
   return (
     <Section>
-      <SectionInfo>
-        전체글 / {category} / "{searchText}" 검색 결과
-      </SectionInfo>
+      <PageTitle title={'Search Result'} sub={`"${searchText}" 으로 검색한 결과 입니다.`} />
       <PostList />
     </Section>
   )
@@ -20,9 +18,4 @@ const Section = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
-
-const SectionInfo = styled.div`
-  padding-top: 8rem;
-  font-size: 3rem;
 `
