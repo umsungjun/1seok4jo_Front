@@ -5,7 +5,7 @@ export const PostFeed: PostFeedInterface[] = [
     id: 1,
     images: [
       {
-        url: 'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=3664af47-7688-4f4f-88f4-d05ed84e58b2&mode=raw',
+        url: 'https://edgio.clien.net/F01/13603866/550fa54c129b36.jpg',
         name: '1번글 입니다.',
       },
       {
@@ -40,7 +40,7 @@ export const PostFeed: PostFeedInterface[] = [
     id: 2,
     images: [
       {
-        url: 'https://edgio.clien.net/F01/13603866/550fa54c129b36.jpg',
+        url: 'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=3664af47-7688-4f4f-88f4-d05ed84e58b2&mode=raw',
         name: '2번글 입니다.',
       },
       {

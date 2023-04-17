@@ -5,7 +5,7 @@ import {BsFillSuitHeartFill, BsSuitHeart} from 'react-icons/bs'
 import {PostFeed} from '../Mock/postFeed'
 import {users} from '../Mock/users'
 import SlideImg from '../Popups/SlideImg'
-import {CgMenuRound} from 'react-icons/cg'
+import {FaEdit} from 'react-icons/fa'
 import {IoLocationSharp} from 'react-icons/io5'
 
 const PostList = () => {
@@ -247,35 +247,35 @@ const ImgBox = styled.div`
     top: 0.5rem;
   }
 `
-const MenuButton = styled(CgMenuRound)`
-  font-size: 1.8rem;
-  right: 0.8rem;
-  color: rgba(255, 255, 255, 0.8);
+const MenuButton = styled(FaEdit)`
+  font-size: 2rem;
+  right: 0.7rem;
+  color: rgba(255, 255, 255, 0.95);
+  // background-color: rgba(0, 0, 0, 0.25);
 `
 const OptionList = styled.div`
   position: relative;
-  top: -88%;
-  left: 80%;
+  top: -86%;
+  left: 78%;
   font-weight: bold;
-  color: white;
 `
 const OptionsButton = styled.button`
   display: block;
   position: relative;
   right: 2%;
-  width: 3.3rem;
-  padding: 0.2rem;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid #fff;
-  font-size: 1rem;
-  color: #fff;
+  width: 4rem;
+  padding: 0.3rem;
+  background: rgba(255, 255, 255, 0.8);
+  border: 3px solid #c0c0c0;
+  font-size: 1.2rem;
+  color: #000;
   cursor: pointer;
   :first-child {
     border-bottom: none;
-    border-radius: 0.3rem 0.3rem 0 0;
+    border-radius: 1rem;
   }
   :last-child {
-    border-radius: 0 0 0.3rem 0.3rem;
+    border-radius: 1rem;
   }
 `
 const LikeButton = styled(BsSuitHeart)`
