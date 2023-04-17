@@ -1,5 +1,5 @@
 import {BrowserRouter} from 'react-router-dom'
-import Header from './Common/Header'
+import Header from './Component/Header/Header'
 import PageNavigator from './PageNavigator'
 
 function App() {

@@ -6,9 +6,9 @@ import {SlCompass} from 'react-icons/sl'
 import {GoSearch} from 'react-icons/go'
 import {AiOutlineBell} from 'react-icons/ai'
 import {RxHamburgerMenu} from 'react-icons/rx'
-import Login from '../Popups/Login'
-import Notification from '../Popups/Notification'
-import {users} from '../Mock/users'
+import Login from '../../Popups/Login'
+import Notification from '../../Popups/Notification'
+import {users} from '../../Mock/users'
 
 const {email, password, nickName, myPage} = users[0]
 
@@ -44,8 +44,10 @@ export default function Header() {
   return (
     <HeaderSection>
       <LogoBox>
-        <SlCompass />
-        <Logo to='/'>Compass</Logo>
+        <Logo to='/'>
+          <SlCompass />
+          Compass
+        </Logo>
       </LogoBox>
       <SearchBox>
         <SearchSelect onClick={handleSearchSelect}>{searchSelect}</SearchSelect>
@@ -127,6 +129,11 @@ const LogoBox = styled.div`
 const Logo = styled(Link)`
   font-size: 1.5rem;
   margin-left: 0.5rem;
+  display: flex;
+  align-items: center;
+  svg {
+    margin-right: 0.5rem;
+  }
 `
 
 const SearchBox = styled.div`
