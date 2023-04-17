@@ -1,11 +1,10 @@
 import React, {useRef} from 'react'
 import styled from 'styled-components'
 import {Swiper, SwiperSlide} from 'swiper/react'
-import SwiperCore, {Navigation, Pagination, Autoplay} from 'swiper'
+import SwiperCore, {Navigation} from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
-SwiperCore.use([Navigation, Pagination, Autoplay]) // *
-import {AiOutlineClose} from 'react-icons/ai'
+SwiperCore.use([Navigation]) // *
 import {useNavigate} from 'react-router-dom'
 import {FaExternalLinkAlt} from 'react-icons/fa'
 
@@ -29,23 +28,27 @@ export default function SlideImg({show, setShowHandleSlideImg, imgs, id}: SlideI
     slidesPerView: 1,
     centeredSlides: true,
     loop: true,
-    spaceBetween: 50,
-
+    spaceBetween: 30,
     className: 'swiper-slide',
+    navigation: true,
   }
+  const prevRef = React.useRef<HTMLDivElement>(null)
+  const nextRef = React.useRef<HTMLDivElement>(null)
+
   const handleLink = (id: number) => {
     navigate(`/PostDetail/${id}`)
   }
   return (
     <ModalBackdrop onClick={handleClickOutside}>
       <ModalContent ref={popupRef} onClick={event => event.stopPropagation()}>
-        {/* <CloseIcon onClick={() => setShowHandleSlideImg(false)} /> */}
-        <Swiper {...slide_settings}>
+        <Swiper {...slide_settings} navigation={{prevEl: prevRef.current, nextEl: nextRef.current}}>
           {imgs.map((url, index) => (
             <SwiperSlide key={`${index}${url}`}>
               <div className='swiper-slide'>
                 <SwiperImage>
                   <ImgBox key={`${index}${url}`} imgUrl={url} />
+                  <div ref={prevRef} className='swiper-button-prev' />
+                  <div ref={nextRef} className='swiper-button-next' />
                 </SwiperImage>
               </div>
             </SwiperSlide>
@@ -59,10 +62,6 @@ export default function SlideImg({show, setShowHandleSlideImg, imgs, id}: SlideI
   )
 }
 
-interface ModalProps {
-  show: boolean
-}
-
 const ModalBackdrop = styled.div`
   position: fixed;
   top: 0;
@@ -71,6 +70,9 @@ const ModalBackdrop = styled.div`
   height: 100%;
   background-color: rgb(122 122 122 / 10%);
   z-index: 999;
+  .swiper-slide {
+    height: 95%;
+  }
 `
 const ModalContent = styled.div`
   position: fixed;
@@ -88,20 +90,6 @@ const ModalContent = styled.div`
   transition: all 0.3s ease-in-out;
 `
 
-const CloseIcon = styled(AiOutlineClose)`
-  font-size: 1.5rem;
-  position: absolute;
-  left: 1rem;
-  top: 0.6rem;
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 50%;
-
-  &:hover {
-    background-color: #f7f7f7;
-  }
-`
-
 const SwiperImage = styled.div`
   display: flex;
   justify-content: center;
@@ -110,8 +98,9 @@ const SwiperImage = styled.div`
   height: 100%;
   img {
     width: 100%;
-    height: 41rem;
+    height: 100%;
     object-fit: cover;
+    border-radius: 1rem;
   }
 `
 interface ImgBoxProps {
@@ -124,13 +113,15 @@ const ImgBox = styled.div<ImgBoxProps>`
   background-repeat: no-repeat;
   background-position: center;
   width: 100%;
-  height: 80%;
+  height: 100%;
   display: inline-block;
-  // border: 5px solid red;
-  border-radius: 1rem;
+  border-radius: 1rem 1rem 0 0;
 `
 
 const DetailLink = styled.span`
+  position: relative;
+  bottom: 4%;
+  padding-bottom: 0.5rem;
   font-size: 1.7rem;
   display: flex;
   align-items: center;
