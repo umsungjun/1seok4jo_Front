@@ -1,10 +1,11 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import styled from 'styled-components'
 import {Swiper, SwiperSlide} from 'swiper/react'
-import SwiperCore, {Navigation} from 'swiper'
+import SwiperCore, {Navigation, Scrollbar} from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
-SwiperCore.use([Navigation]) // *
+import 'swiper/css/scrollbar'
+SwiperCore.use([Navigation, Scrollbar]) // *
 import {useNavigate} from 'react-router-dom'
 import {FaExternalLinkAlt} from 'react-icons/fa'
 
@@ -31,6 +32,14 @@ export default function SlideImg({show, setShowHandleSlideImg, imgs, id}: SlideI
 
   const navigate = useNavigate()
 
+  const [scrollbar, setScrollbar] = useState<{
+    el: string
+    hide: boolean
+  }>({
+    el: '.swiper-scrollbar',
+    hide: false,
+  })
+
   const slide_settings = {
     slidesPerView: 1,
     loop: true,
@@ -47,25 +56,29 @@ export default function SlideImg({show, setShowHandleSlideImg, imgs, id}: SlideI
   return (
     <ModalBackdrop show={show} onClick={handleClickOutside}>
       <ModalContent ref={popupRef} onClick={handlePopup}>
-        <Swiper {...slide_settings} navigation={{prevEl: prevRef.current, nextEl: nextRef.current}}>
+        <Swiper
+          {...slide_settings}
+          navigation={{prevEl: prevRef.current, nextEl: nextRef.current}}
+          scrollbar={scrollbar}
+        >
           {imgs.map((url, index) => (
             <SwiperSlide key={`${index}${url}`}>
               <div className='swiper-slide'>
                 <SwiperImage>
-                  <ImgBox key={`${index}${url}`} imgUrl={url} onClick={() => handleLink(id)}>
-                    <DetailLink onClick={() => handleLink(id)}>
-                      <FaExternalLinkAlt /> 여기 더 자세히 볼게요!
-                    </DetailLink>
-                  </ImgBox>
+                  <ImgBox key={`${index}${url}`} imgUrl={url} onClick={() => handleLink(id)}></ImgBox>
                 </SwiperImage>
               </div>
             </SwiperSlide>
           ))}
+          <div className='swiper-scrollbar'></div>
         </Swiper>
         <NavigationArrow>
           <div ref={prevRef} className='swiper-button-prev' />
           <div ref={nextRef} className='swiper-button-next' />
         </NavigationArrow>
+        <DetailLink onClick={() => handleLink(id)}>
+          <FaExternalLinkAlt /> 상세 페이지로 이동
+        </DetailLink>
       </ModalContent>
     </ModalBackdrop>
   )
@@ -84,7 +97,14 @@ const ModalBackdrop = styled.div<ModalProps>`
   background-color: rgb(122 122 122 / 10%);
   z-index: 1;
   .swiper-slide {
-    height: 90%;
+    height: 95%;
+  }
+  .swiper-scrollbar {
+    height: 0.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 0.5rem;
+    position: relative;
+    bottom: 8%;
   }
 `
 const ModalContent = styled.div`
@@ -94,13 +114,12 @@ const ModalContent = styled.div`
   transform: translate(-50%, -50%);
   background-color: #fff;
   width: 60rem;
-  height: 35rem;
+  height: 36rem;
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   transition: all 0.3s ease-in-out;
-  // padding-bottom: 2.5rem;
   border-radius: 1rem;
 `
 
@@ -108,7 +127,7 @@ const SwiperImage = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 80%;
+  width: 100%;
   height: 100%;
   img {
     width: 100%;
@@ -131,31 +150,23 @@ const ImgBox = styled.div<ImgBoxProps>`
   border-radius: 1rem;
 `
 const NavigationArrow = styled.div`
-  z-index: 999;
   .swiper-button-prev,
   .swiper-button-next {
     opacity: 0.8;
+    color: #a0a0a0;
     :hover {
       opacity: 1;
-      scale: 1.2;
     }
   }
 `
 const DetailLink = styled.div`
   font-size: 1.7rem;
-  display: flex;
-  justify-content: flex-end;
-  position: absolute;
-  bottom: 0;
-  top: 85%;
-  right: 1rem;
-  margin: 1rem;
-  color: #fff;
-  background-color: rgba(0, 0, 0, 0.3);
-  border-radius: 1rem;
-  text-align: center;
+  color: #000;
+  cursor: pointer;
+  position: relative;
+  bottom: 1rem;
   &:hover {
-    background-color: rgba(0, 0, 0, 1);
+    color: #1877f2;
   }
   svg {
     margin-right: 1rem;
