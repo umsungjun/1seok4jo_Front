@@ -1,9 +1,12 @@
-import React from 'react'
+import React, {useRef} from 'react'
 import styled from 'styled-components'
-
+import {Swiper, SwiperSlide} from 'swiper/react'
+import SwiperCore, {Navigation, Pagination, Autoplay} from 'swiper'
+import 'swiper/css'
+import 'swiper/css/navigation'
+SwiperCore.use([Navigation, Pagination, Autoplay]) // *
 import {AiOutlineClose} from 'react-icons/ai'
 import {useNavigate} from 'react-router-dom'
-
 import {FaExternalLinkAlt} from 'react-icons/fa'
 
 interface SlideImgProps {
@@ -14,24 +17,40 @@ interface SlideImgProps {
 }
 
 export default function SlideImg({show, setShowHandleSlideImg, imgs, id}: SlideImgProps) {
+  const popupRef = useRef<HTMLDivElement>(null)
+  const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (popupRef.current && !popupRef.current.contains(e.target as Node)) {
+      setShowHandleSlideImg(false)
+    }
+  }
   const navigate = useNavigate()
 
+  const slide_settings = {
+    slidesPerView: 1,
+    centeredSlides: true,
+    loop: true,
+    spaceBetween: 50,
+
+    className: 'swiper-slide',
+  }
   const handleLink = (id: number) => {
     navigate(`/PostDetail/${id}`)
   }
   return (
-    <ModalBackdrop show={show}>
-      <ModalContent>
-        <ModalCloseTitleBox>
-          <CloseIcon onClick={() => setShowHandleSlideImg(false)} />
-          <ModalTitle>상세 이미지</ModalTitle>
-        </ModalCloseTitleBox>
-        {/* <Line /> */}
-        <SlideImgBox>
-          {imgs.map((url, index) => {
-            return <ImgBox key={`${index}${url}`} imgUrl={url} />
-          })}
-        </SlideImgBox>
+    <ModalBackdrop onClick={handleClickOutside}>
+      <ModalContent ref={popupRef} onClick={event => event.stopPropagation()}>
+        {/* <CloseIcon onClick={() => setShowHandleSlideImg(false)} /> */}
+        <Swiper {...slide_settings}>
+          {imgs.map((url, index) => (
+            <SwiperSlide key={`${index}${url}`}>
+              <div className='swiper-slide'>
+                <SwiperImage>
+                  <ImgBox key={`${index}${url}`} imgUrl={url} />
+                </SwiperImage>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
         <DetailLink onClick={() => handleLink(id)}>
           <FaExternalLinkAlt /> 여기 더 자세히 볼게요!
         </DetailLink>
@@ -44,14 +63,13 @@ interface ModalProps {
   show: boolean
 }
 
-const ModalBackdrop = styled.div<ModalProps>`
+const ModalBackdrop = styled.div`
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background-color: rgb(122 122 122 / 10%);
-  display: ${props => (props.show ? 'block' : 'none')};
   z-index: 999;
 `
 const ModalContent = styled.div`
@@ -60,7 +78,7 @@ const ModalContent = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #fff;
-  width: 70rem;
+  width: 60rem;
   height: 40rem;
   z-index: 1000;
   border-radius: 1rem;
@@ -70,13 +88,6 @@ const ModalContent = styled.div`
   transition: all 0.3s ease-in-out;
 `
 
-const ModalCloseTitleBox = styled.div`
-  padding: 1rem;
-`
-
-const ModalTitle = styled.h1`
-  font-size: 1.5rem;
-`
 const CloseIcon = styled(AiOutlineClose)`
   font-size: 1.5rem;
   position: absolute;
@@ -91,30 +102,16 @@ const CloseIcon = styled(AiOutlineClose)`
   }
 `
 
-const Line = styled.hr`
-  background: #f0f0f0;
-  height: 1px;
+const SwiperImage = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  border: 0px;
-  margin: 0;
-  margin-bottom: 2rem;
-`
-
-const SlideImgBox = styled.div`
-  width: 95%;
-  height: 40rem;
-  overflow: scroll;
-  overflow-y: hidden;
-  white-space: nowrap;
-  padding-bottom: 0.5rem;
-  ::-webkit-scrollbar {
-    width: 5px;
-    height: 10px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: #ccc;
-    border-radius: 5px;
+  height: 100%;
+  img {
+    width: 100%;
+    height: 41rem;
+    object-fit: cover;
   }
 `
 interface ImgBoxProps {
@@ -126,15 +123,14 @@ const ImgBox = styled.div<ImgBoxProps>`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  width: 66.5rem;
-  height: 100%;
+  width: 100%;
+  height: 80%;
   display: inline-block;
   // border: 5px solid red;
   border-radius: 1rem;
 `
 
 const DetailLink = styled.span`
-  margin: 1.5rem 0;
   font-size: 1.7rem;
   display: flex;
   align-items: center;
