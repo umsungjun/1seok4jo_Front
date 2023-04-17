@@ -29,6 +29,10 @@ export default function SlideImg({show, setShowHandleSlideImg, imgs, id}: SlideI
   const prevRef = React.useRef<HTMLDivElement>(null)
   const nextRef = React.useRef<HTMLDivElement>(null)
 
+  const handlePopup = (e: React.MouseEvent<HTMLDivElement>) => {
+    setShowHandleSlideImg(true)
+    e.stopPropagation()
+  }
   const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
     if (popupRef.current && !popupRef.current.contains(e.target as Node)) {
       setShowHandleSlideImg(false)
@@ -41,9 +45,13 @@ export default function SlideImg({show, setShowHandleSlideImg, imgs, id}: SlideI
     slidesPerView: 1,
     loop: true,
     navigation: {
-      prevEl: '.swiper-button-prev',
-      nextEl: '.swiper-button-next',
+      prevEl: prevRef.current ? prevRef.current : undefined,
+      nextEl: nextRef.current ? nextRef.current : undefined,
     },
+    // navigation: {
+    //   prevEl: '.swiper-button-prev',
+    //   nextEl: '.swiper-button-next',
+    // },
     scrollbar: {draggable: true},
     className: 'swiper-slide',
   }
@@ -51,14 +59,11 @@ export default function SlideImg({show, setShowHandleSlideImg, imgs, id}: SlideI
   const handleLink = (id: number) => {
     navigate(`/PostDetail/${id}`)
   }
+
   return (
     <ModalBackdrop show={show} onClick={handleClickOutside}>
       <ModalContent ref={popupRef} onClick={e => e.stopPropagation()}>
-        <Swiper
-          {...slide_settings}
-          scrollbar={scrollbar}
-          // navigation={{prevEl: prevRef.current, nextEl: nextRef.current}}
-        >
+        <Swiper {...slide_settings} scrollbar={scrollbar}>
           {imgs.map((url, index) => (
             <SwiperSlide key={`${index}${url}`}>
               <div className='swiper-slide'>
@@ -69,10 +74,12 @@ export default function SlideImg({show, setShowHandleSlideImg, imgs, id}: SlideI
             </SwiperSlide>
           ))}
           <div className='swiper-scrollbar'></div>
-          <NavigationArrow>
-            <div ref={prevRef} className='swiper-button-prev' />
-            <div ref={nextRef} className='swiper-button-next' />
-          </NavigationArrow>
+          {/* <NavigationArrow> */}
+          {/* <div ref={prevRef} className='swiper-button-prev' />
+            <div ref={nextRef} className='swiper-button-next' /> */}
+          {prevRef.current && <div className='swiper-button-prev' ref={prevRef} />}
+          {nextRef.current && <div className='swiper-button-next' ref={nextRef} />}
+          {/* </NavigationArrow> */}
         </Swiper>
         <DetailLink onClick={() => handleLink(id)}>
           <FaExternalLinkAlt /> 상세 페이지로 이동
@@ -96,6 +103,15 @@ const ModalBackdrop = styled.div<ModalProps>`
   z-index: 1;
   .swiper-slide {
     height: 95%;
+  }
+  .swiper-button-prev,
+  .swiper-button-next {
+    opacity: 0.8;
+    color: #a0a0a0;
+    :hover {
+      opacity: 1;
+      scale: 1.1;
+    }
   }
   .swiper-scrollbar {
     height: 0.5rem;
@@ -147,17 +163,17 @@ const ImgBox = styled.div<ImgBoxProps>`
   display: inline-block;
   border-radius: 1rem;
 `
-const NavigationArrow = styled.div`
-  .swiper-button-prev,
-  .swiper-button-next {
-    opacity: 0.8;
-    color: #a0a0a0;
-    :hover {
-      opacity: 1;
-      scale: 1.1;
-    }
-  }
-`
+// const NavigationArrow = styled.div`
+//   .swiper-button-prev,
+//   .swiper-button-next {
+//     opacity: 0.8;
+//     color: #a0a0a0;
+//     :hover {
+//       opacity: 1;
+//       scale: 1.1;
+//     }
+//   }
+// `
 const DetailLink = styled.div`
   font-size: 1.7rem;
   color: #000;
