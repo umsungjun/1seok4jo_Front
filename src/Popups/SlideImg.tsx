@@ -28,7 +28,7 @@ export default function SlideImg({show, setShowHandleSlideImg, imgs, id}: SlideI
     slidesPerView: 1,
     centeredSlides: true,
     loop: true,
-    spaceBetween: 30,
+    spaceBetween: 0,
     className: 'swiper-slide',
     navigation: true,
   }
@@ -46,17 +46,20 @@ export default function SlideImg({show, setShowHandleSlideImg, imgs, id}: SlideI
             <SwiperSlide key={`${index}${url}`}>
               <div className='swiper-slide'>
                 <SwiperImage>
-                  <ImgBox key={`${index}${url}`} imgUrl={url} />
-                  <div ref={prevRef} className='swiper-button-prev' />
-                  <div ref={nextRef} className='swiper-button-next' />
+                  <ImgBox key={`${index}${url}`} imgUrl={url}>
+                    <DetailLink onClick={() => handleLink(id)}>
+                      <FaExternalLinkAlt /> 여기 더 자세히 볼게요!
+                    </DetailLink>
+                  </ImgBox>
                 </SwiperImage>
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
-        <DetailLink onClick={() => handleLink(id)}>
-          <FaExternalLinkAlt /> 여기 더 자세히 볼게요!
-        </DetailLink>
+        <NavigationArrow>
+          <div ref={prevRef} className='swiper-button-prev' />
+          <div ref={nextRef} className='swiper-button-next' />
+        </NavigationArrow>
       </ModalContent>
     </ModalBackdrop>
   )
@@ -69,9 +72,9 @@ const ModalBackdrop = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgb(122 122 122 / 10%);
-  z-index: 999;
+  z-index: 1;
   .swiper-slide {
-    height: 95%;
+    height: 100%;
   }
 `
 const ModalContent = styled.div`
@@ -81,13 +84,15 @@ const ModalContent = styled.div`
   transform: translate(-50%, -50%);
   background-color: #fff;
   width: 60rem;
-  height: 40rem;
+  height: 37rem;
   z-index: 1000;
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   transition: all 0.3s ease-in-out;
+  // padding-bottom: 2.5rem;
+  border-radius: 1rem;
 `
 
 const SwiperImage = styled.div`
@@ -115,16 +120,32 @@ const ImgBox = styled.div<ImgBoxProps>`
   width: 100%;
   height: 100%;
   display: inline-block;
-  border-radius: 1rem 1rem 0 0;
+  border-radius: 1rem;
+`
+const NavigationArrow = styled.div`
+  .swiper-button-prev,
+  .swiper-button-next {
+    z-index: 100;
+    color: #fff;
+    opacity: 0.8;
+    :hover {
+      opacity: 1;
+      scale: 1.2;
+    }
+  }
 `
 
-const DetailLink = styled.span`
-  position: relative;
-  bottom: 4%;
-  padding-bottom: 0.5rem;
+const DetailLink = styled.div`
+  z-index: 2;
   font-size: 1.7rem;
   display: flex;
-  align-items: center;
+  justify-content: flex-end;
+  position: absolute;
+  bottom: 0;
+  top: 90%;
+  right: 0.5rem;
+  padding: 1rem;
+  color: #fff;
   &:hover {
     color: #1877f2;
   }
