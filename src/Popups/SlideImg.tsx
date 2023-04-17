@@ -134,7 +134,6 @@ const NavigationArrow = styled.div`
     }
   }
 `
-
 const DetailLink = styled.div`
   z-index: 2;
   font-size: 1.7rem;
