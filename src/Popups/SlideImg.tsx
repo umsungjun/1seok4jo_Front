@@ -17,7 +17,19 @@ interface SlideImgProps {
 }
 
 export default function SlideImg({show, setShowHandleSlideImg, imgs, id}: SlideImgProps) {
+  const [swiper, setSwiper] = useState(null)
+  const [scrollbar, setScrollbar] = useState<{
+    el: string
+    hide: boolean
+  }>({
+    el: '.swiper-scrollbar',
+    hide: false,
+  })
   const popupRef = useRef<HTMLDivElement>(null)
+  // const slideRef = useRef<Swiper>(null)
+
+  const prevRef = React.useRef<HTMLDivElement>(null)
+  const nextRef = React.useRef<HTMLDivElement>(null)
 
   const handlePopup = (e: React.MouseEvent<HTMLDivElement>) => {
     setShowHandleSlideImg(true)
@@ -32,23 +44,16 @@ export default function SlideImg({show, setShowHandleSlideImg, imgs, id}: SlideI
 
   const navigate = useNavigate()
 
-  const [scrollbar, setScrollbar] = useState<{
-    el: string
-    hide: boolean
-  }>({
-    el: '.swiper-scrollbar',
-    hide: false,
-  })
-
   const slide_settings = {
     slidesPerView: 1,
     loop: true,
-    navigation: true,
+    navigation: {
+      prevEl: '.swiper-button-prev',
+      nextEl: '.swiper-button-next',
+    },
     scrollbar: {draggable: true},
     className: 'swiper-slide',
   }
-  const prevRef = React.useRef<HTMLDivElement>(null)
-  const nextRef = React.useRef<HTMLDivElement>(null)
 
   const handleLink = (id: number) => {
     navigate(`/PostDetail/${id}`)
@@ -56,11 +61,7 @@ export default function SlideImg({show, setShowHandleSlideImg, imgs, id}: SlideI
   return (
     <ModalBackdrop show={show} onClick={handleClickOutside}>
       <ModalContent ref={popupRef} onClick={handlePopup}>
-        <Swiper
-          {...slide_settings}
-          navigation={{prevEl: prevRef.current, nextEl: nextRef.current}}
-          scrollbar={scrollbar}
-        >
+        <Swiper {...slide_settings} scrollbar={scrollbar}>
           {imgs.map((url, index) => (
             <SwiperSlide key={`${index}${url}`}>
               <div className='swiper-slide'>
@@ -71,11 +72,11 @@ export default function SlideImg({show, setShowHandleSlideImg, imgs, id}: SlideI
             </SwiperSlide>
           ))}
           <div className='swiper-scrollbar'></div>
+          <NavigationArrow>
+            <div ref={prevRef} className='swiper-button-prev' />
+            <div ref={nextRef} className='swiper-button-next' />
+          </NavigationArrow>
         </Swiper>
-        <NavigationArrow>
-          <div ref={prevRef} className='swiper-button-prev' />
-          <div ref={nextRef} className='swiper-button-next' />
-        </NavigationArrow>
         <DetailLink onClick={() => handleLink(id)}>
           <FaExternalLinkAlt /> 상세 페이지로 이동
         </DetailLink>
@@ -157,6 +158,23 @@ const NavigationArrow = styled.div`
     :hover {
       opacity: 1;
     }
+  }
+  .swiper-button-prev {
+    width: 3rem;
+    height: 3rem;
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .swiper-button-next {
+    width: 3rem;
+    height: 3rem;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
   }
 `
 const DetailLink = styled.div`

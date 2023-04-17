@@ -248,7 +248,7 @@ const ImgBox = styled.div`
   }
 `
 const MenuButton = styled(FaEdit)`
-  font-size: 2rem;
+  font-size: 1.9rem;
   right: 0.7rem;
   color: rgba(255, 255, 255, 0.95);
   // background-color: rgba(0, 0, 0, 0.25);
