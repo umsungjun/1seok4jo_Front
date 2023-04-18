@@ -1,10 +1,11 @@
-import React, {useRef} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import styled from 'styled-components'
 import {Swiper, SwiperSlide} from 'swiper/react'
-import SwiperCore, {Navigation} from 'swiper'
+import SwiperCore, {Navigation, Scrollbar} from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
-SwiperCore.use([Navigation]) // *
+import 'swiper/css/scrollbar'
+SwiperCore.use([Navigation, Scrollbar]) // *
 import {useNavigate} from 'react-router-dom'
 import {FaExternalLinkAlt} from 'react-icons/fa'
 
@@ -16,56 +17,83 @@ interface SlideImgProps {
 }
 
 export default function SlideImg({show, setShowHandleSlideImg, imgs, id}: SlideImgProps) {
+  const [scrollbar, setScrollbar] = useState<{
+    el: string
+    hide: boolean
+  }>({
+    el: '.swiper-scrollbar',
+    hide: false,
+  })
   const popupRef = useRef<HTMLDivElement>(null)
+
+  const prevRef = React.useRef<HTMLDivElement>(null)
+  const nextRef = React.useRef<HTMLDivElement>(null)
+
+  const handlePopup = (e: React.MouseEvent<HTMLDivElement>) => {
+    setShowHandleSlideImg(true)
+    e.stopPropagation()
+  }
   const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
     if (popupRef.current && !popupRef.current.contains(e.target as Node)) {
       setShowHandleSlideImg(false)
     }
   }
+
   const navigate = useNavigate()
 
   const slide_settings = {
     slidesPerView: 1,
-    centeredSlides: true,
     loop: true,
-    spaceBetween: 0,
+    navigation: {
+      prevEl: prevRef.current ? prevRef.current : undefined,
+      nextEl: nextRef.current ? nextRef.current : undefined,
+    },
+    // navigation: {
+    //   prevEl: '.swiper-button-prev',
+    //   nextEl: '.swiper-button-next',
+    // },
+    scrollbar: {draggable: true},
     className: 'swiper-slide',
-    navigation: true,
   }
-  const prevRef = React.useRef<HTMLDivElement>(null)
-  const nextRef = React.useRef<HTMLDivElement>(null)
 
   const handleLink = (id: number) => {
     navigate(`/PostDetail/${id}`)
   }
+
   return (
-    <ModalBackdrop onClick={handleClickOutside}>
-      <ModalContent ref={popupRef} onClick={event => event.stopPropagation()}>
-        <Swiper {...slide_settings} navigation={{prevEl: prevRef.current, nextEl: nextRef.current}}>
+    <ModalBackdrop show={show} onClick={handleClickOutside}>
+      <ModalContent ref={popupRef} onClick={e => e.stopPropagation()}>
+        <Swiper {...slide_settings} scrollbar={scrollbar}>
           {imgs.map((url, index) => (
             <SwiperSlide key={`${index}${url}`}>
               <div className='swiper-slide'>
                 <SwiperImage>
-                  <ImgBox key={`${index}${url}`} imgUrl={url}>
-                    <DetailLink onClick={() => handleLink(id)}>
-                      <FaExternalLinkAlt /> 여기 더 자세히 볼게요!
-                    </DetailLink>
-                  </ImgBox>
+                  <ImgBox key={`${index}${url}`} imgUrl={url} onClick={() => handleLink(id)}></ImgBox>
                 </SwiperImage>
               </div>
             </SwiperSlide>
           ))}
+          <div className='swiper-scrollbar'></div>
+          {/* <NavigationArrow> */}
+          {/* <div ref={prevRef} className='swiper-button-prev' />
+            <div ref={nextRef} className='swiper-button-next' /> */}
+          {prevRef.current && <div className='swiper-button-prev' ref={prevRef} />}
+          {nextRef.current && <div className='swiper-button-next' ref={nextRef} />}
+          {/* </NavigationArrow> */}
         </Swiper>
-        <NavigationArrow>
-          <div ref={prevRef} className='swiper-button-prev' />
-          <div ref={nextRef} className='swiper-button-next' />
-        </NavigationArrow>
+        <DetailLink onClick={() => handleLink(id)}>
+          <FaExternalLinkAlt /> 상세 페이지로 이동
+        </DetailLink>
       </ModalContent>
     </ModalBackdrop>
   )
 }
 
-const ModalBackdrop = styled.div`
+interface ModalProps {
+  show: boolean
+}
+
+const ModalBackdrop = styled.div<ModalProps>`
   position: fixed;
   top: 0;
   left: 0;
@@ -74,7 +102,23 @@ const ModalBackdrop = styled.div`
   background-color: rgb(122 122 122 / 10%);
   z-index: 1;
   .swiper-slide {
-    height: 100%;
+    height: 95%;
+  }
+  .swiper-button-prev,
+  .swiper-button-next {
+    opacity: 0.8;
+    color: #a0a0a0;
+    :hover {
+      opacity: 1;
+      scale: 1.1;
+    }
+  }
+  .swiper-scrollbar {
+    height: 0.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 0.5rem;
+    position: relative;
+    bottom: 8%;
   }
 `
 const ModalContent = styled.div`
@@ -84,14 +128,12 @@ const ModalContent = styled.div`
   transform: translate(-50%, -50%);
   background-color: #fff;
   width: 60rem;
-  height: 37rem;
-  z-index: 1000;
+  height: 36rem;
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   transition: all 0.3s ease-in-out;
-  // padding-bottom: 2.5rem;
   border-radius: 1rem;
 `
 
@@ -105,7 +147,6 @@ const SwiperImage = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 1rem;
   }
 `
 interface ImgBoxProps {
@@ -122,29 +163,23 @@ const ImgBox = styled.div<ImgBoxProps>`
   display: inline-block;
   border-radius: 1rem;
 `
-const NavigationArrow = styled.div`
-  .swiper-button-prev,
-  .swiper-button-next {
-    z-index: 100;
-    color: #fff;
-    opacity: 0.8;
-    :hover {
-      opacity: 1;
-      scale: 1.2;
-    }
-  }
-`
+// const NavigationArrow = styled.div`
+//   .swiper-button-prev,
+//   .swiper-button-next {
+//     opacity: 0.8;
+//     color: #a0a0a0;
+//     :hover {
+//       opacity: 1;
+//       scale: 1.1;
+//     }
+//   }
+// `
 const DetailLink = styled.div`
-  z-index: 2;
   font-size: 1.7rem;
-  display: flex;
-  justify-content: flex-end;
-  position: absolute;
-  bottom: 0;
-  top: 90%;
-  right: 0.5rem;
-  padding: 1rem;
-  color: #fff;
+  color: #000;
+  cursor: pointer;
+  position: relative;
+  bottom: 1rem;
   &:hover {
     color: #1877f2;
   }
