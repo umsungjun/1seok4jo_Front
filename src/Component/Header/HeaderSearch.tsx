@@ -2,12 +2,16 @@ import React, {useState} from 'react'
 import styled, {keyframes} from 'styled-components'
 
 import {GoSearch} from 'react-icons/go'
+import {useNavigate} from 'react-router-dom'
 
 const searchCondition = ['제목', '내용', '해시태그']
 
 export default function HeaderSearchBox() {
+  const navigate = useNavigate()
+
   const [searchSelect, setSearchSelect] = useState('제목')
   const [selectUl, setSelectUl] = useState(false)
+  const [searchText, setSearchText] = useState('')
 
   const handleSearchSelect = () => {
     setSelectUl(true)
@@ -16,6 +20,22 @@ export default function HeaderSearchBox() {
   const handleSearchValue = (e: React.MouseEvent<HTMLLIElement>) => {
     setSelectUl(false)
     setSearchSelect(e.currentTarget.innerText)
+  }
+
+  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value)
+  }
+
+  const handleSearchEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (searchText.length < 1) return
+    if (e.key === 'Enter') {
+      navigate(`/SearchDetail/${searchSelect}/${searchText}`)
+    }
+  }
+
+  const handleSearchClick = () => {
+    if (searchText.length < 1) return
+    navigate(`/SearchDetail/${searchSelect}/${searchText}`)
   }
 
   return (
@@ -35,8 +55,8 @@ export default function HeaderSearchBox() {
         </SearchUl>
       )}
       <Bar />
-      <Search />
-      <SearchButton>
+      <Search onChange={e => handleSearchInput(e)} onKeyDown={e => handleSearchEnter(e)} />
+      <SearchButton onClick={handleSearchClick}>
         <GoSearch />
       </SearchButton>
     </SearchBox>

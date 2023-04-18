@@ -6,6 +6,7 @@ import MyPage from './Pages/MyPage'
 import MessagePage from './Pages/MessagePage'
 import ProfileEditPage from './Pages/ProfileEditPage'
 import PostEditPage from './Pages/PostEditPage'
+import SearchDetailPage from './Pages/SearchDetailPage'
 
 export default function PageNavigator() {
   return (
@@ -17,6 +18,7 @@ export default function PageNavigator() {
       <Route path='/MyPage' element={<MyPage />} />
       <Route path='/Message' element={<MessagePage />} />
       <Route path='/ProfileEdit' element={<ProfileEditPage />} />
+      <Route path='/SearchDetail/:category/:searchText' element={<SearchDetailPage />} />
     </Routes>
   )
 }
