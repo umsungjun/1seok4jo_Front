@@ -249,6 +249,9 @@ const Bottom = styled.section`
   height: auto;
   padding-bottom: 8rem;
   border-bottom: 1px solid #c0c0c0;
+  @media (max-width: 960px) {
+    display: block;
+  }
 `
 const CommentBox = styled.section`
   width: 50rem;

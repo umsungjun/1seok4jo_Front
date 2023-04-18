@@ -5,10 +5,7 @@ import {BsFillSuitHeartFill, BsSuitHeart} from 'react-icons/bs'
 import {PostFeed} from '../Mock/postFeed'
 import {users} from '../Mock/users'
 import SlideImg from '../Popups/SlideImg'
-import {FaEdit} from 'react-icons/fa'
 import {IoLocationSharp} from 'react-icons/io5'
-import {MdEditSquare} from 'react-icons/md'
-import {CiMenuKebab} from 'react-icons/ci'
 
 const PostList = () => {
   const [isLiked, setIsLiked] = useState(false)
@@ -219,11 +216,11 @@ export default PostList
 const PostListStyled = styled.ul`
   margin-top: 3rem;
   display: flex;
+  justify-content: left;
   flex-wrap: wrap;
-  width: 89%;
-  justify-content: space-around;
+  width: 90%;
+  gap: 1.5rem;
 `
-
 const FeedStyled = styled.li`
   list-style: none;
   cursor: pointer;
@@ -238,7 +235,6 @@ const FeedStyled = styled.li`
     margin: 0.625rem 0 1.25rem 0;
   }
 `
-
 const ImgBox = styled.div`
   position: relative;
   height: 19rem;
