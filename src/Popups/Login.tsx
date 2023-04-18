@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useRef, useState} from 'react'
 import styled from 'styled-components'
 
 import {AiOutlineClose} from 'react-icons/ai'
@@ -12,12 +12,47 @@ interface PaymentModalProps {
 
 export default function Login({show, setShowLoginModal}: PaymentModalProps) {
   const [joinForm, setJoinForm] = useState(false)
+  const [joinWelcomeText, setJoinWelcomeText] = useState('Compass에 오신 것을 환영합니다.')
+
+  const loginEmailRef = useRef<HTMLInputElement>(null)
+  const loginPasswordRef = useRef<HTMLInputElement>(null)
+
+  const joinWelcomeTextRef = useRef<HTMLDivElement>(null)
+  const joinEmailRef = useRef<HTMLInputElement>(null)
+  const joinPasswordRef = useRef<HTMLInputElement>(null)
+  const joinPassword2Ref = useRef<HTMLInputElement>(null)
+  const joinNickNameRef = useRef<HTMLInputElement>(null)
+
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    console.log('이메일 : ', loginEmailRef.current?.value)
+    console.log('비밀번호 : ', loginPasswordRef.current?.value)
+    setShowLoginModal(false)
+  }
+
+  const handleJoin = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (joinPasswordRef.current?.value !== joinPassword2Ref.current?.value) {
+      if (joinWelcomeTextRef.current) {
+        joinWelcomeTextRef.current.style.color = 'red'
+      }
+
+      setJoinWelcomeText('비밀번호가 일치하지 않습니다.')
+      return
+    }
+
+    console.log('이메일 : ', joinEmailRef.current?.value)
+    console.log('비밀번호 : ', joinPasswordRef.current?.value)
+    console.log('닉네임 : ', joinNickNameRef.current?.value)
+    setJoinForm(false)
+    setShowLoginModal(false)
+  }
 
   return (
     <ModalBackdrop show={show}>
       <ModalContent>
         {joinForm ? (
-          <>
+          <JoinForm onSubmit={e => handleJoin(e)}>
             <ModalCloseTitleBox>
               <CloseIcon
                 onClick={() => {
@@ -27,17 +62,23 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
               <ModalTitle>회원가입</ModalTitle>
             </ModalCloseTitleBox>
             <Line />
-            <WelcomeText>Compass에 오신 것을 환영합니다.</WelcomeText>
+            <WelcomeText ref={joinWelcomeTextRef}>{joinWelcomeText}</WelcomeText>
             <InputGroupJoin>
-              <Input type='email' pattern='.+@gmail\.com' placeholder='이메일' required />
-              <Input type='password' placeholder='비밀 번호' required />
-              <Input type='password2' placeholder='비밀 번호 확인' required />
-              <Input type='text' placeholder='닉네임' required />
+              <Input
+                type='email'
+                pattern='[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.]+[a-zA-Z]+[.]*[a-zA-Z]*'
+                placeholder='이메일'
+                required
+                ref={joinEmailRef}
+              />
+              <Input type='password' placeholder='비밀 번호' required ref={joinPasswordRef} />
+              <Input type='password' placeholder='비밀 번호 확인' required ref={joinPassword2Ref} />
+              <Input type='text' placeholder='닉네임' required ref={joinNickNameRef} />
             </InputGroupJoin>
-            <LoginButton>회원가입</LoginButton>
-          </>
+            <LoginButton type='submit'>회원가입</LoginButton>
+          </JoinForm>
         ) : (
-          <>
+          <LoginForm onSubmit={e => handleLogin(e)}>
             <ModalCloseTitleBox>
               <CloseIcon
                 onClick={() => {
@@ -49,21 +90,27 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
             <Line />
             <WelcomeText>Compass에 오신 것을 환영합니다.</WelcomeText>
             <InputGroup>
-              <Input type='email' pattern='.+@gmail\.com' placeholder='이메일' required />
-              <Input type='password' placeholder='비밀 번호' required />
+              <Input
+                type='email'
+                pattern='[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.]+[a-zA-Z]+[.]*[a-zA-Z]*'
+                placeholder='이메일'
+                required
+                ref={loginEmailRef}
+              />
+              <Input type='password' placeholder='비밀 번호' required ref={loginPasswordRef} />
             </InputGroup>
             <JoinFindPassBox>
               <button onClick={() => setJoinForm(true)}>회원가입</button>
               <TbSlash />
               <button>비밀번호 찾기</button>
             </JoinFindPassBox>
-            <LoginButton>로그인</LoginButton>
+            <LoginButton type='submit'>로그인</LoginButton>
             <Hrspan>또는</Hrspan>
             <KaKaoLoginButton>
               <ImBubble />
               카카오 로그인
             </KaKaoLoginButton>
-          </>
+          </LoginForm>
         )}
       </ModalContent>
     </ModalBackdrop>
@@ -73,6 +120,20 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
 interface ModalProps {
   show: boolean
 }
+
+const JoinForm = styled.form`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+const LoginForm = styled.form`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
 
 const ModalBackdrop = styled.div<ModalProps>`
   position: fixed;
