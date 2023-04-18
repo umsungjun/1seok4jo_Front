@@ -41,4 +41,10 @@ const MapSection = styled.div`
   height: 50rem;
   border-radius: 3rem;
   margin-left: 2rem;
+  @media (max-width: 960px) {
+    width: 50rem;
+    height: 60rem;
+    margin-top: 3.5rem;
+    margin: 3.5rem 0 0 0;
+  }
 `

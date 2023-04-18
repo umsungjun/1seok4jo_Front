@@ -5,7 +5,6 @@ import {BsFillSuitHeartFill, BsSuitHeart} from 'react-icons/bs'
 import {PostFeed} from '../Mock/postFeed'
 import {users} from '../Mock/users'
 import SlideImg from '../Popups/SlideImg'
-import {FaEdit} from 'react-icons/fa'
 import {IoLocationSharp} from 'react-icons/io5'
 
 const PostList = () => {
@@ -38,7 +37,7 @@ const PostList = () => {
     setIsLiked(!isLiked)
   }
 
-  const handleOptionClick = (e: React.MouseEvent<SVGElement>) => {
+  const handleOptionClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation()
     console.log('옵션 클릭')
     setIsMenuOpen(!isMenuOpen)
@@ -118,7 +117,11 @@ const PostList = () => {
               }
             >
               <img src={images[0].url} alt={name} />
-              <MenuButton onClick={handleOptionClick} />
+              <MenuButton className='circle-button' onClick={handleOptionClick}>
+                <div className='circle'></div>
+                <div className='circle'></div>
+                <div className='circle'></div>
+              </MenuButton>
               {isMenuOpen && (
                 <OptionList>
                   {menuOptions.map(option => (
@@ -213,11 +216,11 @@ export default PostList
 const PostListStyled = styled.ul`
   margin-top: 3rem;
   display: flex;
+  justify-content: left;
   flex-wrap: wrap;
-  width: 89%;
-  justify-content: space-around;
+  width: 90%;
+  gap: 1.5rem;
 `
-
 const FeedStyled = styled.li`
   list-style: none;
   cursor: pointer;
@@ -232,7 +235,6 @@ const FeedStyled = styled.li`
     margin: 0.625rem 0 1.25rem 0;
   }
 `
-
 const ImgBox = styled.div`
   position: relative;
   height: 19rem;
@@ -247,35 +249,51 @@ const ImgBox = styled.div`
     top: 0.5rem;
   }
 `
-const MenuButton = styled(FaEdit)`
-  font-size: 1.9rem;
-  right: 0.7rem;
-  color: rgba(255, 255, 255, 0.95);
-  // background-color: rgba(0, 0, 0, 0.25);
+const MenuButton = styled.div`
+  position: relative;
+  bottom: 95%;
+  left: 91%;
+  border: none;
+  cursor: pointer;
+  width: 1rem;
+  .circle-button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+  }
+  .circle {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: #fff;
+    margin-bottom: 5px;
+    display: block;
+  }
 `
 const OptionList = styled.div`
   position: relative;
-  top: -86%;
-  left: 78%;
+  bottom: 109%;
+  left: 75%;
   font-weight: bold;
 `
 const OptionsButton = styled.button`
   display: block;
   position: relative;
   right: 2%;
-  width: 4rem;
+  width: 3rem;
   padding: 0.3rem;
-  background: rgba(255, 255, 255, 0.8);
-  border: 3px solid #c0c0c0;
-  font-size: 1.2rem;
+  background: #fff;
+  border: 1px solid #c0c0c0;
+  font-size: 1rem;
   color: #000;
   cursor: pointer;
   :first-child {
+    border-radius: 0.5rem 0.5rem 0 0;
     border-bottom: none;
-    border-radius: 1rem;
   }
   :last-child {
-    border-radius: 1rem;
+    margin-bottom: 0.2rem;
+    border-radius: 0 0 0.5rem 0.5rem;
   }
 `
 const LikeButton = styled(BsSuitHeart)`

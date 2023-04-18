@@ -106,19 +106,21 @@ const ModalBackdrop = styled.div<ModalProps>`
   }
   .swiper-button-prev,
   .swiper-button-next {
-    opacity: 0.8;
-    color: #a0a0a0;
+    color: #000;
     :hover {
-      opacity: 1;
+      color: #c0c0c0;
       scale: 1.1;
+      transition: all 0.3s ease-in-out;
     }
   }
   .swiper-scrollbar {
     height: 0.5rem;
     background: rgba(0, 0, 0, 0.2);
     border-radius: 0.5rem;
+    margin: 0 2.3rem;
+    width: 90%;
     position: relative;
-    bottom: 8%;
+    bottom: 5%;
   }
 `
 const ModalContent = styled.div`
@@ -127,21 +129,20 @@ const ModalContent = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #fff;
-  width: 60rem;
-  height: 36rem;
+  width: 55rem;
+  height: 33rem;
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   transition: all 0.3s ease-in-out;
   border-radius: 1rem;
+  padding: 2rem 0 1.5rem 0;
 `
 
 const SwiperImage = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+  margin: 0 5%;
+  width: 90%;
   height: 100%;
   img {
     width: 100%;
@@ -163,23 +164,10 @@ const ImgBox = styled.div<ImgBoxProps>`
   display: inline-block;
   border-radius: 1rem;
 `
-// const NavigationArrow = styled.div`
-//   .swiper-button-prev,
-//   .swiper-button-next {
-//     opacity: 0.8;
-//     color: #a0a0a0;
-//     :hover {
-//       opacity: 1;
-//       scale: 1.1;
-//     }
-//   }
-// `
 const DetailLink = styled.div`
   font-size: 1.7rem;
   color: #000;
   cursor: pointer;
-  position: relative;
-  bottom: 1rem;
   &:hover {
     color: #1877f2;
   }
