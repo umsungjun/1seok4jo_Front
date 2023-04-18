@@ -23,14 +23,14 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
   const joinPassword2Ref = useRef<HTMLInputElement>(null)
   const joinNickNameRef = useRef<HTMLInputElement>(null)
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     console.log('이메일 : ', loginEmailRef.current?.value)
     console.log('비밀번호 : ', loginPasswordRef.current?.value)
     setShowLoginModal(false)
   }
 
-  const handleJoin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleJoin = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     if (joinPasswordRef.current?.value !== joinPassword2Ref.current?.value) {
       if (joinWelcomeTextRef.current) {
@@ -52,7 +52,7 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
     <ModalBackdrop show={show}>
       <ModalContent>
         {joinForm ? (
-          <JoinForm onSubmit={e => handleJoin(e)}>
+          <>
             <ModalCloseTitleBox>
               <CloseIcon
                 onClick={() => {
@@ -75,10 +75,10 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
               <Input type='password' placeholder='비밀 번호 확인' required ref={joinPassword2Ref} />
               <Input type='text' placeholder='닉네임' required ref={joinNickNameRef} />
             </InputGroupJoin>
-            <LoginButton type='submit'>회원가입</LoginButton>
-          </JoinForm>
+            <LoginButton onClick={e => handleJoin(e)}>회원가입</LoginButton>
+          </>
         ) : (
-          <LoginForm onSubmit={e => handleLogin(e)}>
+          <>
             <ModalCloseTitleBox>
               <CloseIcon
                 onClick={() => {
@@ -104,13 +104,13 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
               <TbSlash />
               <button>비밀번호 찾기</button>
             </JoinFindPassBox>
-            <LoginButton type='submit'>로그인</LoginButton>
+            <LoginButton onClick={e => handleLogin(e)}>로그인</LoginButton>
             <Hrspan>또는</Hrspan>
             <KaKaoLoginButton>
               <ImBubble />
               카카오 로그인
             </KaKaoLoginButton>
-          </LoginForm>
+          </>
         )}
       </ModalContent>
     </ModalBackdrop>
