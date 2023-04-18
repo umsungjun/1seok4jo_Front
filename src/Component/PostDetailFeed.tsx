@@ -25,13 +25,6 @@ const PostDetailFeed = () => {
     setSlideId(id)
   }
 
-  // const handleSlideImg = (images: {url: string; name: string}[]) => {
-  //   const urls = images.map(image => image.url)
-  //   setSlideImgs(urls)
-  //   setShowHandleSlideImg(true)
-  //   console.log(urls)
-  // }
-
   const handleLikeClick = (e: React.MouseEvent<SVGAElement>) => {
     e.stopPropagation()
     console.log('좋아요 클릭')
