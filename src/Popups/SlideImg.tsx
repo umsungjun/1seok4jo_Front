@@ -106,9 +106,9 @@ const ModalBackdrop = styled.div<ModalProps>`
   }
   .swiper-button-prev,
   .swiper-button-next {
-    color: #c0c0c0;
+    color: #000;
     :hover {
-      color: #000;
+      color: #c0c0c0;
       scale: 1.1;
       transition: all 0.3s ease-in-out;
     }

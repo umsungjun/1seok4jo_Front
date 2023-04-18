@@ -7,6 +7,8 @@ import {users} from '../Mock/users'
 import SlideImg from '../Popups/SlideImg'
 import {FaEdit} from 'react-icons/fa'
 import {IoLocationSharp} from 'react-icons/io5'
+import {MdEditSquare} from 'react-icons/md'
+import {CiMenuKebab} from 'react-icons/ci'
 
 const PostList = () => {
   const [isLiked, setIsLiked] = useState(false)
@@ -38,7 +40,7 @@ const PostList = () => {
     setIsLiked(!isLiked)
   }
 
-  const handleOptionClick = (e: React.MouseEvent<SVGElement>) => {
+  const handleOptionClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation()
     console.log('옵션 클릭')
     setIsMenuOpen(!isMenuOpen)
@@ -118,7 +120,11 @@ const PostList = () => {
               }
             >
               <img src={images[0].url} alt={name} />
-              <MenuButton onClick={handleOptionClick} />
+              <MenuButton className='circle-button' onClick={handleOptionClick}>
+                <div className='circle'></div>
+                <div className='circle'></div>
+                <div className='circle'></div>
+              </MenuButton>
               {isMenuOpen && (
                 <OptionList>
                   {menuOptions.map(option => (
@@ -247,35 +253,48 @@ const ImgBox = styled.div`
     top: 0.5rem;
   }
 `
-const MenuButton = styled(FaEdit)`
-  font-size: 1.9rem;
-  right: 0.7rem;
-  color: rgba(255, 255, 255, 0.95);
-  // background-color: rgba(0, 0, 0, 0.25);
+const MenuButton = styled.div`
+  position: relative;
+  bottom: 97%;
+  left: 83%;
+  border: none;
+  cursor: pointer;
+  .circle-button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    display: inline-block;
+  }
+  .circle {
+    // border: 1px solid red;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: #fff;
+    margin-right: 5px;
+    display: inline-block;
+  }
 `
 const OptionList = styled.div`
   position: relative;
-  top: -86%;
-  left: 78%;
+  bottom: 95%;
+  left: 82%;
   font-weight: bold;
 `
 const OptionsButton = styled.button`
   display: block;
   position: relative;
   right: 2%;
-  width: 4rem;
+  width: 3rem;
   padding: 0.3rem;
-  background: rgba(255, 255, 255, 0.8);
-  border: 3px solid #c0c0c0;
-  font-size: 1.2rem;
+  background: rgba(255, 255, 255, 0.5);
+  border: 3px solid #a0a0a0;
+  font-size: 1rem;
   color: #000;
   cursor: pointer;
+  border-radius: 0.75rem;
   :first-child {
-    border-bottom: none;
-    border-radius: 1rem;
-  }
-  :last-child {
-    border-radius: 1rem;
+    margin-bottom: 0.2rem;
   }
 `
 const LikeButton = styled(BsSuitHeart)`
