@@ -251,30 +251,29 @@ const ImgBox = styled.div`
 `
 const MenuButton = styled.div`
   position: relative;
-  bottom: 97%;
-  left: 83%;
+  bottom: 95%;
+  left: 91%;
   border: none;
   cursor: pointer;
+  width: 1rem;
   .circle-button {
     border: none;
     background-color: transparent;
     cursor: pointer;
-    display: inline-block;
   }
   .circle {
-    // border: 1px solid red;
     width: 0.5rem;
     height: 0.5rem;
     border-radius: 50%;
     background-color: #fff;
-    margin-right: 5px;
-    display: inline-block;
+    margin-bottom: 5px;
+    display: block;
   }
 `
 const OptionList = styled.div`
   position: relative;
-  bottom: 95%;
-  left: 82%;
+  bottom: 109%;
+  left: 75%;
   font-weight: bold;
 `
 const OptionsButton = styled.button`
@@ -283,14 +282,18 @@ const OptionsButton = styled.button`
   right: 2%;
   width: 3rem;
   padding: 0.3rem;
-  background: rgba(255, 255, 255, 0.5);
-  border: 3px solid #a0a0a0;
+  background: #fff;
+  border: 1px solid #c0c0c0;
   font-size: 1rem;
   color: #000;
   cursor: pointer;
-  border-radius: 0.75rem;
   :first-child {
+    border-radius: 0.5rem 0.5rem 0 0;
+    border-bottom: none;
+  }
+  :last-child {
     margin-bottom: 0.2rem;
+    border-radius: 0 0 0.5rem 0.5rem;
   }
 `
 const LikeButton = styled(BsSuitHeart)`
