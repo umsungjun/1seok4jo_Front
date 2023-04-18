@@ -130,6 +130,10 @@ const Detail = styled.section`
   h4 {
     font-size: 2rem;
     padding-top: 5rem;
+    @media (max-width: 960px) {
+      display: flex;
+      justify-content: center;
+    }
   }
 `
 const Header = styled.section`
@@ -193,9 +197,15 @@ const Info = styled.div`
 `
 const Text = styled.h2`
   font-size: 1.5rem;
+  @media (max-width: 960px) {
+    font-size: 1.75rem;
+  }
 `
 const Status = styled.h2`
   font-size: 1rem;
+  @media (max-width: 960px) {
+    font-size: 1.3rem;
+  }
 `
 const ContentBox = styled.section`
   max-height: 50rem;
