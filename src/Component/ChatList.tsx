@@ -11,7 +11,7 @@ type ChatListProps = {
 const ChatList: React.FC<ChatListProps> = ({chats}) => {
   return (
     <InboxUl>
-      {chats.map(chat => (
+      {chatList.map(chat => (
         <InboxLi key={chat.id}>
           <InboxLiImg src={chat.profile} />
           <InboxLiUser>
