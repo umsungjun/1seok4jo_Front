@@ -59,6 +59,14 @@ const SwiperImage = styled.div`
     height: 41rem;
     object-fit: cover;
   }
+
+  @media (max-width: 576px) {
+    img {
+      width: 100%;
+      height: 35rem;
+      object-fit: cover;
+    }
+  }
 `
 
 const TextContentStyled = styled.section`
@@ -87,5 +95,15 @@ const TextContentStyled = styled.section`
     font-size: 1.5rem;
     display: flex;
     align-items: center;
+  }
+
+  @media (max-width: 576px) {
+    p {
+      font-size: 2.2rem;
+      font-weight: bold;
+      font-align: left;
+      z-index: 1;
+      margin-bottom: 1rem;
+    }
   }
 `
