@@ -215,11 +215,22 @@ export default PostList
 
 const PostListStyled = styled.ul`
   margin-top: 3rem;
-  display: flex;
-  justify-content: left;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 1.5rem;
   width: 90%;
-  gap: 1.5rem;
+
+  @media (max-width: 1440px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (max-width: 960px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 576px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `
 const FeedStyled = styled.li`
   list-style: none;
@@ -233,6 +244,23 @@ const FeedStyled = styled.li`
     display: flex;
     justify-content: space-between;
     margin: 0.625rem 0 1.25rem 0;
+  }
+
+  @media (max-width: 960px) {
+    .text {
+      width: 75%;
+      display: flex;
+      justify-content: space-between;
+      margin: 0.625rem 0 1.25rem 0;
+    }
+  }
+  @media (max-width: 576px) {
+    .text {
+      width: 60%;
+      display: flex;
+      justify-content: space-between;
+      margin: 0.625rem 0 1.25rem 0;
+    }
   }
 `
 const ImgBox = styled.div`
