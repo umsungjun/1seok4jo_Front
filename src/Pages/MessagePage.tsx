@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import Chat from '../Component/Chat'
-import {inboxList} from '../Mock/inboxList'
+import ChatList from '../Component/ChatList'
 import {scrollToTop} from '../util/scrollToTop'
 
 const MessagePage = () => {
@@ -8,19 +8,14 @@ const MessagePage = () => {
   const handleSubmit = (input: string) => {
     console.log(`test: ${input}`)
   }
+
+  const handleInbox = (e: React.MouseEvent<HTMLLIElement>) => {
+    console.log(e.currentTarget)
+  }
   return (
     <Message>
-      <Inbox>
-        <InboxUl>
-          {inboxList.map(inbox => (
-            <InboxLi key={inbox.user}>
-              <InboxLiImg src={inbox.profile} />
-              <InboxLiUser>{inbox.user}</InboxLiUser>
-            </InboxLi>
-          ))}
-        </InboxUl>
-      </Inbox>
-      <Chat />
+      <Inbox>{/* <ChatList /> */}</Inbox>
+      {/* <Chat /> */}
     </Message>
   )
 }
@@ -48,6 +43,10 @@ const Inbox = styled.section`
     border-radius: 5px;
     transition: width 0.2s ease-in-out;
   }
+
+  @media (max-width: 576px) {
+    width: 100%;
+  }
 `
 
 const InboxUl = styled.ul``
@@ -59,9 +58,16 @@ const InboxLi = styled.li`
   display: flex;
   align-items: center;
   padding-left: 3rem;
+  cursor: pointer;
 
   &:last-child {
     border: none;
+  }
+
+  @media (max-width: 576px) {
+    padding-left: 5rem;
+    border-bottom: 2px solid #c0c0c0;
+    height: 7.5rem;
   }
 `
 const InboxLiImg = styled.img`
@@ -69,7 +75,16 @@ const InboxLiImg = styled.img`
   height: 3.5rem;
   margin-right: 2rem;
   border-radius: 5rem;
+  @media (max-width: 576px) {
+    margin-right: 3.5rem;
+    width: 4.5rem;
+    height: 4.5rem;
+  }
 `
 const InboxLiUser = styled.div`
   font-size: 1.5rem;
+  width: 80%;
+  @media (max-width: 576px) {
+    font-size: 1.8rem;
+  }
 `

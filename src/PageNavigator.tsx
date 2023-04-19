@@ -16,7 +16,7 @@ export default function PageNavigator() {
       <Route path='/PostDetail/:id' element={<PostDetailPage />} />
       <Route path='/PostEdit' element={<PostEditPage />} />
       <Route path='/MyPage' element={<MyPage />} />
-      <Route path='/Message' element={<MessagePage />} />
+      {/* <Route path='/Message' element={<MessagePage />} /> */}
       <Route path='/ProfileEdit' element={<ProfileEditPage />} />
       <Route path='/SearchDetail/:category/:searchText' element={<SearchDetailPage />} />
     </Routes>

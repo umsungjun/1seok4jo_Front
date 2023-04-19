@@ -3,10 +3,10 @@ import styled from 'styled-components'
 import sangchu from '../Assets/sangchu.png'
 import {ImAttachment} from 'react-icons/im'
 import type {ChatBubbleProps} from '../Interface/interface'
-import type {Props} from '../Interface/interface'
+import type {ChatProps} from '../Interface/interface'
 import SpeechBubble from './SpeechBubble'
 
-const Chat: React.FC<Props> = () => {
+const Chat: React.FC<ChatProps> = ({id, user}) => {
   const [newMessageText, setNewMessageText] = useState<string>('')
   const [messages, setMessages] = useState<ChatBubbleProps[]>([])
   const [file, setFile] = useState<File | null>(null)
@@ -65,8 +65,10 @@ const Chat: React.FC<Props> = () => {
                 minute: 'numeric',
               })}
             </div>
+            <h1>{user}</h1>
             <div className='new-text'>{chat.text}</div>
             <img src={sangchu} alt='유저프로필' />
+            <p>Chat room id: {id}</p>
           </NewChat>
         ))}
       </ChatBox>
@@ -90,6 +92,9 @@ export default Chat
 const ChatContainer = styled.section`
   width: 80%;
   height: 100%;
+  @media (max-width: 576px) {
+    display: none;
+  }
 `
 const ChatBox = styled.div`
   height: 90%;
