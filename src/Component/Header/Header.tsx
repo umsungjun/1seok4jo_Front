@@ -14,11 +14,19 @@ export default function Header() {
           Compass
         </Logo>
       </LogoBox>
-      <HeaderSearchBox />
+      <HeaderSearchWarper>
+        <HeaderSearchBox />
+      </HeaderSearchWarper>
       <HeaderProfile />
     </HeaderSection>
   )
 }
+
+const HeaderSearchWarper = styled.div`
+  @media (max-width: 576px) {
+    display: none;
+  }
+`
 
 const HeaderSection = styled.section`
   display: flex;
@@ -31,6 +39,10 @@ const HeaderSection = styled.section`
   box-sizing: border-box;
   z-index: 10;
   background: #fff;
+
+  @media (max-width: 576px) {
+    padding: 1rem 1rem;
+  }
 `
 
 const LogoBox = styled.div`
