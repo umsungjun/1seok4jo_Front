@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import MapContainer from '../Component/MapContainer'
 import {PostListStyled} from '../Component/PostDetailFeed'
@@ -12,6 +12,12 @@ import {PostDetailInfo} from '../Mock/postDetail'
 import type {PostDetailInfoInterface} from '../Interface/interface'
 import {scrollToTop} from '../util/scrollToTop'
 import {useParams} from 'react-router-dom'
+import {Swiper, SwiperSlide} from 'swiper/react'
+import SwiperCore, {Navigation, Scrollbar} from 'swiper'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/scrollbar'
+SwiperCore.use([Navigation, Scrollbar]) // *
 
 const PostDetailPage = () => {
   //페이지 로딩시 상단부터 노출되도록
@@ -19,6 +25,28 @@ const PostDetailPage = () => {
   const {id} = useParams()
   const [post, setPost] = useState<PostDetailInfoInterface>()
   const [isLiked, setIsLiked] = useState(false)
+  const [scrollbar, setScrollbar] = useState<{
+    el: string
+    hide: boolean
+  }>({
+    el: '.swiper-scrollbar',
+    hide: false,
+  })
+
+  const prevRef = React.useRef<HTMLDivElement>(null)
+  const nextRef = React.useRef<HTMLDivElement>(null)
+
+  const slide_settings = {
+    slidesPerView: 1,
+    loop: true,
+    navigation: {
+      prevEl: prevRef.current ? prevRef.current : undefined,
+      nextEl: nextRef.current ? nextRef.current : undefined,
+    },
+    scrollbar: {draggable: true},
+    className: 'swiper-slide',
+  }
+
   const handleClick = () => {
     setIsLiked(!isLiked)
   }
@@ -66,6 +94,22 @@ const PostDetailPage = () => {
           </Image>
         ))}
       </ImageArea>
+      <SwiperArea>
+        <Swiper {...slide_settings} scrollbar={scrollbar}>
+          {post?.images?.map(data => (
+            <SwiperSlide key={data.name}>
+              <div className='swiper-slide'>
+                <Image>
+                  <img src={data.url} alt={data.name}></img>
+                </Image>
+              </div>
+            </SwiperSlide>
+          ))}
+          <div className='swiper-scrollbar'></div>
+          {prevRef.current && <div className='swiper-button-prev' ref={prevRef} />}
+          {nextRef.current && <div className='swiper-button-next' ref={nextRef} />}
+        </Swiper>
+      </SwiperArea>
       <Body>
         <Info>
           <Text>
@@ -101,7 +145,7 @@ const PostDetailPage = () => {
             {post?.comments?.map(data => {
               const {nickName, date, comment} = data
               return (
-                <Comment key={nickName}>
+                <CommentList key={nickName}>
                   <UserProfile>
                     <img src={sangchu} alt='하상츄' />
                     <UserInfo>
@@ -109,8 +153,8 @@ const PostDetailPage = () => {
                       <div>{date}</div>
                     </UserInfo>
                   </UserProfile>
-                  <div>{comment}</div>
-                </Comment>
+                  <Comment>{comment}</Comment>
+                </CommentList>
               )
             })}
           </div>
@@ -127,6 +171,18 @@ export default PostDetailPage
 
 const Detail = styled.section`
   padding: 10rem 5rem 0 5rem;
+  @media (max-width: 576px) {
+    padding: 10rem 2rem 0 2rem;
+    .swiper-button-prev,
+    .swiper-button-next {
+      color: #000;
+      :hover {
+        color: #c0c0c0;
+        scale: 1.1;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+  }
   h4 {
     font-size: 2rem;
     padding-top: 5rem;
@@ -140,12 +196,22 @@ const Header = styled.section`
   display: flex;
   justify-content: space-between;
   margin-bottom: 3rem;
+  @media (max-width: 576px) {
+    display: block;
+    margin-bottom: 1rem;
+  }
 `
 const Title = styled.h1`
   font-size: 2rem;
+  @media (max-width: 576px) {
+    margin-bottom: 2rem;
+  }
 `
 const Buttons = styled.div`
   display: flex;
+  @media (max-width: 576px) {
+    justify-content: flex-end;
+  }
   button {
     display: flex;
     background-color: #fff;
@@ -171,6 +237,15 @@ const ImageArea = styled.section`
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
   gap: 0.5rem;
+  @media (max-width: 576px) {
+    display: none;
+  }
+`
+const SwiperArea = styled.section`
+  display: none;
+  @media (max-width: 576px) {
+    display: flex;
+  }
 `
 const Image = styled.div`
   height: 19.25rem;
@@ -194,6 +269,10 @@ const Info = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 2rem;
+  @media (max-width: 576px) {
+    display: block;
+    margin-bottom: 1rem;
+  }
 `
 const Text = styled.h2`
   font-size: 1.5rem;
@@ -205,6 +284,11 @@ const Status = styled.h2`
   font-size: 1rem;
   @media (max-width: 960px) {
     font-size: 1.3rem;
+  }
+  @media (max-width: 576px) {
+    margin: 1.5rem 0;
+    display: flex;
+    justify-content: flex-end;
   }
 `
 const ContentBox = styled.section`
@@ -231,6 +315,9 @@ const ProfileImage = styled.div`
 const NickName = styled.span`
   font-size: 1.3rem;
   padding: 1rem 0 0 1rem;
+  @media (max-width: 576px) {
+    font-size: 1.5rem;
+  }
 `
 const PostArea = styled.section`
   font-size: 1.2rem;
@@ -239,23 +326,32 @@ const PostArea = styled.section`
   height: 15rem;
   border-radius: 1rem;
   background-color: #f0f0f0;
+  @media (max-width: 576px) {
+    font-size: 1.5rem;
+  }
 `
 const HashtagTitle = styled.div``
 
 const Suggest = styled.h2`
   font-size: 1.5rem;
+  @media (max-width: 576px) {
+    font-size: 1.8rem;
+  }
 `
 
 const Hashtag = styled.h3`
   color: gray;
   padding-top: 2rem;
   font-size: 1.2rem;
+  @media (max-width: 576px) {
+    font-size: 1.5rem;
+  }
 `
 
 const Bottom = styled.section`
   margin-top: 3rem;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   height: auto;
   padding-bottom: 8rem;
   border-bottom: 1px solid #c0c0c0;
@@ -264,14 +360,19 @@ const Bottom = styled.section`
   }
 `
 const CommentBox = styled.section`
-  width: 50rem;
+  width: 50%;
   height: 50rem;
   border: 1px solid #c0c0c0;
   border-radius: 3rem;
   padding: 2rem;
 
+  @media (max-width: 576px) {
+    width: 100%;
+    padding: 1.5rem;
+  }
+
   .scroll-box {
-    width: 45.5rem;
+    width: 45.5%;
     height: 45rem;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -285,12 +386,21 @@ const CommentBox = styled.section`
       border-radius: 1rem;
       background-color: #c0c0c0;
     }
+    @media (max-width: 576px) {
+      width: 100%;
+    }
   }
 `
-const Comment = styled.li`
+const CommentList = styled.li`
   display: block;
   margin-bottom: 3rem;
   font-size: 1.2rem;
+  @media (max-width: 576px) {
+    font-size: 1.5rem;
+  }
+`
+const Comment = styled.div`
+  width: auto;
 `
 
 const UserProfile = styled.div`

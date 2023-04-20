@@ -37,10 +37,17 @@ const PostList = () => {
     setIsLiked(!isLiked)
   }
 
-  const handleOptionClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleOptionClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     console.log('옵션 클릭')
     setIsMenuOpen(!isMenuOpen)
+  }
+
+  const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation()
+    if (isMenuOpen) {
+      setIsMenuOpen(false)
+    }
   }
 
   const handleDeletePost = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -117,20 +124,22 @@ const PostList = () => {
               }
             >
               <img src={images[0].url} alt={name} />
-              <MenuButton className='circle-button' onClick={handleOptionClick}>
-                <div className='circle'></div>
-                <div className='circle'></div>
-                <div className='circle'></div>
-              </MenuButton>
-              {isMenuOpen && (
-                <OptionList>
-                  {menuOptions.map(option => (
-                    <OptionsButton key={option} onClick={option === '삭제' ? handleDeletePost : handleEditPost}>
-                      {option}
-                    </OptionsButton>
-                  ))}
-                </OptionList>
-              )}
+              <div onClick={handleClickOutside}>
+                <MenuButton className='circle-button' onClick={handleOptionClick}>
+                  <div className='circle'></div>
+                  <div className='circle'></div>
+                  <div className='circle'></div>
+                </MenuButton>
+                {isMenuOpen && (
+                  <OptionList>
+                    {menuOptions.map(option => (
+                      <OptionsButton key={option} onClick={option === '삭제' ? handleDeletePost : handleEditPost}>
+                        {option}
+                      </OptionsButton>
+                    ))}
+                  </OptionList>
+                )}
+              </div>
             </ImgBox>
             <div className='text'>
               <FeedInfoStyled>
@@ -256,14 +265,14 @@ const FeedStyled = styled.li`
   }
   @media (max-width: 576px) {
     .text {
-      width: 60%;
+      width: 80%;
       display: flex;
       justify-content: space-between;
       margin: 0.625rem 0 1.25rem 0;
     }
   }
 `
-const ImgBox = styled.div`
+export const ImgBox = styled.div`
   position: relative;
   height: 19rem;
   img {
@@ -276,14 +285,27 @@ const ImgBox = styled.div`
     position: absolute;
     top: 0.5rem;
   }
+  @media (max-width: 576px) {
+    height: 25rem;
+    img {
+      width: 25rem;
+      height: 25rem;
+    }
+  }
 `
-const MenuButton = styled.div`
+export const MenuButton = styled.button`
   position: relative;
-  bottom: 95%;
-  left: 91%;
+  bottom: 18rem;
+  left: 90%;
   border: none;
   cursor: pointer;
   width: 1rem;
+  background: transparent;
+  // border: 1px solid red;
+  @media (max-width: 576px) {
+    bottom: 23.5rem;
+    left: 90%;
+  }
   .circle-button {
     border: none;
     background-color: transparent;
@@ -296,15 +318,23 @@ const MenuButton = styled.div`
     background-color: #fff;
     margin-bottom: 5px;
     display: block;
+    @media (max-width: 576px) {
+      width: 0.8rem;
+      height: 0.8rem;
+    }
   }
 `
-const OptionList = styled.div`
+export const OptionList = styled.div`
   position: relative;
-  bottom: 109%;
-  left: 75%;
+  bottom: 21rem;
+  left: 76%;
   font-weight: bold;
+  @media (max-width: 576px) {
+    bottom: 27.2rem;
+    left: 75%;
+  }
 `
-const OptionsButton = styled.button`
+export const OptionsButton = styled.button`
   display: block;
   position: relative;
   right: 2%;
@@ -323,8 +353,13 @@ const OptionsButton = styled.button`
     margin-bottom: 0.2rem;
     border-radius: 0 0 0.5rem 0.5rem;
   }
+  @media (max-width: 576px) {
+    width: 4rem;
+    height: 2.5rem;
+    font-size: 1.25rem;
+  }
 `
-const LikeButton = styled(BsSuitHeart)`
+export const LikeButton = styled(BsSuitHeart)`
   font-size: 1.5rem;
   right: 0.8rem;
   color: rgba(255, 255, 255, 0.8);
@@ -332,8 +367,12 @@ const LikeButton = styled(BsSuitHeart)`
     opacity: 1;
     color: red;
   }
+  @media (max-width: 576px) {
+    font-size: 2.5rem;
+    right: 1rem;
+  }
 `
-const FeedInfoStyled = styled.label`
+export const FeedInfoStyled = styled.label`
   div {
     margin: 0.5rem;
   }
@@ -347,8 +386,12 @@ const FeedInfoStyled = styled.label`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 19.2px;
+    font-size: 1.2rem;
     padding-top: 0.2rem;
+    @media (max-width: 576px) {
+      width: 20rem;
+      font-size: 1.7rem;
+    }
   }
   .location {
     display: flex;
@@ -356,26 +399,38 @@ const FeedInfoStyled = styled.label`
       display: flex;
       flex-direction: column;
       justify-content: center;
+      @media (max-width: 576px) {
+        font-size: 1.5rem;
+      }
     }
     svg {
       font-size: 1.2rem;
       padding-right: 0.2rem;
       color: #1877f2;
+      @media (max-width: 576px) {
+        font-size: 1.7rem;
+      }
     }
   }
   .date {
     font-size: 0.9rem;
     color: gray;
+    @media (max-width: 576px) {
+      font-size: 1.35rem;
+    }
   }
 `
-const FeedLikeStyled = styled.div`
+export const FeedLikeStyled = styled.div`
   font-weight: semi-bold;
   font-size: 1.35rem;
   display: flex;
   flex-direction: row;
   margin: 0.5rem;
+  @media (max-width: 576px) {
+    font-size: 1.7rem;
+  }
 `
-const LikeButtonStyled = styled.button`
+export const LikeButtonStyled = styled.button`
   border: none;
   background-color: transparent;
   padding: 0;
@@ -386,5 +441,9 @@ const LikeButtonStyled = styled.button`
   svg {
     width: 1.2rem;
     height: 1.2rem;
+    @media (max-width: 576px) {
+      width: 1.55rem;
+      height: 1.55rem;
+    }
   }
 `

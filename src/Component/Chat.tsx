@@ -3,10 +3,10 @@ import styled from 'styled-components'
 import sangchu from '../Assets/sangchu.png'
 import {ImAttachment} from 'react-icons/im'
 import type {ChatBubbleProps} from '../Interface/interface'
-import type {Props} from '../Interface/interface'
+import type {ChatProps} from '../Interface/interface'
 import SpeechBubble from './SpeechBubble'
 
-const Chat: React.FC<Props> = () => {
+const Chat: React.FC<ChatProps> = () => {
   const [newMessageText, setNewMessageText] = useState<string>('')
   const [messages, setMessages] = useState<ChatBubbleProps[]>([])
   const [file, setFile] = useState<File | null>(null)
@@ -65,8 +65,10 @@ const Chat: React.FC<Props> = () => {
                 minute: 'numeric',
               })}
             </div>
+            {/* <h1>{user}</h1> */}
             <div className='new-text'>{chat.text}</div>
             <img src={sangchu} alt='유저프로필' />
+            {/* <p>Chat room id: {id}</p>s */}
           </NewChat>
         ))}
       </ChatBox>
@@ -90,15 +92,26 @@ export default Chat
 const ChatContainer = styled.section`
   width: 80%;
   height: 100%;
+  @media (max-width: 576px) {
+    width: 90%;
+    height: 85vh;
+    position: absolute;
+    top: 12.5%;
+    left: 5%;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    border-radius: 1rem;
+    padding: 1rem 0.5rem;
+  }
 `
 const ChatBox = styled.div`
   height: 90%;
   overflow: scroll;
-  ::-webkit-scrollbar {
-    width: 10px;
-    height: 5px;
-  }
 
+  ::-webkit-scrollbar {
+    width: 0.625rem;
+    height: 0.3125rem;
+  }
   ::-webkit-scrollbar-thumb {
     background-color: #ccc;
     border-radius: 5px;
@@ -106,6 +119,10 @@ const ChatBox = styled.div`
   img {
     width: 3rem;
     height: 3rem;
+    @media (max-width: 576px) {
+      width: 4rem;
+      height: 4rem;
+    }
   }
 `
 const ChatForm = styled.form`
@@ -115,6 +132,13 @@ const ChatForm = styled.form`
   align-items: center;
   width: 100%;
   height: 10%;
+  @media (max-width: 576px) {
+    position: absolute;
+    bottom: 0;
+    height: 12%;
+    justify-content: space-evenly;
+    width: 98%;
+  }
   label {
     cursor: pointer;
     color: #c0c0c0;
@@ -133,6 +157,10 @@ const ChatForm = styled.form`
     &:focus {
       outline: none;
       border: 2px solid #c0c0c0;
+    }
+    @media (max-width: 576px) {
+      width: 70%;
+      height: 3rem;
     }
   }
   button {
@@ -155,15 +183,19 @@ const ChatForm = styled.form`
 const NewChat = styled.div`
   display: flex;
   padding: 2rem;
-
+  @media (max-width: 576px) {
+    padding: 1.5rem;
+  }
   .date {
     margin-left: auto;
     margin-right: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    @media (max-width: 576px) {
+      width: 35%;
+    }
   }
-
   .new-text {
     position: relative;
     width: 20rem;

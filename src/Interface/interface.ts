@@ -3,7 +3,10 @@ export interface ChatBubbleProps {
   text: string
   createdAt: Date
 }
-export interface Props {}
+export interface ChatProps {
+  // id: number
+  // user: string
+}
 
 // ChatBubble
 export interface SpeechBubbleProps {
@@ -62,14 +65,14 @@ export interface PostDetailInfoInterface {
   }[]
 }
 
-// InboxList
+// ChatList
 export interface InboxListInterface {
+  readonly id: number
   readonly user: string
   readonly message: string
   readonly date: string
   readonly profile: string
 }
-
 // users
 export interface UserInterface {
   email: string

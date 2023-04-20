@@ -121,6 +121,9 @@ const ModalBackdrop = styled.div<ModalProps>`
     width: 90%;
     position: relative;
     bottom: 5%;
+    @media (max-width: 576px) {
+      display: none;
+    }
   }
 `
 const ModalContent = styled.div`
@@ -138,6 +141,11 @@ const ModalContent = styled.div`
   transition: all 0.3s ease-in-out;
   border-radius: 1rem;
   padding: 2rem 0 1.5rem 0;
+  @media (max-width: 576px) {
+    width: 90%;
+    height: 37rem;
+    padding: 2rem 0;
+  }
 `
 
 const SwiperImage = styled.div`
@@ -173,6 +181,9 @@ const DetailLink = styled.div`
   }
   svg {
     margin-right: 1rem;
+    @media (max-width: 576px) {
+      margin-right: 0.5rem;
+    }
   }
   transition: color ease-in 0.2s;
 `

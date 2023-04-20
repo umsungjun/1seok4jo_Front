@@ -37,7 +37,7 @@ export default function Map() {
 }
 
 const MapSection = styled.div`
-  width: 40rem;
+  width: 50%;
   height: 50rem;
   border-radius: 3rem;
   margin-left: 2rem;
@@ -46,5 +46,8 @@ const MapSection = styled.div`
     height: 60rem;
     margin-top: 3.5rem;
     margin: 3.5rem 0 0 0;
+  }
+  @media (max-width: 576px) {
+    width: 100%;
   }
 `
