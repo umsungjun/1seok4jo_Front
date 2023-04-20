@@ -40,6 +40,7 @@ export default function PageNavigator() {
       <Route path='/PostEdit' element={<PostEditPage />} />
       <Route path='/MyPage' element={<MyPage />} />
       <Route path='/Message' element={shouldShowDesktop ? <MessagePage /> : <ChatList chats={[]} />} />
+      <Route path='/Chat/:id' element={<Chat />} />
       <Route path='/ProfileEdit' element={<ProfileEditPage />} />
       <Route path='/SearchDetail/:category/:searchText' element={<SearchDetailPage />} />
     </Routes>

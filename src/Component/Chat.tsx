@@ -92,6 +92,16 @@ export default Chat
 const ChatContainer = styled.section`
   width: 80%;
   height: 100%;
+  @media (max-width: 576px) {
+    width: 90%;
+    height: 85vh;
+    position: absolute;
+    top: 12.5%;
+    left: 4%;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    border-radius: 2.5rem;
+  }
 `
 const ChatBox = styled.div`
   height: 90%;
@@ -107,6 +117,10 @@ const ChatBox = styled.div`
   img {
     width: 3rem;
     height: 3rem;
+    @media (max-width: 576px) {
+      width: 4rem;
+      height: 4rem;
+    }
   }
 `
 const ChatForm = styled.form`
@@ -116,6 +130,10 @@ const ChatForm = styled.form`
   align-items: center;
   width: 100%;
   height: 10%;
+  @media (max-width: 576px) {
+    position: absolute;
+    bottom: 3%;
+  }
   label {
     cursor: pointer;
     color: #c0c0c0;
@@ -134,6 +152,9 @@ const ChatForm = styled.form`
     &:focus {
       outline: none;
       border: 2px solid #c0c0c0;
+    }
+    @media (max-width: 576px) {
+      width: 70%;
     }
   }
   button {
@@ -156,12 +177,18 @@ const ChatForm = styled.form`
 const NewChat = styled.div`
   display: flex;
   padding: 2rem;
+  @media (max-width: 576px) {
+    padding: 1.5rem;
+  }
   .date {
     margin-left: auto;
     margin-right: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    @media (max-width: 576px) {
+      width: 35%;
+    }
   }
   .new-text {
     position: relative;

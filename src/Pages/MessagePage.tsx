@@ -15,14 +15,14 @@ const MessagePage = () => {
   return (
     <Message>
       <Inbox>
-        <InboxUl>
+        <ul>
           {inboxList.map(inbox => (
             <InboxLi key={inbox.user}>
               <InboxLiImg src={inbox.profile} />
               <InboxLiUser>{inbox.user}</InboxLiUser>
             </InboxLi>
           ))}
-        </InboxUl>
+        </ul>
       </Inbox>
       <Chat />
     </Message>
@@ -36,7 +36,7 @@ const Message = styled.section`
   height: 100vh;
 `
 
-const Inbox = styled.section`
+export const Inbox = styled.section`
   width: 20%;
   min-width: 20rem;
   overflow: scroll;
@@ -54,9 +54,7 @@ const Inbox = styled.section`
   }
 `
 
-const InboxUl = styled.ul``
-
-const InboxLi = styled.li`
+export const InboxLi = styled.li`
   width: 100%;
   height: 6rem;
   border-bottom: 1px solid #c0c0c0;
@@ -69,12 +67,12 @@ const InboxLi = styled.li`
     border: none;
   }
 `
-const InboxLiImg = styled.img`
+export const InboxLiImg = styled.img`
   width: 3.5rem;
   height: 3.5rem;
   margin-right: 2rem;
   border-radius: 5rem;
 `
-const InboxLiUser = styled.div`
+export const InboxLiUser = styled.div`
   font-size: 1.5rem;
 `
