@@ -4,8 +4,8 @@ export interface ChatBubbleProps {
   createdAt: Date
 }
 export interface ChatProps {
-  id: number
-  user: string
+  // id: number
+  // user: string
 }
 
 // ChatBubble
@@ -66,7 +66,7 @@ export interface PostDetailInfoInterface {
 }
 
 // ChatList
-export interface ChatListInterface {
+export interface InboxListInterface {
   readonly id: number
   readonly user: string
   readonly message: string

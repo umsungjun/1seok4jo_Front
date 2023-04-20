@@ -329,6 +329,10 @@ export const OptionList = styled.div`
   bottom: 21rem;
   left: 76%;
   font-weight: bold;
+  @media (max-width: 576px) {
+    bottom: 27.2rem;
+    left: 75%;
+  }
 `
 export const OptionsButton = styled.button`
   display: block;

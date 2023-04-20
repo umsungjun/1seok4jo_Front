@@ -1,10 +1,6 @@
-import type {ChatListInterface} from '../Interface/interface'
+import type {InboxListInterface} from '../Interface/interface'
 
-export type ChatListProps = {
-  chats: ChatListInterface[]
-}
-
-export const chatList: ChatListInterface[] = [
+export const inboxList: InboxListInterface[] = [
   {
     id: 1,
     user: 'user1',

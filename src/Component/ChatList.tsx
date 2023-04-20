@@ -1,21 +1,21 @@
 import React from 'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
-import {chatList} from '../Mock/chatList'
-import {ChatListInterface} from '../Interface/interface'
+import {inboxList} from '../Mock/chatList'
+import {InboxListInterface} from '../Interface/interface'
 
 type ChatListProps = {
-  chats: ChatListInterface[]
+  chats: InboxListInterface[]
 }
 
 const ChatList: React.FC<ChatListProps> = ({chats}) => {
   return (
     <InboxUl>
-      {chatList.map(chat => (
+      {inboxList.map(chat => (
         <InboxLi key={chat.id}>
           <InboxLiImg src={chat.profile} />
           <InboxLiUser>
-            <Link to={`/chats/${chat.id}`}>{chat.user}</Link>
+            <Link to={`/Chat/${chat.id}`}>{chat.user}</Link>
           </InboxLiUser>
         </InboxLi>
       ))}

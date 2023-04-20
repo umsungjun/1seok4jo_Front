@@ -6,7 +6,7 @@ import type {ChatBubbleProps} from '../Interface/interface'
 import type {ChatProps} from '../Interface/interface'
 import SpeechBubble from './SpeechBubble'
 
-const Chat: React.FC<ChatProps> = ({id, user}) => {
+const Chat: React.FC<ChatProps> = () => {
   const [newMessageText, setNewMessageText] = useState<string>('')
   const [messages, setMessages] = useState<ChatBubbleProps[]>([])
   const [file, setFile] = useState<File | null>(null)
@@ -65,10 +65,10 @@ const Chat: React.FC<ChatProps> = ({id, user}) => {
                 minute: 'numeric',
               })}
             </div>
-            <h1>{user}</h1>
+            {/* <h1>{user}</h1> */}
             <div className='new-text'>{chat.text}</div>
             <img src={sangchu} alt='유저프로필' />
-            <p>Chat room id: {id}</p>
+            {/* <p>Chat room id: {id}</p>s */}
           </NewChat>
         ))}
       </ChatBox>
@@ -92,9 +92,6 @@ export default Chat
 const ChatContainer = styled.section`
   width: 80%;
   height: 100%;
-  @media (max-width: 576px) {
-    display: none;
-  }
 `
 const ChatBox = styled.div`
   height: 90%;
@@ -103,7 +100,6 @@ const ChatBox = styled.div`
     width: 10px;
     height: 5px;
   }
-
   ::-webkit-scrollbar-thumb {
     background-color: #ccc;
     border-radius: 5px;
@@ -160,7 +156,6 @@ const ChatForm = styled.form`
 const NewChat = styled.div`
   display: flex;
   padding: 2rem;
-
   .date {
     margin-left: auto;
     margin-right: 1rem;
@@ -168,7 +163,6 @@ const NewChat = styled.div`
     flex-direction: column;
     justify-content: flex-end;
   }
-
   .new-text {
     position: relative;
     width: 20rem;
