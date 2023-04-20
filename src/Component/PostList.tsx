@@ -302,6 +302,10 @@ export const MenuButton = styled.button`
   width: 1rem;
   background: transparent;
   // border: 1px solid red;
+  @media (max-width: 576px) {
+    bottom: 23.5rem;
+    left: 90%;
+  }
   .circle-button {
     border: none;
     background-color: transparent;
