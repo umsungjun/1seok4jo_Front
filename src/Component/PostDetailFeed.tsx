@@ -5,7 +5,6 @@ import {BsFillSuitHeartFill, BsSuitHeart} from 'react-icons/bs'
 import {detailPostFeed} from '../Mock/detailPostFeed'
 import {users} from '../Mock/users'
 import SlideImg from '../Popups/SlideImg'
-import {CgMenuRound} from 'react-icons/cg'
 import {IoLocationSharp} from 'react-icons/io5'
 import {ImgBox} from './PostList'
 import {MenuButton} from './PostList'
@@ -39,10 +38,17 @@ const PostDetailFeed = () => {
     setIsLiked(!isLiked)
   }
 
-  const handleOptionClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleOptionClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     console.log('옵션 클릭')
     setIsMenuOpen(!isMenuOpen)
+  }
+
+  const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation()
+    if (isMenuOpen) {
+      setIsMenuOpen(false)
+    }
   }
 
   const handleDeletePost = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -119,20 +125,22 @@ const PostDetailFeed = () => {
               }
             >
               <img src={images[0].url} alt={name} />
-              <MenuButton className='circle-button' onClick={handleOptionClick}>
-                <div className='circle'></div>
-                <div className='circle'></div>
-                <div className='circle'></div>
-              </MenuButton>
-              {isMenuOpen && (
-                <OptionList>
-                  {menuOptions.map(option => (
-                    <OptionsButton key={option} onClick={option === '삭제' ? handleDeletePost : handleEditPost}>
-                      {option}
-                    </OptionsButton>
-                  ))}
-                </OptionList>
-              )}
+              <div onClick={handleClickOutside}>
+                <MenuButton className='circle-button' onClick={handleOptionClick}>
+                  <div className='circle'></div>
+                  <div className='circle'></div>
+                  <div className='circle'></div>
+                </MenuButton>
+                {isMenuOpen && (
+                  <OptionList>
+                    {menuOptions.map(option => (
+                      <OptionsButton key={option} onClick={option === '삭제' ? handleDeletePost : handleEditPost}>
+                        {option}
+                      </OptionsButton>
+                    ))}
+                  </OptionList>
+                )}
+              </div>
             </ImgBox>
             <div className='text'>
               <FeedInfoStyled>
