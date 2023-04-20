@@ -7,6 +7,14 @@ import {users} from '../Mock/users'
 import SlideImg from '../Popups/SlideImg'
 import {CgMenuRound} from 'react-icons/cg'
 import {IoLocationSharp} from 'react-icons/io5'
+import {ImgBox} from './PostList'
+import {MenuButton} from './PostList'
+import {OptionList} from './PostList'
+import {OptionsButton} from './PostList'
+import {LikeButton} from './PostList'
+import {FeedInfoStyled} from './PostList'
+import {FeedLikeStyled} from './PostList'
+import {LikeButtonStyled} from './PostList'
 
 const PostDetailFeed = () => {
   const [isLiked, setIsLiked] = useState(false)
@@ -31,7 +39,7 @@ const PostDetailFeed = () => {
     setIsLiked(!isLiked)
   }
 
-  const handleOptionClick = (e: React.MouseEvent<SVGElement>) => {
+  const handleOptionClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation()
     console.log('옵션 클릭')
     setIsMenuOpen(!isMenuOpen)
@@ -111,7 +119,11 @@ const PostDetailFeed = () => {
               }
             >
               <img src={images[0].url} alt={name} />
-              <MenuButton onClick={handleOptionClick} />
+              <MenuButton className='circle-button' onClick={handleOptionClick}>
+                <div className='circle'></div>
+                <div className='circle'></div>
+                <div className='circle'></div>
+              </MenuButton>
               {isMenuOpen && (
                 <OptionList>
                   {menuOptions.map(option => (
@@ -223,115 +235,5 @@ const FeedStyled = styled.li`
     display: flex;
     justify-content: space-between;
     margin: 0.625rem 0 1.25rem 0;
-  }
-`
-
-const ImgBox = styled.div`
-  position: relative;
-  height: 19rem;
-  img {
-    width: 19rem;
-    height: 19rem;
-    object-fit: cover;
-    border-radius: 1.25rem;
-  }
-  svg {
-    position: absolute;
-    top: 0.5rem;
-  }
-`
-const MenuButton = styled(CgMenuRound)`
-  font-size: 1.8rem;
-  right: 0.8rem;
-  color: rgba(255, 255, 255, 0.8);
-`
-const OptionList = styled.div`
-  position: relative;
-  top: -88%;
-  left: 80%;
-  font-weight: bold;
-  color: white;
-`
-const OptionsButton = styled.button`
-  display: block;
-  position: relative;
-  right: 2%;
-  width: 3.3rem;
-  padding: 0.2rem;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid #fff;
-  font-size: 1rem;
-  color: #fff;
-  cursor: pointer;
-  :first-child {
-    border-bottom: none;
-    border-radius: 0.3rem 0.3rem 0 0;
-  }
-  :last-child {
-    border-radius: 0 0 0.3rem 0.3rem;
-  }
-`
-const LikeButton = styled(BsSuitHeart)`
-  font-size: 1.5rem;
-  right: 0.8rem;
-  color: rgba(255, 255, 255, 0.8);
-  :hover {
-    opacity: 1;
-    color: red;
-  }
-`
-const FeedInfoStyled = styled.label`
-  div {
-    margin: 0.5rem;
-  }
-  span {
-    display: flex;
-    justify-content: space-between;
-  }
-  .title {
-    width: 14rem;
-    height: auto;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 19.2px;
-    padding-top: 0.2rem;
-  }
-  .location {
-    display: flex;
-    span {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    svg {
-      font-size: 1.2rem;
-      padding-right: 0.2rem;
-      color: #1877f2;
-    }
-  }
-  .date {
-    font-size: 0.9rem;
-    color: gray;
-  }
-`
-const FeedLikeStyled = styled.div`
-  font-weight: semi-bold;
-  font-size: 1.35rem;
-  display: flex;
-  flex-direction: row;
-  margin: 0.5rem;
-`
-const LikeButtonStyled = styled.button`
-  border: none;
-  background-color: transparent;
-  padding: 0;
-  width: 1.2rem;
-  height: 1.2rem;
-  color: rgba(255, 0, 0, 0.7);
-  margin-right: 0.5rem;
-  svg {
-    width: 1.2rem;
-    height: 1.2rem;
   }
 `

@@ -263,7 +263,7 @@ const FeedStyled = styled.li`
     }
   }
 `
-const ImgBox = styled.div`
+export const ImgBox = styled.div`
   position: relative;
   height: 19rem;
   img {
@@ -284,7 +284,7 @@ const ImgBox = styled.div`
     }
   }
 `
-const MenuButton = styled.div`
+export const MenuButton = styled.div`
   position: relative;
   bottom: 95%;
   left: 91%;
@@ -309,13 +309,13 @@ const MenuButton = styled.div`
     }
   }
 `
-const OptionList = styled.div`
+export const OptionList = styled.div`
   position: relative;
   bottom: 109%;
   left: 75%;
   font-weight: bold;
 `
-const OptionsButton = styled.button`
+export const OptionsButton = styled.button`
   display: block;
   position: relative;
   right: 2%;
@@ -340,7 +340,7 @@ const OptionsButton = styled.button`
     font-size: 1.25rem;
   }
 `
-const LikeButton = styled(BsSuitHeart)`
+export const LikeButton = styled(BsSuitHeart)`
   font-size: 1.5rem;
   right: 0.8rem;
   color: rgba(255, 255, 255, 0.8);
@@ -353,7 +353,7 @@ const LikeButton = styled(BsSuitHeart)`
     right: 1rem;
   }
 `
-const FeedInfoStyled = styled.label`
+export const FeedInfoStyled = styled.label`
   div {
     margin: 0.5rem;
   }
@@ -401,7 +401,7 @@ const FeedInfoStyled = styled.label`
     }
   }
 `
-const FeedLikeStyled = styled.div`
+export const FeedLikeStyled = styled.div`
   font-weight: semi-bold;
   font-size: 1.35rem;
   display: flex;
@@ -411,7 +411,7 @@ const FeedLikeStyled = styled.div`
     font-size: 1.7rem;
   }
 `
-const LikeButtonStyled = styled.button`
+export const LikeButtonStyled = styled.button`
   border: none;
   background-color: transparent;
   padding: 0;
