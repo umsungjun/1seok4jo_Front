@@ -97,18 +97,20 @@ const ChatContainer = styled.section`
     height: 85vh;
     position: absolute;
     top: 12.5%;
-    left: 4%;
+    left: 5%;
     margin: 0 auto;
     border: 1px solid #ccc;
-    border-radius: 2.5rem;
+    border-radius: 1rem;
+    padding: 1rem 0.5rem;
   }
 `
 const ChatBox = styled.div`
   height: 90%;
   overflow: scroll;
+
   ::-webkit-scrollbar {
-    width: 10px;
-    height: 5px;
+    width: 0.625rem;
+    height: 0.3125rem;
   }
   ::-webkit-scrollbar-thumb {
     background-color: #ccc;
@@ -132,7 +134,10 @@ const ChatForm = styled.form`
   height: 10%;
   @media (max-width: 576px) {
     position: absolute;
-    bottom: 3%;
+    bottom: 0;
+    height: 12%;
+    justify-content: space-evenly;
+    width: 98%;
   }
   label {
     cursor: pointer;
@@ -155,6 +160,7 @@ const ChatForm = styled.form`
     }
     @media (max-width: 576px) {
       width: 70%;
+      height: 3rem;
     }
   }
   button {
