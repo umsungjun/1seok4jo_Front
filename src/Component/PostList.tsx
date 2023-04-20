@@ -37,10 +37,17 @@ const PostList = () => {
     setIsLiked(!isLiked)
   }
 
-  const handleOptionClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleOptionClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     console.log('옵션 클릭')
     setIsMenuOpen(!isMenuOpen)
+  }
+
+  const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation()
+    if (isMenuOpen) {
+      setIsMenuOpen(false)
+    }
   }
 
   const handleDeletePost = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -117,20 +124,22 @@ const PostList = () => {
               }
             >
               <img src={images[0].url} alt={name} />
-              <MenuButton className='circle-button' onClick={handleOptionClick}>
-                <div className='circle'></div>
-                <div className='circle'></div>
-                <div className='circle'></div>
-              </MenuButton>
-              {isMenuOpen && (
-                <OptionList>
-                  {menuOptions.map(option => (
-                    <OptionsButton key={option} onClick={option === '삭제' ? handleDeletePost : handleEditPost}>
-                      {option}
-                    </OptionsButton>
-                  ))}
-                </OptionList>
-              )}
+              <div onClick={handleClickOutside}>
+                <MenuButton className='circle-button' onClick={handleOptionClick}>
+                  <div className='circle'></div>
+                  <div className='circle'></div>
+                  <div className='circle'></div>
+                </MenuButton>
+                {isMenuOpen && (
+                  <OptionList>
+                    {menuOptions.map(option => (
+                      <OptionsButton key={option} onClick={option === '삭제' ? handleDeletePost : handleEditPost}>
+                        {option}
+                      </OptionsButton>
+                    ))}
+                  </OptionList>
+                )}
+              </div>
             </ImgBox>
             <div className='text'>
               <FeedInfoStyled>
@@ -284,13 +293,15 @@ export const ImgBox = styled.div`
     }
   }
 `
-export const MenuButton = styled.div`
+export const MenuButton = styled.button`
   position: relative;
-  bottom: 95%;
-  left: 91%;
+  bottom: 18rem;
+  left: 90%;
   border: none;
   cursor: pointer;
   width: 1rem;
+  background: transparent;
+  // border: 1px solid red;
   .circle-button {
     border: none;
     background-color: transparent;
@@ -311,8 +322,8 @@ export const MenuButton = styled.div`
 `
 export const OptionList = styled.div`
   position: relative;
-  bottom: 109%;
-  left: 75%;
+  bottom: 21rem;
+  left: 76%;
   font-weight: bold;
 `
 export const OptionsButton = styled.button`
