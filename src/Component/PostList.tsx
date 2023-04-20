@@ -256,7 +256,7 @@ const FeedStyled = styled.li`
   }
   @media (max-width: 576px) {
     .text {
-      width: 60%;
+      width: 80%;
       display: flex;
       justify-content: space-between;
       margin: 0.625rem 0 1.25rem 0;
@@ -275,6 +275,13 @@ const ImgBox = styled.div`
   svg {
     position: absolute;
     top: 0.5rem;
+  }
+  @media (max-width: 576px) {
+    height: 25rem;
+    img {
+      width: 25rem;
+      height: 25rem;
+    }
   }
 `
 const MenuButton = styled.div`
@@ -296,6 +303,10 @@ const MenuButton = styled.div`
     background-color: #fff;
     margin-bottom: 5px;
     display: block;
+    @media (max-width: 576px) {
+      width: 0.8rem;
+      height: 0.8rem;
+    }
   }
 `
 const OptionList = styled.div`
@@ -323,6 +334,11 @@ const OptionsButton = styled.button`
     margin-bottom: 0.2rem;
     border-radius: 0 0 0.5rem 0.5rem;
   }
+  @media (max-width: 576px) {
+    width: 4rem;
+    height: 2.5rem;
+    font-size: 1.25rem;
+  }
 `
 const LikeButton = styled(BsSuitHeart)`
   font-size: 1.5rem;
@@ -331,6 +347,10 @@ const LikeButton = styled(BsSuitHeart)`
   :hover {
     opacity: 1;
     color: red;
+  }
+  @media (max-width: 576px) {
+    font-size: 2.5rem;
+    right: 1rem;
   }
 `
 const FeedInfoStyled = styled.label`
@@ -347,8 +367,12 @@ const FeedInfoStyled = styled.label`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 19.2px;
+    font-size: 1.2rem;
     padding-top: 0.2rem;
+    @media (max-width: 576px) {
+      width: 20rem;
+      font-size: 1.7rem;
+    }
   }
   .location {
     display: flex;
@@ -356,16 +380,25 @@ const FeedInfoStyled = styled.label`
       display: flex;
       flex-direction: column;
       justify-content: center;
+      @media (max-width: 576px) {
+        font-size: 1.5rem;
+      }
     }
     svg {
       font-size: 1.2rem;
       padding-right: 0.2rem;
       color: #1877f2;
+      @media (max-width: 576px) {
+        font-size: 1.7rem;
+      }
     }
   }
   .date {
     font-size: 0.9rem;
     color: gray;
+    @media (max-width: 576px) {
+      font-size: 1.35rem;
+    }
   }
 `
 const FeedLikeStyled = styled.div`
@@ -374,6 +407,9 @@ const FeedLikeStyled = styled.div`
   display: flex;
   flex-direction: row;
   margin: 0.5rem;
+  @media (max-width: 576px) {
+    font-size: 1.7rem;
+  }
 `
 const LikeButtonStyled = styled.button`
   border: none;
@@ -386,5 +422,9 @@ const LikeButtonStyled = styled.button`
   svg {
     width: 1.2rem;
     height: 1.2rem;
+    @media (max-width: 576px) {
+      width: 1.55rem;
+      height: 1.55rem;
+    }
   }
 `
