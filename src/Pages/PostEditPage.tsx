@@ -253,6 +253,10 @@ const DateText = styled.span`
   display: flex;
   align-items: center;
   font-size: 1.5rem;
+
+  @media (max-width: 576px) {
+    font-size: 1.1rem;
+  }
 `
 
 const AddressInput = styled.input`

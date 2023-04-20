@@ -63,6 +63,10 @@ const ModalContent = styled.div`
   align-items: center;
 
   transition: all 0.3s ease-in-out;
+
+  @media (max-width: 576px) {
+    width: 30rem;
+  }
 `
 
 const CloseIcon = styled(AiOutlineClose)`
