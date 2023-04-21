@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 
-import {users} from '../../Mock/users'
 import Login from '../../Popups/Login'
 
 import Notification from '../../Popups/Notification'
@@ -15,14 +14,13 @@ import {changeThemeType} from '../../Store/themeTypeSlice'
 
 import {MdSunny} from 'react-icons/md'
 import {IoMdMoon} from 'react-icons/io'
-
-const {email, password, nickName, myPage} = users[0]
+import {useCookies} from 'react-cookie'
 
 export default function HeaderProfile() {
   const themeDispatch = useDispatch()
   const theme = useSelector((state: RootState) => state.themeType.theme)
-
-  const [token, setToken] = useState(true) // TODO 로그인 상태
+  const user = useSelector((state: RootState) => state.user)
+  const [token, setToken] = useCookies(['token']) // TODO 로그인 상태
   const [userUlList, setUserUlList] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [notification, setNotification] = useState(false)
@@ -32,7 +30,8 @@ export default function HeaderProfile() {
   }
 
   const handleLogout = () => {
-    setToken(false)
+    setToken('token', '', {expires: new Date(0)})
+    // TODO reducer함수를 통해서 그 회원정보의 값을 초기화 해줘야한다.
   }
 
   const handleLogin = () => {
@@ -41,7 +40,7 @@ export default function HeaderProfile() {
 
   return (
     <>
-      {!token ? (
+      {Object.keys(token).length === 0 ? (
         <LoginText onClick={handleLogin}>로그인</LoginText>
       ) : (
         <LoginBox onClick={() => themeDispatch(changeThemeType())}>
@@ -57,7 +56,7 @@ export default function HeaderProfile() {
           {notification && <Notification setNotification={setNotification} />}
           <UserButton onClick={handleOpenUserUl}>
             <RxHamburgerMenu />
-            <UserImg src={myPage.profile} alt='userImg' />
+            <UserImg src={user.profileUrl} alt='userImg' />
             {userUlList && (
               <UserUl>
                 <UserLiLink to='PostWrite'>글쓰기</UserLiLink>

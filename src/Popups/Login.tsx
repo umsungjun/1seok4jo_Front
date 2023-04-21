@@ -4,6 +4,11 @@ import styled from 'styled-components'
 import {AiOutlineClose} from 'react-icons/ai'
 import {ImBubble} from 'react-icons/im'
 import {TbSlash} from 'react-icons/tb'
+import {fetchJoinApi} from '../Service/joinService'
+import {fetchLoginApi} from '../Service/loginService'
+import {useCookies} from 'react-cookie'
+import {useDispatch} from 'react-redux'
+import {setUser} from '../Store/user'
 
 interface PaymentModalProps {
   show: boolean
@@ -11,6 +16,8 @@ interface PaymentModalProps {
 }
 
 export default function Login({show, setShowLoginModal}: PaymentModalProps) {
+  const userDispatch = useDispatch()
+  const [cookies, setCookie] = useCookies(['token'])
   const [joinForm, setJoinForm] = useState(false)
   const [joinWelcomeText, setJoinWelcomeText] = useState('Compass에 오신 것을 환영합니다.')
 
@@ -23,10 +30,33 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
   const joinPassword2Ref = useRef<HTMLInputElement>(null)
   const joinNickNameRef = useRef<HTMLInputElement>(null)
 
-  const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
+  interface UserData {
+    accessToken: string
+    bannerUrl: string
+    email: string
+    introduction: string
+    nickName: string
+    profileUrl: string
+    userId: number
+  }
+
+  const handleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     console.log('이메일 : ', loginEmailRef.current?.value)
     console.log('비밀번호 : ', loginPasswordRef.current?.value)
+    try {
+      const loginResult = await fetchLoginApi(
+        loginEmailRef.current?.value as string,
+        loginPasswordRef.current?.value as string,
+      )
+      // console.log(loginResult)
+
+      setCookie('token', `bearer ${loginResult.accessToken}`)
+      userDispatch(setUser(loginResult))
+    } catch (error) {
+      console.log(error)
+    }
+
     setShowLoginModal(false)
   }
 
@@ -41,9 +71,15 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
       return
     }
 
-    console.log('이메일 : ', joinEmailRef.current?.value)
-    console.log('비밀번호 : ', joinPasswordRef.current?.value)
-    console.log('닉네임 : ', joinNickNameRef.current?.value)
+    console.log('이메일 : ', typeof joinEmailRef.current?.value)
+    console.log('비밀번호 : ', typeof joinPasswordRef.current?.value)
+    console.log('닉네임 : ', typeof joinNickNameRef.current?.value)
+
+    fetchJoinApi(
+      joinEmailRef.current?.value as string,
+      joinPasswordRef.current?.value as string,
+      joinNickNameRef.current?.value as string,
+    )
     setJoinForm(false)
     setShowLoginModal(false)
   }
