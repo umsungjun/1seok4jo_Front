@@ -17,12 +17,38 @@ import SwiperCore, {Navigation, Scrollbar} from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/scrollbar'
-SwiperCore.use([Navigation, Scrollbar]) // *
+import {PostDetailInterface, fetchThemePostDetailApi} from '../Service/postDetailService'
+SwiperCore.use([Navigation, Scrollbar])
 
 const PostDetailPage = () => {
-  //페이지 로딩시 상단부터 노출되도록
   scrollToTop()
   const {id} = useParams()
+
+  const [postDetail, setPostDetail] = useState<PostDetailInterface>({
+    baseUrl: '',
+    commentCount: 0,
+    detail: '',
+    endDate: '',
+    hashtag: '',
+    id: 0,
+    likeCount: 0,
+    location: '',
+    nickname: '',
+    startDate: '',
+    storeFileUrl: [],
+    themeId: 0,
+    title: '',
+  })
+
+  useEffect(() => {
+    ;(async () => {
+      const postDetail = await fetchThemePostDetailApi(Number(id))
+      setPostDetail(postDetail.result)
+    })()
+  }, [id])
+
+  console.log(postDetail)
+
   const [post, setPost] = useState<PostDetailInfoInterface>()
   const [isLiked, setIsLiked] = useState(false)
   const [scrollbar, setScrollbar] = useState<{
@@ -52,7 +78,6 @@ const PostDetailPage = () => {
   }
 
   useEffect(() => {
-    console.log('id', id)
     const selectedPost = PostDetailInfo.find(post => post.id === parseInt(id as string))
     setPost(selectedPost)
   }, [id])
@@ -65,7 +90,7 @@ const PostDetailPage = () => {
   return (
     <Detail>
       <Header>
-        <Title>{post?.title}</Title>
+        <Title>{postDetail.title}</Title>
         <Buttons>
           <RWebShare
             data={{
@@ -88,19 +113,19 @@ const PostDetailPage = () => {
         </Buttons>
       </Header>
       <ImageArea>
-        {post?.images?.map(data => (
-          <Image key={data.name}>
-            <img src={data.url} alt={data.name} />
+        {postDetail.storeFileUrl.map((url, index) => (
+          <Image key={`${url}${index}`}>
+            <img src={`https://compass-s3-bucket.s3.ap-northeast-2.amazonaws.com/${url}`} alt={'postDetailImg'} />
           </Image>
         ))}
       </ImageArea>
       <SwiperArea>
         <Swiper {...slide_settings} scrollbar={scrollbar}>
-          {post?.images?.map(data => (
-            <SwiperSlide key={data.name}>
+          {postDetail.storeFileUrl.map((url, index) => (
+            <SwiperSlide key={`${url}${index}`}>
               <div className='swiper-slide'>
                 <Image>
-                  <img src={data.url} alt={data.name}></img>
+                  <img src={`https://compass-s3-bucket.s3.ap-northeast-2.amazonaws.com/${url}`} alt={'postDetailImg'} />
                 </Image>
               </div>
             </SwiperSlide>
@@ -113,10 +138,10 @@ const PostDetailPage = () => {
       <Body>
         <Info>
           <Text>
-            {post?.location} / {post?.startDate} ~ {post?.endDate}
+            {postDetail.location} / {postDetail.startDate} ~ {postDetail.endDate}
           </Text>
           <Status>
-            댓글 {post?.comment}개 · 좋아요 {post?.likes}
+            댓글 {postDetail.commentCount}개 · 좋아요 {postDetail.likeCount}
           </Status>
         </Info>
         <ContentBox>
@@ -125,18 +150,14 @@ const PostDetailPage = () => {
               <ProfileImage>
                 <img src={sangchu} alt='하상츄' />
               </ProfileImage>
-              <NickName>{post?.user}</NickName>
+              <NickName>{postDetail.nickname}</NickName>
             </ProfileInfo>
-            {post?.post}
+            {postDetail.detail}
           </PostArea>
         </ContentBox>
         <HashtagTitle>
           <Suggest># 이런 분들에게 추천합니다</Suggest>
-          <Hashtag>
-            {post?.hashtags?.map((hashtag, index) => (
-              <span key={index}> #{hashtag}</span>
-            ))}
-          </Hashtag>
+          <Hashtag>{postDetail.hashtag}</Hashtag>
         </HashtagTitle>
       </Body>
       <Bottom>

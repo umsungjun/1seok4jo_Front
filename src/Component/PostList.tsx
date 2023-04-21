@@ -1,25 +1,24 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 import {useNavigate} from 'react-router-dom'
 import {BsFillSuitHeartFill, BsSuitHeart} from 'react-icons/bs'
-import {PostFeed} from '../Mock/postFeed'
-import {users} from '../Mock/users'
 import SlideImg from '../Popups/SlideImg'
 import {IoLocationSharp} from 'react-icons/io5'
-import {fetchThemePostListApi} from '../Service/PostService'
 
-const PostList = () => {
-  const [themePostList, setThemePostList] = useState([])
+interface ThemePostListProps {
+  themePostList: {
+    baseUrl: string
+    endDate: string
+    likeCount: number
+    location: string
+    postId: number
+    startDate: string
+    storeFileUrl: string[]
+    title: string
+  }[]
+}
 
-  useEffect(() => {
-    ;(async () => {
-      const postList = await fetchThemePostListApi()
-      setThemePostList(postList.result)
-    })()
-  }, [])
-
-  console.log(themePostList)
-
+const PostList = ({themePostList}: ThemePostListProps) => {
   const [isLiked, setIsLiked] = useState(false)
   const [login, setLogin] = useState(null) // users[0]
   const [showHandleSlideImg, setShowHandleSlideImg] = useState<boolean>(false)
@@ -73,7 +72,7 @@ const PostList = () => {
   return (
     <PostListStyled>
       {themePostList.map(post => {
-        const {baseUrl, postId, storeFileUrl, title, location, startDate, endDate} = post
+        const {baseUrl, postId, storeFileUrl, title, location, startDate, endDate, likeCount} = post
         return (
           <FeedStyled key={postId}>
             <ImgBox onClick={() => setSlideImgAndShow(storeFileUrl, postId)}>
@@ -93,8 +92,7 @@ const PostList = () => {
                 <LikeButtonStyled>
                   <BsFillSuitHeartFill />
                 </LikeButtonStyled>
-
-                <div>{3}</div>
+                <div>{likeCount}</div>
               </FeedLikeStyled>
             </div>
             {showHandleSlideImg && (
@@ -276,6 +274,7 @@ const PostListStyled = styled.ul`
   grid-template-columns: repeat(5, 1fr);
   grid-gap: 1.5rem;
   width: 90%;
+  min-height: 40rem;
 
   @media (max-width: 1440px) {
     grid-template-columns: repeat(4, 1fr);

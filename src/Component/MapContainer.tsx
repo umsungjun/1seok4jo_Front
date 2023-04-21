@@ -21,7 +21,7 @@ export default function Map() {
     // 지도 객체 생성
     const map = new kakao.maps.Map(mapContainer, options)
 
-    console.log(mapContainer)
+    // console.log(mapContainer)
     new kakao.maps.Marker({
       map: map,
       position: new kakao.maps.LatLng(37.506502, 127.053617),

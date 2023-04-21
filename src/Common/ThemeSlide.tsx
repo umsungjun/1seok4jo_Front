@@ -7,22 +7,27 @@ import {HiShoppingBag} from 'react-icons/hi'
 import {FaDog} from 'react-icons/fa'
 import {GiStrong} from 'react-icons/gi'
 
-export default function ThemeSlide() {
+interface ThemeSlideProps {
+  setCategoryId: (value: number) => void
+}
+
+export default function ThemeSlide({setCategoryId}: ThemeSlideProps) {
   const [category, setCategory] = useState('레저')
 
-  const handleCategory = (categoryStr: string, e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleCategory = (categoryStr: string, e: React.MouseEvent<HTMLButtonElement>, categoryId: number) => {
     e.preventDefault()
     setCategory(categoryStr)
+    setCategoryId(categoryId)
   }
 
   return (
     <TabBtnWrapStyled>
       <TabBtnUl>
         {themeSlide.map(data => (
-          <li key={data.category}>
+          <li key={data.id}>
             <TabBtnStyled
               active={category === `${data.category}` ? true : false}
-              onClick={e => handleCategory(data.category, e)}
+              onClick={e => handleCategory(data.category, e, data.id)}
             >
               {data.icon}
               <span>{data.category}</span>
@@ -36,42 +41,52 @@ export default function ThemeSlide() {
 
 const themeSlide = [
   {
+    id: 1,
     category: '레저',
     icon: <MdOutlineSportsHandball />,
   },
   {
+    id: 2,
     category: '맛집',
     icon: <MdOutlineFoodBank />,
   },
   {
+    id: 3,
     category: '자연',
     icon: <TbTrees />,
   },
   {
+    id: 4,
     category: '문화',
     icon: <TbPhotoHeart />,
   },
   {
+    id: 5,
     category: '쇼핑',
     icon: <HiShoppingBag />,
   },
   {
+    id: 6,
     category: '가족',
     icon: <MdFamilyRestroom />,
   },
   {
+    id: 7,
     category: '반려동물',
     icon: <FaDog />,
   },
   {
+    id: 8,
     category: '건강',
     icon: <GiStrong />,
   },
   {
+    id: 9,
     category: '종교',
     icon: <TbCross />,
   },
   {
+    id: 10,
     category: '체험',
     icon: <MdSportsTennis />,
   },
