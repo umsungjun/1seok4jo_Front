@@ -68,7 +68,11 @@ export default function SlideImg({show, setShowHandleSlideImg, imgs, id}: SlideI
             <SwiperSlide key={`${index}${url}`}>
               <div className='swiper-slide'>
                 <SwiperImage>
-                  <ImgBox key={`${index}${url}`} imgUrl={url} onClick={() => handleLink(id)}></ImgBox>
+                  <ImgBox
+                    key={`${index}${url}`}
+                    imgUrl={`https://compass-s3-bucket.s3.ap-northeast-2.amazonaws.com/${url}`}
+                    onClick={() => handleLink(id)}
+                  ></ImgBox>
                 </SwiperImage>
               </div>
             </SwiperSlide>
