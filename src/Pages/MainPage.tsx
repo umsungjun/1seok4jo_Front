@@ -5,7 +5,7 @@ import PostList from '../Component/PostList'
 import {scrollToTop} from '../util/scrollToTop'
 import styled from 'styled-components'
 import HeaderSearchBox from '../Component/Header/HeaderSearch'
-import {fetchThemePostListApi} from '../Service/PostThemeService'
+import {fetchThemePostListApi} from '../Service/postThemeService'
 
 export default function MainPage() {
   scrollToTop()

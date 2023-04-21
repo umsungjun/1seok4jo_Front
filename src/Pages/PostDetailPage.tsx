@@ -18,12 +18,14 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/scrollbar'
 import {PostDetailInterface, fetchThemePostDetailApi} from '../Service/postDetailService'
+import {fetchThemePostListApi} from '../Service/postThemeService'
 SwiperCore.use([Navigation, Scrollbar])
 
 const PostDetailPage = () => {
   scrollToTop()
   const {id} = useParams()
-
+  const [themePostList, setThemePostList] = useState([])
+  const [categoryId, setCategoryId] = useState(1)
   const [postDetail, setPostDetail] = useState<PostDetailInterface>({
     baseUrl: '',
     commentCount: 0,
@@ -47,7 +49,15 @@ const PostDetailPage = () => {
     })()
   }, [id])
 
+  useEffect(() => {
+    ;(async () => {
+      const postList = await fetchThemePostListApi(categoryId)
+      setThemePostList(postList.result.slice(0, 4))
+    })()
+  }, [categoryId])
+
   console.log(postDetail)
+  console.log(themePostList)
 
   const [post, setPost] = useState<PostDetailInfoInterface>()
   const [isLiked, setIsLiked] = useState(false)
@@ -183,7 +193,7 @@ const PostDetailPage = () => {
         <MapContainer />
       </Bottom>
       <h4>같은 테마의 이런 곳은 어떨까요?</h4>
-      <PostDetailFeed />
+      <PostDetailFeed themePostList={themePostList} />
     </Detail>
   )
 }
@@ -393,7 +403,7 @@ const CommentBox = styled.section`
   }
 
   .scroll-box {
-    width: 45.5%;
+    width: 100%;
     height: 45rem;
     overflow-y: scroll;
     overflow-x: hidden;
