@@ -9,6 +9,7 @@ import {fetchThemePostListApi} from '../Service/postThemeService'
 
 export default function MainPage() {
   scrollToTop()
+
   const [themePostList, setThemePostList] = useState([])
   const [categoryId, setCategoryId] = useState(1)
 

@@ -9,10 +9,19 @@ import {AiOutlineBell} from 'react-icons/ai'
 import {RxHamburgerMenu} from 'react-icons/rx'
 import styled, {keyframes} from 'styled-components'
 import {Link} from 'react-router-dom'
+import {useDispatch, useSelector} from 'react-redux'
+import {RootState} from '../../Store'
+import {changeThemeType} from '../../Store/themeTypeSlice'
+
+import {MdSunny} from 'react-icons/md'
+import {IoMdMoon} from 'react-icons/io'
 
 const {email, password, nickName, myPage} = users[0]
 
 export default function HeaderProfile() {
+  const themeDispatch = useDispatch()
+  const theme = useSelector((state: RootState) => state.themeType.theme)
+
   const [token, setToken] = useState(true) // TODO 로그인 상태
   const [userUlList, setUserUlList] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
@@ -35,7 +44,8 @@ export default function HeaderProfile() {
       {!token ? (
         <LoginText onClick={handleLogin}>로그인</LoginText>
       ) : (
-        <LoginBox>
+        <LoginBox onClick={() => themeDispatch(changeThemeType())}>
+          <ThemeBox>{theme === 'light' ? <MdSunny /> : <IoMdMoon style={{color: 'fff'}} />}</ThemeBox>
           <Notifications
             onMouseEnter={() => {
               setNotification(true)
@@ -75,6 +85,14 @@ const LoginBox = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+`
+
+const ThemeBox = styled.div`
+  display: flex;
+  font-size: 2rem;
+  padding: 0px 0px 0.1rem 0px;
+  margin-right: 1rem;
+  cursor: pointer;
 `
 
 const Notifications = styled.div`
