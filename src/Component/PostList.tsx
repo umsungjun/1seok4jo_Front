@@ -1,9 +1,16 @@
-import React, {useState} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import styled from 'styled-components'
 import {useNavigate} from 'react-router-dom'
 import {BsFillSuitHeartFill, BsSuitHeart} from 'react-icons/bs'
 import SlideImg from '../Popups/SlideImg'
 import {IoLocationSharp} from 'react-icons/io5'
+import useIntersectionObserver from '../util/useIntersectionObserver'
+import {useInView} from 'react-intersection-observer'
+
+// interface IProps {
+//   loadMore: () => void;
+//   isLoading: boolean;
+// }
 
 interface ThemePostListProps {
   themePostList: {
@@ -16,9 +23,11 @@ interface ThemePostListProps {
     storeFileUrl: string[]
     title: string
   }[]
+  setTarget: React.Dispatch<React.SetStateAction<HTMLElement | null | undefined>>
+  isLoaded: boolean
 }
 
-const PostList = ({themePostList}: ThemePostListProps) => {
+const PostList = ({themePostList, setTarget, isLoaded}: ThemePostListProps) => {
   const [isLiked, setIsLiked] = useState(false)
   const [login, setLogin] = useState(null) // users[0]
   const [showHandleSlideImg, setShowHandleSlideImg] = useState<boolean>(false)
@@ -28,6 +37,13 @@ const PostList = ({themePostList}: ThemePostListProps) => {
 
   const navigate = useNavigate()
   const menuOptions = ['삭제', '편집']
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (ref.current) {
+      setTarget(ref.current)
+    }
+  }, [setTarget])
 
   const setSlideImgAndShow = (images: string[], id: number) => {
     setSlideImgs(images)
@@ -106,6 +122,8 @@ const PostList = ({themePostList}: ThemePostListProps) => {
           </FeedStyled>
         )
       })}
+      {/* {isLoaded && <div>Loading..</div>} */}
+      <div ref={setTarget}>{isLoaded && <div>Loading..</div>}</div>
     </PostListStyled>
   )
 
