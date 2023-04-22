@@ -20,6 +20,7 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
   const [cookies, setCookie] = useCookies(['token'])
   const [joinForm, setJoinForm] = useState(false)
   const [joinWelcomeText, setJoinWelcomeText] = useState('Compass에 오신 것을 환영합니다.')
+  const [loginWelcomeText, setLoginWelcomeText] = useState('Compass에 오신 것을 환영합니다.')
 
   const loginEmailRef = useRef<HTMLInputElement>(null)
   const loginPasswordRef = useRef<HTMLInputElement>(null)
@@ -30,34 +31,21 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
   const joinPassword2Ref = useRef<HTMLInputElement>(null)
   const joinNickNameRef = useRef<HTMLInputElement>(null)
 
-  interface UserData {
-    accessToken: string
-    bannerUrl: string
-    email: string
-    introduction: string
-    nickName: string
-    profileUrl: string
-    userId: number
-  }
-
   const handleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    console.log('이메일 : ', loginEmailRef.current?.value)
-    console.log('비밀번호 : ', loginPasswordRef.current?.value)
+    // console.log('이메일 : ', loginEmailRef.current?.value)
+    // console.log('비밀번호 : ', loginPasswordRef.current?.value)
+    const loginEmail = loginEmailRef.current?.value as string
+    const loginPassword = loginPasswordRef.current?.value as string
     try {
-      const loginResult = await fetchLoginApi(
-        loginEmailRef.current?.value as string,
-        loginPasswordRef.current?.value as string,
-      )
-      // console.log(loginResult)
-
+      const loginResult = await fetchLoginApi(loginEmail, loginPassword)
       setCookie('token', `bearer ${loginResult.accessToken}`)
       userDispatch(setUser(loginResult))
+      setShowLoginModal(false)
     } catch (error) {
       console.log(error)
+      setLoginWelcomeText('로그인 정보가 일치하지 않습니다.')
     }
-
-    setShowLoginModal(false)
   }
 
   const handleJoin = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -124,7 +112,7 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
               <ModalTitle>로그인</ModalTitle>
             </ModalCloseTitleBox>
             <Line />
-            <WelcomeText>Compass에 오신 것을 환영합니다.</WelcomeText>
+            <WelcomeText>{loginWelcomeText}</WelcomeText>
             <InputGroup>
               <Input
                 type='email'

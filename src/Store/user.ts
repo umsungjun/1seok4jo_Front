@@ -10,15 +10,18 @@ export interface UserState {
   userId: number
 }
 
-const initialState: UserState = {
-  accessToken: '',
-  bannerUrl: '',
-  email: '',
-  introduction: '',
-  nickName: '',
-  profileUrl: '',
-  userId: 0,
-}
+const initialState: UserState = JSON.parse(
+  localStorage.getItem('USER') ??
+    JSON.stringify({
+      accessToken: '',
+      bannerUrl: '',
+      email: '',
+      introduction: '',
+      nickName: '',
+      profileUrl: '',
+      userId: 0,
+    }),
+)
 
 export const userSlice = createSlice({
   name: 'user',
@@ -33,6 +36,8 @@ export const userSlice = createSlice({
       state.nickName = nickName
       state.profileUrl = profileUrl
       state.userId = userId
+
+      localStorage.setItem('USER', JSON.stringify(state))
     },
   },
 })

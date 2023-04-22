@@ -7,7 +7,7 @@ import Notification from '../../Popups/Notification'
 import {AiOutlineBell} from 'react-icons/ai'
 import {RxHamburgerMenu} from 'react-icons/rx'
 import styled, {keyframes} from 'styled-components'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from '../../Store'
 import {changeThemeType} from '../../Store/themeTypeSlice'
@@ -24,6 +24,7 @@ export default function HeaderProfile() {
   const [userUlList, setUserUlList] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [notification, setNotification] = useState(false)
+  const navigate = useNavigate()
 
   const handleOpenUserUl = () => {
     setUserUlList(!userUlList)
@@ -31,7 +32,19 @@ export default function HeaderProfile() {
 
   const handleLogout = () => {
     setToken('token', '', {expires: new Date(0)})
-    // TODO reducer함수를 통해서 그 회원정보의 값을 초기화 해줘야한다.
+    localStorage.setItem(
+      'USER',
+      JSON.stringify({
+        accessToken: '',
+        bannerUrl: '',
+        email: '',
+        introduction: '',
+        nickName: '',
+        profileUrl: '',
+        userId: 0,
+      }),
+    )
+    navigate('/')
   }
 
   const handleLogin = () => {
