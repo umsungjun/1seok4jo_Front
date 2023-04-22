@@ -7,8 +7,9 @@ import {TbSlash} from 'react-icons/tb'
 import {fetchJoinApi} from '../Service/joinService'
 import {fetchLoginApi} from '../Service/loginService'
 import {useCookies} from 'react-cookie'
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {setUser} from '../Store/user'
+import {RootState} from '../Store'
 
 interface PaymentModalProps {
   show: boolean
@@ -16,6 +17,7 @@ interface PaymentModalProps {
 }
 
 export default function Login({show, setShowLoginModal}: PaymentModalProps) {
+  const theme = useSelector((state: RootState) => state.themeType.theme)
   const userDispatch = useDispatch()
   const [cookies, setCookie] = useCookies(['token'])
   const [joinForm, setJoinForm] = useState(false)
@@ -87,18 +89,19 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
 
   return (
     <ModalBackdrop show={show}>
-      <ModalContent>
+      <ModalContent theme={theme}>
         {joinForm ? (
           <>
             <ModalCloseTitleBox>
               <CloseIcon
+                theme={theme}
                 onClick={() => {
                   setShowLoginModal(false), setJoinForm(false)
                 }}
               />
               <ModalTitle>회원가입</ModalTitle>
             </ModalCloseTitleBox>
-            <Line />
+            <Line theme={theme} />
             <WelcomeText ref={joinWelcomeTextRef}>{joinWelcomeText}</WelcomeText>
             <InputGroupJoin>
               <Input
@@ -118,13 +121,14 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
           <>
             <ModalCloseTitleBox>
               <CloseIcon
+                theme={theme}
                 onClick={() => {
                   setShowLoginModal(false), setJoinForm(false)
                 }}
               />
               <ModalTitle>로그인</ModalTitle>
             </ModalCloseTitleBox>
-            <Line />
+            <Line theme={theme} />
             <WelcomeText>{loginWelcomeText}</WelcomeText>
             <InputGroup>
               <Input
@@ -137,9 +141,11 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
               <Input type='password' placeholder='비밀 번호' required ref={loginPasswordRef} />
             </InputGroup>
             <JoinFindPassBox>
-              <button onClick={() => setJoinForm(true)}>회원가입</button>
+              <JoinFindPassButton theme={theme} onClick={() => setJoinForm(true)}>
+                회원가입
+              </JoinFindPassButton>
               <TbSlash />
-              <button>비밀번호 찾기</button>
+              <JoinFindPassButton theme={theme}>비밀번호 찾기</JoinFindPassButton>
             </JoinFindPassBox>
             <LoginButton onClick={e => handleLogin(e)}>로그인</LoginButton>
             <Hrspan>또는</Hrspan>
@@ -174,7 +180,8 @@ const ModalContent = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #fff;
+  ${props => (props.theme === 'light' ? 'background-color: #fff;' : 'background-color: #1b1b1d;')}
+  ${props => (props.theme === 'light' ? '' : 'color: #fff;')}
   width: 35rem;
   height: 33rem;
   z-index: 1000;
@@ -196,7 +203,7 @@ const CloseIcon = styled(AiOutlineClose)`
   border-radius: 50%;
 
   &:hover {
-    background-color: #f7f7f7;
+    ${props => (props.theme === 'light' ? 'background-color: #f7f7f7;' : 'background-color: #5e5e5e;')}
   }
 `
 
@@ -258,16 +265,17 @@ const JoinFindPassBox = styled.div`
   justify-content: flex-end;
   margin-top: 1rem;
   align-items: center;
+`
 
-  button {
-    border: none;
-    cursor: pointer;
-    background: none;
-  }
+const JoinFindPassButton = styled.button`
+  border: none;
+  cursor: pointer;
+  background: none;
+  ${props => (props.theme === 'light' ? '' : 'color: #fff;')}
 `
 
 const Line = styled.hr`
-  background: #f0f0f0;
+  ${props => (props.theme === 'light' ? 'background: #f0f0f0;' : 'background: #7a7a7a;')}
   height: 1px;
   width: 100%;
   border: 0px;
