@@ -58,7 +58,9 @@ export default function HeaderProfile() {
           <ThemeBoxNotLogin onClick={() => themeDispatch(changeThemeType())}>
             {theme === 'light' ? <MdSunny /> : <IoMdMoon style={{color: 'fff'}} />}
           </ThemeBoxNotLogin>
-          <LoginText onClick={handleLogin}>로그인</LoginText>
+          <LoginText theme={theme} onClick={handleLogin}>
+            로그인
+          </LoginText>
         </NotLoginBox>
       ) : (
         <LoginBox>
@@ -66,6 +68,7 @@ export default function HeaderProfile() {
             {theme === 'light' ? <MdSunny /> : <IoMdMoon style={{color: 'fff'}} />}
           </ThemeBox>
           <Notifications
+            theme={theme}
             onMouseEnter={() => {
               setNotification(true)
             }}
@@ -75,7 +78,7 @@ export default function HeaderProfile() {
           </Notifications>
           {notification && <Notification setNotification={setNotification} />}
           <UserButton onClick={handleOpenUserUl}>
-            <RxHamburgerMenu />
+            <RxHamburgerMenu style={{color: theme === 'light' ? '' : '#fff'}} />
             <UserImg src={user.profileUrl} alt='userImg' />
             {userUlList && (
               <UserUl>
@@ -98,6 +101,7 @@ const LoginText = styled.span`
   cursor: pointer;
   padding-top: 0.2rem;
   font-size: 1.2rem;
+  ${props => (props.theme === 'light' ? '' : 'color:#fff')}
 `
 
 const NotLoginBox = styled.div`
@@ -139,9 +143,11 @@ const Notifications = styled.div`
   }
 
   &:hover {
-    background-color: #f7f7f7;
+    // background-color: #f7f7f7;
     color: #1877fe;
   }
+
+  ${props => (props.theme === 'light' ? '' : 'color: #fff;')}
 `
 
 const Count = styled.span`

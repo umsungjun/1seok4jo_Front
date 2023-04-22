@@ -62,7 +62,7 @@ export default function HeaderSearchBox() {
         </SearchUl>
       )}
       <Bar />
-      <Search onChange={e => handleSearchInput(e)} onKeyDown={e => handleSearchEnter(e)} />
+      <Search theme={theme} onChange={e => handleSearchInput(e)} onKeyDown={e => handleSearchEnter(e)} />
       <SearchButton onClick={handleSearchClick}>
         <GoSearch />
       </SearchButton>
@@ -152,8 +152,11 @@ const Search = styled.input`
   border: none;
   font-size: 1rem;
   height: 1.7rem;
-  border-radius: 0.5rem;
+  border-radius: 0.2rem;
   padding-left: 0.5rem;
+
+  ${props => (props.theme === 'light' ? '' : 'color:#fff')};
+  ${props => (props.theme === 'light' ? 'background-color: #fff;' : 'background-color: #1b1b1d;')}
   &:focus {
     outline: none;
   }
