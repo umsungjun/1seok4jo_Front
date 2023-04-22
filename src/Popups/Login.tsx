@@ -158,20 +158,6 @@ interface ModalProps {
   show: boolean
 }
 
-const JoinForm = styled.form`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`
-
-const LoginForm = styled.form`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`
-
 const ModalBackdrop = styled.div<ModalProps>`
   position: fixed;
   top: 0;
