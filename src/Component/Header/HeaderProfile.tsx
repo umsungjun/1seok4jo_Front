@@ -54,10 +54,17 @@ export default function HeaderProfile() {
   return (
     <>
       {Object.keys(token).length === 0 ? (
-        <LoginText onClick={handleLogin}>로그인</LoginText>
+        <NotLoginBox>
+          <ThemeBoxNotLogin onClick={() => themeDispatch(changeThemeType())}>
+            {theme === 'light' ? <MdSunny /> : <IoMdMoon style={{color: 'fff'}} />}
+          </ThemeBoxNotLogin>
+          <LoginText onClick={handleLogin}>로그인</LoginText>
+        </NotLoginBox>
       ) : (
-        <LoginBox onClick={() => themeDispatch(changeThemeType())}>
-          <ThemeBox>{theme === 'light' ? <MdSunny /> : <IoMdMoon style={{color: 'fff'}} />}</ThemeBox>
+        <LoginBox>
+          <ThemeBox onClick={() => themeDispatch(changeThemeType())}>
+            {theme === 'light' ? <MdSunny /> : <IoMdMoon style={{color: 'fff'}} />}
+          </ThemeBox>
           <Notifications
             onMouseEnter={() => {
               setNotification(true)
@@ -89,14 +96,27 @@ export default function HeaderProfile() {
 
 const LoginText = styled.span`
   cursor: pointer;
-  min-width: 9rem;
-  text-align: right;
+  padding-top: 0.2rem;
+  font-size: 1.2rem;
+`
+
+const NotLoginBox = styled.div`
+  display: flex;
+  align-items: center;
 `
 
 const LoginBox = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+`
+
+const ThemeBoxNotLogin = styled.div`
+  display: flex;
+  font-size: 2rem;
+  padding: 0px 0px 0.1rem 0px;
+  margin-right: 1rem;
+  cursor: pointer;
 `
 
 const ThemeBox = styled.div`
