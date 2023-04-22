@@ -37,6 +37,12 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
     // console.log('비밀번호 : ', loginPasswordRef.current?.value)
     const loginEmail = loginEmailRef.current?.value as string
     const loginPassword = loginPasswordRef.current?.value as string
+
+    if (loginEmail === '' || loginPassword === '') {
+      setLoginWelcomeText('로그인 정보를 다시 기입하여 주십시오.')
+      return
+    }
+
     try {
       const loginResult = await fetchLoginApi(loginEmail, loginPassword)
       setCookie('token', `bearer ${loginResult.accessToken}`)
@@ -50,11 +56,18 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
 
   const handleJoin = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    if (joinPasswordRef.current?.value !== joinPassword2Ref.current?.value) {
-      if (joinWelcomeTextRef.current) {
-        joinWelcomeTextRef.current.style.color = 'red'
-      }
 
+    if (
+      (joinEmailRef.current?.value as string) === '' ||
+      (joinPasswordRef.current?.value as string) === '' ||
+      (joinPassword2Ref.current?.value as string) === '' ||
+      (joinNickNameRef.current?.value as string) === ''
+    ) {
+      setJoinWelcomeText('회원 정보를 모두 기입하여 주십시오.')
+      return
+    }
+
+    if (joinPasswordRef.current?.value !== joinPassword2Ref.current?.value) {
       setJoinWelcomeText('비밀번호가 일치하지 않습니다.')
       return
     }
