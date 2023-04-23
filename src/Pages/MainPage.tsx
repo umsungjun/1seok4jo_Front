@@ -17,15 +17,12 @@ export default function MainPage() {
   const [lastId, setLastId] = useState<number | null>(null)
 
   useEffect(() => {
+    const lastPost = themePostList[themePostList.length - 1]
+    if (lastPost) {
+      setLastId(lastPost.postId)
+    }
     console.log('themePostList', themePostList)
     console.log('lastId', lastId)
-    setLastId(
-      themePostList.length > 9
-        ? themePostList[9].postId
-        : themePostList.length > 0
-        ? themePostList[themePostList.length - 1].postId
-        : 0,
-    )
   }, [themePostList])
 
   const onLoadMore = useCallback(async () => {
@@ -34,11 +31,11 @@ export default function MainPage() {
       setThemePostList([...themePostList, ...nextPosts.result])
       console.log('nextPosts:', nextPosts)
     }
-  }, [categoryId, lastId])
+  }, [categoryId, lastId, themePostList])
 
   const [infiniteRef] = useInfiniteScroll({
     loading: false,
-    hasNextPage: true,
+    hasNextPage: themePostList.length % 10 === 0 ? true : false,
     onLoadMore,
     disabled: false,
     rootMargin: '0px 0px 500px 0px',
