@@ -4,10 +4,15 @@ import {SlCompass} from 'react-icons/sl'
 
 import HeaderSearchBox from './HeaderSearch'
 import HeaderProfile from './HeaderProfile'
+import {useSelector} from 'react-redux'
+import {RootState} from '../../Store'
+import {ThemeState} from '../../Store/themeTypeSlice'
 
 export default function Header() {
+  const theme = useSelector((state: RootState) => state.themeType.theme)
+
   return (
-    <HeaderSection>
+    <HeaderSection theme={theme}>
       <LogoBox>
         <Logo to='/'>
           <SlCompass />
@@ -28,17 +33,16 @@ const HeaderSearchWarper = styled.div`
   }
 `
 
-const HeaderSection = styled.section`
+const HeaderSection = styled.section<ThemeState>`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 5rem;
-  border-bottom: 1px solid #d0d0d0;
   position: fixed;
   width: 100%;
   box-sizing: border-box;
   z-index: 10;
-  background: #fff;
+  ${props => (props.theme === 'light' ? 'background-color: #fff;' : 'background-color: #1b1b1d;')}
 
   @media (max-width: 576px) {
     padding: 1rem 1rem;
