@@ -9,28 +9,24 @@ import {fetchThemePostListApi} from '../Service/postThemeService'
 import {fetchThemeScrollApi} from '../Service/postThemeScrollService'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 import {ThemePostListProps} from '../Component/PostList'
-import {ThemeScrollProps} from '../Component/PostList'
 
 export default function MainPage() {
   scrollToTop()
   const [themePostList, setThemePostList] = useState<ThemePostListProps['themePostList']>([])
-  const [themeScrollList, setThemeScrollList] = useState<ThemeScrollProps['themeScrollList']>([])
   const [categoryId, setCategoryId] = useState(1)
   const [lastId, setLastId] = useState<number | null>(null)
 
   useEffect(() => {
     console.log('themePostList', themePostList)
-    console.log('themeScrollList', themeScrollList)
     console.log('lastId', lastId)
     setLastId(themePostList.length > 0 ? themePostList[0].postId - 9 : 0)
-  }, [themePostList, themeScrollList])
+  }, [themePostList])
 
   const onLoadMore = useCallback(async () => {
     if (lastId !== null) {
       const nextPosts = await fetchThemeScrollApi(categoryId, lastId)
       setThemePostList([...themePostList, ...nextPosts.result])
       console.log('nextPosts:', nextPosts)
-      console.log('more')
     }
   }, [categoryId, lastId])
 
@@ -58,7 +54,7 @@ export default function MainPage() {
       <ThemeSlideWrapper>
         <ThemeSlide setCategoryId={setCategoryId} />
       </ThemeSlideWrapper>
-      <PostList ref={infiniteRef} themePostList={themePostList} themeScrollList={themeScrollList} />
+      <PostList ref={infiniteRef} themePostList={themePostList} />
     </MainSection>
   )
 }
