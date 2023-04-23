@@ -7,7 +7,6 @@ import styled from 'styled-components'
 import HeaderSearchBox from '../Component/Header/HeaderSearch'
 import {fetchThemePostListApi} from '../Service/postThemeService'
 import {fetchThemeScrollApi} from '../Service/postThemeScrollService'
-import {useIntersectionObserver} from 'react-intersection-observer-hook'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 import {ThemePostListProps} from '../Component/PostList'
 import {ThemeScrollProps} from '../Component/PostList'
@@ -18,10 +17,7 @@ export default function MainPage() {
   const [themeScrollList, setThemeScrollList] = useState<ThemeScrollProps['themeScrollList']>([])
   const [categoryId, setCategoryId] = useState(1)
   const [lastId, setLastId] = useState<number | null>(null)
-  // const ref = useRef<HTMLDivElement>(null)
 
-  // const [ref, {entry}] = useIntersectionObserver()
-  // const isVisible = entry && entry.isIntersecting
   useEffect(() => {
     console.log('themePostList', themePostList)
     console.log('themeScrollList', themeScrollList)
@@ -32,7 +28,7 @@ export default function MainPage() {
   const onLoadMore = useCallback(async () => {
     if (lastId !== null) {
       const nextPosts = await fetchThemeScrollApi(categoryId, lastId)
-      setThemeScrollList(nextPosts.result)
+      setThemePostList([...themePostList, ...nextPosts.result])
       console.log('nextPosts:', nextPosts)
       console.log('more')
     }
@@ -41,29 +37,17 @@ export default function MainPage() {
   const [infiniteRef] = useInfiniteScroll({
     loading: false,
     hasNextPage: true,
-    // themePostList.length < 10
-
-    // onLoadMore: async () => {
-    //   console.log('more')
-    //   const postScrollList = await fetchThemeScrollApi(categoryId, lastId)
-    //   setThemePostList(postScrollList.result)
-    //   setLastId(postScrollList.result[postScrollList.result.length + 10])
-    // },
     onLoadMore,
     disabled: false,
     rootMargin: '0px 0px 500px 0px',
   })
 
   useEffect(() => {
-    // if (!isVisible) return
     ;(async () => {
       const postList = await fetchThemePostListApi(categoryId)
       setThemePostList(postList.result)
     })()
-  }, [
-    categoryId,
-    // , isVisible
-  ])
+  }, [categoryId])
 
   return (
     <MainSection>
