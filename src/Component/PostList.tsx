@@ -1,18 +1,11 @@
-import React, {useState, useRef, useEffect} from 'react'
+import React, {useState, forwardRef, ForwardedRef} from 'react'
 import styled from 'styled-components'
 import {useNavigate} from 'react-router-dom'
 import {BsFillSuitHeartFill, BsSuitHeart} from 'react-icons/bs'
 import SlideImg from '../Popups/SlideImg'
 import {IoLocationSharp} from 'react-icons/io5'
-import useIntersectionObserver from '../util/useIntersectionObserver'
-import {useInView} from 'react-intersection-observer'
 
-// interface IProps {
-//   loadMore: () => void;
-//   isLoading: boolean;
-// }
-
-interface ThemePostListProps {
+export interface ThemePostListProps {
   themePostList: {
     baseUrl: string
     endDate: string
@@ -23,266 +16,277 @@ interface ThemePostListProps {
     storeFileUrl: string[]
     title: string
   }[]
-  setTarget: React.Dispatch<React.SetStateAction<HTMLElement | null | undefined>>
-  isLoaded: boolean
 }
 
-const PostList = ({themePostList, setTarget, isLoaded}: ThemePostListProps) => {
-  const [isLiked, setIsLiked] = useState(false)
-  const [login, setLogin] = useState(null) // users[0]
-  const [showHandleSlideImg, setShowHandleSlideImg] = useState<boolean>(false)
-  const [slideImgs, setSlideImgs] = useState<string[]>([])
-  const [slideId, setSlideId] = useState<number>(0)
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
+export interface ThemeScrollProps {
+  themeScrollList: {
+    baseUrl: string
+    endDate: string
+    likeCount: number
+    location: string
+    postId: number
+    startDate: string
+    storeFileUrl: string[]
+    title: string
+  }[]
+}
 
-  const navigate = useNavigate()
-  const menuOptions = ['삭제', '편집']
-  const ref = useRef<HTMLDivElement>(null)
+const PostList = forwardRef(
+  (
+    props: {
+      themePostList: ThemePostListProps
+      themeScrollList: ThemeScrollProps
+    },
+    ref: ForwardedRef<HTMLDivElement>,
+  ) => {
+    const [isLiked, setIsLiked] = useState(false)
+    const [login, setLogin] = useState(null) // users[0]
+    const [showHandleSlideImg, setShowHandleSlideImg] = useState<boolean>(false)
+    const [slideImgs, setSlideImgs] = useState<string[]>([])
+    const [slideId, setSlideId] = useState<number>(0)
+    const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
 
-  useEffect(() => {
-    if (ref.current) {
-      setTarget(ref.current)
+    const navigate = useNavigate()
+    const menuOptions = ['삭제', '편집']
+
+    const setSlideImgAndShow = (images: string[], id: number) => {
+      setSlideImgs(images)
+      setShowHandleSlideImg(true)
+      setSlideId(id)
     }
-  }, [setTarget])
 
-  const setSlideImgAndShow = (images: string[], id: number) => {
-    setSlideImgs(images)
-    setShowHandleSlideImg(true)
-    setSlideId(id)
-  }
-
-  const handleLikeClick = (e: React.MouseEvent<SVGAElement>) => {
-    e.stopPropagation()
-    console.log('좋아요 클릭')
-    setIsLiked(!isLiked)
-  }
-
-  const handleOptionClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    console.log('옵션 클릭')
-    setIsMenuOpen(!isMenuOpen)
-  }
-
-  const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation()
-    if (isMenuOpen) {
-      setIsMenuOpen(false)
+    const handleLikeClick = (e: React.MouseEvent<SVGAElement>) => {
+      e.stopPropagation()
+      console.log('좋아요 클릭')
+      setIsLiked(!isLiked)
     }
-  }
 
-  const handleDeletePost = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    console.log('삭제 클릭')
-    confirm('정말 삭제하시겠습니까?') // TODO 팝업
-    setIsMenuOpen(!isMenuOpen)
-  }
+    const handleOptionClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation()
+      console.log('옵션 클릭')
+      setIsMenuOpen(!isMenuOpen)
+    }
 
-  const handleEditPost = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    console.log('편집 클릭')
-    navigate(`/PostEdit`)
-  }
-  if (!themePostList) {
-    return null
-  }
-  return (
-    <PostListStyled>
-      {themePostList.map(post => {
-        const {baseUrl, postId, storeFileUrl, title, location, startDate, endDate, likeCount} = post
-        return (
-          <FeedStyled key={postId}>
-            <ImgBox onClick={() => setSlideImgAndShow(storeFileUrl, postId)}>
-              <img src={`${baseUrl}${storeFileUrl[0]}`} />
-            </ImgBox>
-            <div className='text'>
-              <FeedInfoStyled>
-                <div className='title'>{title}</div>
-                <div className='location'>
-                  <IoLocationSharp />
-                  <span>{location}</span>
+    const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
+      e.stopPropagation()
+      if (isMenuOpen) {
+        setIsMenuOpen(false)
+      }
+    }
+
+    const handleDeletePost = (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation()
+      console.log('삭제 클릭')
+      confirm('정말 삭제하시겠습니까?') // TODO 팝업
+      setIsMenuOpen(!isMenuOpen)
+    }
+
+    const handleEditPost = (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation()
+      console.log('편집 클릭')
+      navigate(`/PostEdit`)
+    }
+
+    return (
+      <>
+        <PostListStyled>
+          {props.themePostList.map(post => {
+            const {baseUrl, postId, storeFileUrl, title, location, startDate, endDate, likeCount} = post
+            return (
+              <FeedStyled key={postId}>
+                <ImgBox onClick={() => setSlideImgAndShow(storeFileUrl, postId)}>
+                  <img src={`${baseUrl}${storeFileUrl[0]}`} />
+                </ImgBox>
+                <div className='text'>
+                  <FeedInfoStyled>
+                    <div className='title'>{title}</div>
+                    <div className='location'>
+                      <IoLocationSharp />
+                      <span>{location}</span>
+                    </div>
+                    <div className='date'>{`${startDate} ~ ${endDate}`}</div>
+                  </FeedInfoStyled>
+
+                  <FeedLikeStyled>
+                    <LikeButtonStyled>
+                      <BsFillSuitHeartFill />
+                    </LikeButtonStyled>
+                    <div>{likeCount}</div>
+                  </FeedLikeStyled>
                 </div>
-                <div className='date'>{`${startDate} ~ ${endDate}`}</div>
-              </FeedInfoStyled>
+                {showHandleSlideImg && (
+                  <SlideImg
+                    show={showHandleSlideImg}
+                    setShowHandleSlideImg={setShowHandleSlideImg}
+                    imgs={slideImgs}
+                    id={slideId}
+                  />
+                )}
+              </FeedStyled>
+            )
+          })}
+        </PostListStyled>
+        <div ref={ref}>Loading</div>
+      </>
+    )
 
-              <FeedLikeStyled>
-                <LikeButtonStyled>
-                  <BsFillSuitHeartFill />
-                </LikeButtonStyled>
-                <div>{likeCount}</div>
-              </FeedLikeStyled>
-            </div>
-            {showHandleSlideImg && (
-              <SlideImg
-                show={showHandleSlideImg}
-                setShowHandleSlideImg={setShowHandleSlideImg}
-                imgs={slideImgs}
-                id={slideId}
-              />
-            )}
-          </FeedStyled>
-        )
-      })}
-      {/* {isLoaded && <div>Loading..</div>} */}
-      <div ref={setTarget}>{isLoaded && <div>Loading..</div>}</div>
-    </PostListStyled>
-  )
+    // return login === null ? (
+    //   <PostListStyled>
+    //     {PostFeed.map(data => {
+    //       const {id, title, location, date, likes, images, name} = data
+    //       return (
+    //         <FeedStyled key={id}>
+    //           <ImgBox
+    //             onClick={() =>
+    //               setSlideImgAndShow(
+    //                 images.map(image => image.url),
+    //                 id,
+    //               )
+    //             }
+    //           >
+    //             <img src={images[0].url} alt={name} />
+    //           </ImgBox>
+    //           <div className='text'>
+    //             <FeedInfoStyled>
+    //               <div className='title'>{title}</div>
+    //               <div className='location'>
+    //                 <IoLocationSharp />
+    //                 <span>{location}</span>
+    //               </div>
+    //               <div className='date'>{date}</div>
+    //             </FeedInfoStyled>
 
-  // return login === null ? (
-  //   <PostListStyled>
-  //     {PostFeed.map(data => {
-  //       const {id, title, location, date, likes, images, name} = data
-  //       return (
-  //         <FeedStyled key={id}>
-  //           <ImgBox
-  //             onClick={() =>
-  //               setSlideImgAndShow(
-  //                 images.map(image => image.url),
-  //                 id,
-  //               )
-  //             }
-  //           >
-  //             <img src={images[0].url} alt={name} />
-  //           </ImgBox>
-  //           <div className='text'>
-  //             <FeedInfoStyled>
-  //               <div className='title'>{title}</div>
-  //               <div className='location'>
-  //                 <IoLocationSharp />
-  //                 <span>{location}</span>
-  //               </div>
-  //               <div className='date'>{date}</div>
-  //             </FeedInfoStyled>
+    //             <FeedLikeStyled>
+    //               <LikeButtonStyled>
+    //                 <BsFillSuitHeartFill />
+    //               </LikeButtonStyled>
 
-  //             <FeedLikeStyled>
-  //               <LikeButtonStyled>
-  //                 <BsFillSuitHeartFill />
-  //               </LikeButtonStyled>
+    //               <div>{likes}</div>
+    //             </FeedLikeStyled>
+    //           </div>
+    //           {showHandleSlideImg && (
+    //             <SlideImg
+    //               show={showHandleSlideImg}
+    //               setShowHandleSlideImg={setShowHandleSlideImg}
+    //               imgs={slideImgs}
+    //               id={slideId}
+    //             />
+    //           )}
+    //         </FeedStyled>
+    //       )
+    //     })}
+    //   </PostListStyled>
+    // ) : (
+    //   <PostListStyled>
+    //     {PostFeed.map(data => {
+    //       const {id, nickName, title, location, date, likes, images, name} = data
+    //       return nickName === login.nickName ? (
+    //         <FeedStyled key={id}>
+    //           <ImgBox
+    //             onClick={() =>
+    //               setSlideImgAndShow(
+    //                 images.map(image => image.url),
+    //                 id,
+    //               )
+    //             }
+    //           >
+    //             <img src={images[0].url} alt={name} />
+    //             <div onClick={handleClickOutside}>
+    //               <MenuButton className='circle-button' onClick={handleOptionClick}>
+    //                 <div className='circle'></div>
+    //                 <div className='circle'></div>
+    //                 <div className='circle'></div>
+    //               </MenuButton>
+    //               {isMenuOpen && (
+    //                 <OptionList>
+    //                   {menuOptions.map(option => (
+    //                     <OptionsButton key={option} onClick={option === '삭제' ? handleDeletePost : handleEditPost}>
+    //                       {option}
+    //                     </OptionsButton>
+    //                   ))}
+    //                 </OptionList>
+    //               )}
+    //             </div>
+    //           </ImgBox>
+    //           <div className='text'>
+    //             <FeedInfoStyled>
+    //               <div className='title'>{title}</div>
+    //               <div className='location'>
+    //                 <IoLocationSharp />
+    //                 <span>{location}</span>
+    //               </div>
+    //               <div className='date'>{date}</div>
+    //             </FeedInfoStyled>
 
-  //               <div>{likes}</div>
-  //             </FeedLikeStyled>
-  //           </div>
-  //           {showHandleSlideImg && (
-  //             <SlideImg
-  //               show={showHandleSlideImg}
-  //               setShowHandleSlideImg={setShowHandleSlideImg}
-  //               imgs={slideImgs}
-  //               id={slideId}
-  //             />
-  //           )}
-  //         </FeedStyled>
-  //       )
-  //     })}
-  //   </PostListStyled>
-  // ) : (
-  //   <PostListStyled>
-  //     {PostFeed.map(data => {
-  //       const {id, nickName, title, location, date, likes, images, name} = data
-  //       return nickName === login.nickName ? (
-  //         <FeedStyled key={id}>
-  //           <ImgBox
-  //             onClick={() =>
-  //               setSlideImgAndShow(
-  //                 images.map(image => image.url),
-  //                 id,
-  //               )
-  //             }
-  //           >
-  //             <img src={images[0].url} alt={name} />
-  //             <div onClick={handleClickOutside}>
-  //               <MenuButton className='circle-button' onClick={handleOptionClick}>
-  //                 <div className='circle'></div>
-  //                 <div className='circle'></div>
-  //                 <div className='circle'></div>
-  //               </MenuButton>
-  //               {isMenuOpen && (
-  //                 <OptionList>
-  //                   {menuOptions.map(option => (
-  //                     <OptionsButton key={option} onClick={option === '삭제' ? handleDeletePost : handleEditPost}>
-  //                       {option}
-  //                     </OptionsButton>
-  //                   ))}
-  //                 </OptionList>
-  //               )}
-  //             </div>
-  //           </ImgBox>
-  //           <div className='text'>
-  //             <FeedInfoStyled>
-  //               <div className='title'>{title}</div>
-  //               <div className='location'>
-  //                 <IoLocationSharp />
-  //                 <span>{location}</span>
-  //               </div>
-  //               <div className='date'>{date}</div>
-  //             </FeedInfoStyled>
+    //             <FeedLikeStyled>
+    //               <LikeButtonStyled>
+    //                 <BsFillSuitHeartFill />
+    //               </LikeButtonStyled>
 
-  //             <FeedLikeStyled>
-  //               <LikeButtonStyled>
-  //                 <BsFillSuitHeartFill />
-  //               </LikeButtonStyled>
+    //               <div>{likes}</div>
+    //             </FeedLikeStyled>
+    //           </div>
+    //           {showHandleSlideImg && (
+    //             <SlideImg
+    //               show={showHandleSlideImg}
+    //               setShowHandleSlideImg={setShowHandleSlideImg}
+    //               imgs={slideImgs}
+    //               id={slideId}
+    //             />
+    //           )}
+    //         </FeedStyled>
+    //       ) : (
+    //         <FeedStyled key={id}>
+    //           <ImgBox
+    //             onClick={() =>
+    //               setSlideImgAndShow(
+    //                 images.map(image => image.url),
+    //                 id,
+    //               )
+    //             }
+    //           >
+    //             <img src={images[0].url} alt={name} />
+    //             <LikeButton type='submit'>
+    //               {isLiked ? (
+    //                 <BsFillSuitHeartFill onClick={handleLikeClick} />
+    //               ) : (
+    //                 <BsSuitHeart onClick={handleLikeClick} />
+    //               )}
+    //             </LikeButton>
+    //           </ImgBox>
+    //           <div className='text'>
+    //             <FeedInfoStyled>
+    //               <div className='title'>{title}</div>
+    //               <div className='location'>
+    //                 <IoLocationSharp />
+    //                 <span>{location}</span>
+    //               </div>
+    //               <div className='date'>{date}</div>
+    //             </FeedInfoStyled>
 
-  //               <div>{likes}</div>
-  //             </FeedLikeStyled>
-  //           </div>
-  //           {showHandleSlideImg && (
-  //             <SlideImg
-  //               show={showHandleSlideImg}
-  //               setShowHandleSlideImg={setShowHandleSlideImg}
-  //               imgs={slideImgs}
-  //               id={slideId}
-  //             />
-  //           )}
-  //         </FeedStyled>
-  //       ) : (
-  //         <FeedStyled key={id}>
-  //           <ImgBox
-  //             onClick={() =>
-  //               setSlideImgAndShow(
-  //                 images.map(image => image.url),
-  //                 id,
-  //               )
-  //             }
-  //           >
-  //             <img src={images[0].url} alt={name} />
-  //             <LikeButton type='submit'>
-  //               {isLiked ? (
-  //                 <BsFillSuitHeartFill onClick={handleLikeClick} />
-  //               ) : (
-  //                 <BsSuitHeart onClick={handleLikeClick} />
-  //               )}
-  //             </LikeButton>
-  //           </ImgBox>
-  //           <div className='text'>
-  //             <FeedInfoStyled>
-  //               <div className='title'>{title}</div>
-  //               <div className='location'>
-  //                 <IoLocationSharp />
-  //                 <span>{location}</span>
-  //               </div>
-  //               <div className='date'>{date}</div>
-  //             </FeedInfoStyled>
+    //             <FeedLikeStyled>
+    //               <LikeButtonStyled>
+    //                 <BsFillSuitHeartFill />
+    //               </LikeButtonStyled>
 
-  //             <FeedLikeStyled>
-  //               <LikeButtonStyled>
-  //                 <BsFillSuitHeartFill />
-  //               </LikeButtonStyled>
-
-  //               <div>{likes}</div>
-  //             </FeedLikeStyled>
-  //           </div>
-  //           {showHandleSlideImg && (
-  //             <SlideImg
-  //               show={showHandleSlideImg}
-  //               setShowHandleSlideImg={setShowHandleSlideImg}
-  //               imgs={slideImgs}
-  //               id={slideId}
-  //             />
-  //           )}
-  //         </FeedStyled>
-  //       )
-  //     })}
-  //   </PostListStyled>
-  // )
-}
+    //               <div>{likes}</div>
+    //             </FeedLikeStyled>
+    //           </div>
+    //           {showHandleSlideImg && (
+    //             <SlideImg
+    //               show={showHandleSlideImg}
+    //               setShowHandleSlideImg={setShowHandleSlideImg}
+    //               imgs={slideImgs}
+    //               id={slideId}
+    //             />
+    //           )}
+    //         </FeedStyled>
+    //       )
+    //     })}
+    //   </PostListStyled>
+    // )
+  },
+)
 
 export default PostList
 

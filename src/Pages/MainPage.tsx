@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import {useEffect, useState, useRef, useCallback} from 'react'
 import MainBanner from '../Component/MainBanner'
 import ThemeSlide from '../Common/ThemeSlide'
 import PostList from '../Component/PostList'
@@ -6,46 +6,64 @@ import {scrollToTop} from '../util/scrollToTop'
 import styled from 'styled-components'
 import HeaderSearchBox from '../Component/Header/HeaderSearch'
 import {fetchThemePostListApi} from '../Service/postThemeService'
-import useIntersectionObserver from '../util/useIntersectionObserver'
+import {fetchThemeScrollApi} from '../Service/postThemeScrollService'
+import {useIntersectionObserver} from 'react-intersection-observer-hook'
+import useInfiniteScroll from 'react-infinite-scroll-hook'
+import {ThemePostListProps} from '../Component/PostList'
+import {ThemeScrollProps} from '../Component/PostList'
 
 export default function MainPage() {
   scrollToTop()
-  const [themePostList, setThemePostList] = useState([])
+  const [themePostList, setThemePostList] = useState<ThemePostListProps['themePostList']>([])
+  const [themeScrollList, setThemeScrollList] = useState<ThemeScrollProps['themeScrollList']>([])
   const [categoryId, setCategoryId] = useState(1)
-  const [lastId, setLastId] = useState(0)
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [lastId, setLastId] = useState<number | null>(null)
+  // const ref = useRef<HTMLDivElement>(null)
+
+  // const [ref, {entry}] = useIntersectionObserver()
+  // const isVisible = entry && entry.isIntersecting
+  useEffect(() => {
+    console.log('themePostList', themePostList)
+    console.log('themeScrollList', themeScrollList)
+    console.log('lastId', lastId)
+    setLastId(themePostList.length > 0 ? themePostList[0].postId - 9 : 0)
+  }, [themePostList, themeScrollList])
+
+  const onLoadMore = useCallback(async () => {
+    if (lastId !== null) {
+      const nextPosts = await fetchThemeScrollApi(categoryId, lastId)
+      setThemeScrollList(nextPosts.result)
+      console.log('nextPosts:', nextPosts)
+      console.log('more')
+    }
+  }, [categoryId, lastId])
+
+  const [infiniteRef] = useInfiniteScroll({
+    loading: false,
+    hasNextPage: true,
+    // themePostList.length < 10
+
+    // onLoadMore: async () => {
+    //   console.log('more')
+    //   const postScrollList = await fetchThemeScrollApi(categoryId, lastId)
+    //   setThemePostList(postScrollList.result)
+    //   setLastId(postScrollList.result[postScrollList.result.length + 10])
+    // },
+    onLoadMore,
+    disabled: false,
+    rootMargin: '0px 0px 500px 0px',
+  })
 
   useEffect(() => {
-    setIsLoaded(true)
-    // const postList = await fetchThemePostListApi(categoryId)
-    // setThemePostList(postList.result)
-    getList()
-    setIsLoaded(false)
-  }, [categoryId])
-
-  const getList = async () => {
-    const postList = await fetchThemePostListApi(categoryId)
-    setLastId(i => i + 1)
-    setThemePostList(postList.concat(postList.slice(lastId, lastId + 10)))
-    // setThemePostList(postList.result)
-    console.log('test', postList.result)
-  }
-
-  const onIntersect: IntersectionObserverCallback = async ([entry], observer) => {
-    if (entry.isIntersecting && !isLoaded) {
-      observer.unobserve(entry.target)
-      await getList()
-      observer.observe(entry.target)
-    }
-  }
-
-  //현재 대상 및 option을 props로 전달
-  const {setTarget} = useIntersectionObserver({
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.5,
-    onIntersect,
-  })
+    // if (!isVisible) return
+    ;(async () => {
+      const postList = await fetchThemePostListApi(categoryId)
+      setThemePostList(postList.result)
+    })()
+  }, [
+    categoryId,
+    // , isVisible
+  ])
 
   return (
     <MainSection>
@@ -56,7 +74,7 @@ export default function MainPage() {
       <ThemeSlideWrapper>
         <ThemeSlide setCategoryId={setCategoryId} />
       </ThemeSlideWrapper>
-      <PostList themePostList={themePostList} isLoaded={isLoaded} setTarget={setTarget} />
+      <PostList ref={infiniteRef} themePostList={themePostList} themeScrollList={themeScrollList} />
     </MainSection>
   )
 }

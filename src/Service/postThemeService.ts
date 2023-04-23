@@ -13,3 +13,4 @@ export const fetchThemePostListApi = async (categoryId: number) => {
   return response.data
 }
 // http://localhost:8080/post?themeId=1&lastId=10
+// const themePostListURL = `http://localhost:8080/post?themeId=${categoryId}&lastId=${lastId}`
