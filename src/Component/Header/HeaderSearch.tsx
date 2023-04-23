@@ -3,10 +3,15 @@ import styled, {keyframes} from 'styled-components'
 
 import {GoSearch} from 'react-icons/go'
 import {useNavigate} from 'react-router-dom'
+import {useSelector} from 'react-redux'
+import {RootState} from '../../Store'
 
 const searchCondition = ['제목', '내용', '해시태그']
 
 export default function HeaderSearchBox() {
+  const theme = useSelector((state: RootState) => state.themeType.theme)
+  // console.log(theme)
+
   const navigate = useNavigate()
 
   const [searchSelect, setSearchSelect] = useState('제목')
@@ -39,8 +44,10 @@ export default function HeaderSearchBox() {
   }
 
   return (
-    <SearchBox>
-      <SearchSelect onClick={handleSearchSelect}>{searchSelect}</SearchSelect>
+    <SearchBox theme={theme}>
+      <SearchSelect theme={theme} onClick={handleSearchSelect}>
+        {searchSelect}
+      </SearchSelect>
       {selectUl && (
         <SearchUl>
           {searchCondition.map(searchStr => {
@@ -55,7 +62,7 @@ export default function HeaderSearchBox() {
         </SearchUl>
       )}
       <Bar />
-      <Search onChange={e => handleSearchInput(e)} onKeyDown={e => handleSearchEnter(e)} />
+      <Search theme={theme} onChange={e => handleSearchInput(e)} onKeyDown={e => handleSearchEnter(e)} />
       <SearchButton onClick={handleSearchClick}>
         <GoSearch />
       </SearchButton>
@@ -67,19 +74,23 @@ const SearchBox = styled.div`
   padding: 0.4rem 1rem;
   display: flex;
   align-items: center;
-  border: 1px solid #c0c0c0;
+  ${props => (props.theme === 'light' ? 'border: 1px solid #c0c0c0;' : 'border: 1px solid #4B5563;')}
+
   border-radius: 2rem;
-  box-shadow: 0px 1px 1px 1px #dbdbdb;
+  ${props =>
+    props.theme === 'light' ? 'box-shadow: 0px 1px 1px 1px #dbdbdb;' : 'box-shadow: 0px 1px 1px 1px #4B5563;'}
   position: relative;
   cursor: pointer;
   transition: box-shadow 0.3s ease-in-out;
 
   &:hover {
-    box-shadow: 0px 1px 2px 2px #dbdbdb;
+    ${props =>
+      props.theme === 'light' ? 'box-shadow: 0px 1px 2px 2px #dbdbdb;' : 'box-shadow: 0px 1px 2px 2px #4B5563;'}
   }
 
   &:focus {
-    box-shadow: 0px 1px 2px 2px #dbdbdb;
+    ${props =>
+      props.theme === 'light' ? 'box-shadow: 0px 1px 2px 2px #dbdbdb;' : 'box-shadow: 0px 1px 2px 2px #4B5563;'}
   }
 `
 
@@ -89,6 +100,7 @@ const SearchSelect = styled.button`
   cursor: pointer;
   min-width: 4rem;
   font-size: 1rem;
+  ${props => (props.theme === 'light' ? '' : 'color: #fff;')}
   &:focus {
     outline: none;
   }
@@ -139,6 +151,12 @@ const Bar = styled.span`
 const Search = styled.input`
   border: none;
   font-size: 1rem;
+  height: 1.7rem;
+  border-radius: 0.2rem;
+  padding-left: 0.5rem;
+
+  ${props => (props.theme === 'light' ? '' : 'color:#fff')};
+  ${props => (props.theme === 'light' ? 'background-color: #fff;' : 'background-color: #1b1b1d;')}
   &:focus {
     outline: none;
   }
@@ -153,6 +171,7 @@ const SearchButton = styled.button`
   border: none;
   background-color: #1877f2;
   cursor: pointer;
+  margin-left: 0.5rem;
   svg {
     color: #fff;
     font-size: 1rem;
