@@ -19,7 +19,13 @@ export default function MainPage() {
   useEffect(() => {
     console.log('themePostList', themePostList)
     console.log('lastId', lastId)
-    setLastId(themePostList.length > 0 ? themePostList[0].postId - 9 : 0)
+    setLastId(
+      themePostList.length > 9
+        ? themePostList[9].postId
+        : themePostList.length > 0
+        ? themePostList[themePostList.length - 1].postId
+        : 0,
+    )
   }, [themePostList])
 
   const onLoadMore = useCallback(async () => {

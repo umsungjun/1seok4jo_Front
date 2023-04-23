@@ -75,7 +75,7 @@ const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostLis
         {props.themePostList.map(post => {
           const {baseUrl, postId, storeFileUrl, title, location, startDate, endDate, likeCount} = post
           return (
-            <FeedStyled key={postId}>
+            <FeedStyled key={post.postId}>
               <ImgBox onClick={() => setSlideImgAndShow(storeFileUrl, postId)}>
                 <img src={`${baseUrl}${storeFileUrl[0]}`} />
               </ImgBox>
