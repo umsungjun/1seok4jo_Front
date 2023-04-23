@@ -1,11 +1,11 @@
-import React, {useState} from 'react'
+import React, {useState, forwardRef, ForwardedRef} from 'react'
 import styled from 'styled-components'
 import {useNavigate} from 'react-router-dom'
 import {BsFillSuitHeartFill, BsSuitHeart} from 'react-icons/bs'
 import SlideImg from '../Popups/SlideImg'
 import {IoLocationSharp} from 'react-icons/io5'
 
-interface ThemePostListProps {
+export interface ThemePostListProps {
   themePostList: {
     baseUrl: string
     endDate: string
@@ -18,7 +18,9 @@ interface ThemePostListProps {
   }[]
 }
 
-const PostList = ({themePostList}: ThemePostListProps) => {
+const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostList(props, ref) {
+  // (themePostList: ThemePostListProps, ref: ForwardedRef<HTMLDivElement>)
+
   const [isLiked, setIsLiked] = useState(false)
   const [login, setLogin] = useState(null) // users[0]
   const [showHandleSlideImg, setShowHandleSlideImg] = useState<boolean>(false)
@@ -66,47 +68,48 @@ const PostList = ({themePostList}: ThemePostListProps) => {
     console.log('편집 클릭')
     navigate(`/PostEdit`)
   }
-  if (!themePostList) {
-    return null
-  }
-  return (
-    <PostListStyled>
-      {themePostList.map(post => {
-        const {baseUrl, postId, storeFileUrl, title, location, startDate, endDate, likeCount} = post
-        return (
-          <FeedStyled key={postId}>
-            <ImgBox onClick={() => setSlideImgAndShow(storeFileUrl, postId)}>
-              <img src={`${baseUrl}${storeFileUrl[0]}`} />
-            </ImgBox>
-            <div className='text'>
-              <FeedInfoStyled>
-                <div className='title'>{title}</div>
-                <div className='location'>
-                  <IoLocationSharp />
-                  <span>{location}</span>
-                </div>
-                <div className='date'>{`${startDate} ~ ${endDate}`}</div>
-              </FeedInfoStyled>
 
-              <FeedLikeStyled>
-                <LikeButtonStyled>
-                  <BsFillSuitHeartFill />
-                </LikeButtonStyled>
-                <div>{likeCount}</div>
-              </FeedLikeStyled>
-            </div>
-            {showHandleSlideImg && (
-              <SlideImg
-                show={showHandleSlideImg}
-                setShowHandleSlideImg={setShowHandleSlideImg}
-                imgs={slideImgs}
-                id={slideId}
-              />
-            )}
-          </FeedStyled>
-        )
-      })}
-    </PostListStyled>
+  return (
+    <>
+      <PostListStyled>
+        {props.themePostList.map(post => {
+          const {baseUrl, postId, storeFileUrl, title, location, startDate, endDate, likeCount} = post
+          return (
+            <FeedStyled key={post.postId}>
+              <ImgBox onClick={() => setSlideImgAndShow(storeFileUrl, postId)}>
+                <img src={`${baseUrl}${storeFileUrl[0]}`} />
+              </ImgBox>
+              <div className='text'>
+                <FeedInfoStyled>
+                  <div className='title'>{title}</div>
+                  <div className='location'>
+                    <IoLocationSharp />
+                    <span>{location}</span>
+                  </div>
+                  <div className='date'>{`${startDate} ~ ${endDate}`}</div>
+                </FeedInfoStyled>
+
+                <FeedLikeStyled>
+                  <LikeButtonStyled>
+                    <BsFillSuitHeartFill />
+                  </LikeButtonStyled>
+                  <div>{likeCount}</div>
+                </FeedLikeStyled>
+              </div>
+              {showHandleSlideImg && (
+                <SlideImg
+                  show={showHandleSlideImg}
+                  setShowHandleSlideImg={setShowHandleSlideImg}
+                  imgs={slideImgs}
+                  id={slideId}
+                />
+              )}
+            </FeedStyled>
+          )
+        })}
+      </PostListStyled>
+      <div ref={ref}>Loading</div>
+    </>
   )
 
   // return login === null ? (
@@ -264,7 +267,7 @@ const PostList = ({themePostList}: ThemePostListProps) => {
   //     })}
   //   </PostListStyled>
   // )
-}
+})
 
 export default PostList
 
