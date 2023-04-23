@@ -4,6 +4,12 @@ import styled from 'styled-components'
 import {AiOutlineClose} from 'react-icons/ai'
 import {ImBubble} from 'react-icons/im'
 import {TbSlash} from 'react-icons/tb'
+import {fetchJoinApi} from '../Service/joinService'
+import {fetchLoginApi} from '../Service/loginService'
+import {useCookies} from 'react-cookie'
+import {useDispatch, useSelector} from 'react-redux'
+import {setUser} from '../Store/user'
+import {RootState} from '../Store'
 
 interface PaymentModalProps {
   show: boolean
@@ -11,8 +17,12 @@ interface PaymentModalProps {
 }
 
 export default function Login({show, setShowLoginModal}: PaymentModalProps) {
+  const theme = useSelector((state: RootState) => state.themeType.theme)
+  const userDispatch = useDispatch()
+  const [cookies, setCookie] = useCookies(['token'])
   const [joinForm, setJoinForm] = useState(false)
   const [joinWelcomeText, setJoinWelcomeText] = useState('Compass에 오신 것을 환영합니다.')
+  const [loginWelcomeText, setLoginWelcomeText] = useState('Compass에 오신 것을 환영합니다.')
 
   const loginEmailRef = useRef<HTMLInputElement>(null)
   const loginPasswordRef = useRef<HTMLInputElement>(null)
@@ -23,45 +33,75 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
   const joinPassword2Ref = useRef<HTMLInputElement>(null)
   const joinNickNameRef = useRef<HTMLInputElement>(null)
 
-  const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    console.log('이메일 : ', loginEmailRef.current?.value)
-    console.log('비밀번호 : ', loginPasswordRef.current?.value)
-    setShowLoginModal(false)
+    // console.log('이메일 : ', loginEmailRef.current?.value)
+    // console.log('비밀번호 : ', loginPasswordRef.current?.value)
+    const loginEmail = loginEmailRef.current?.value as string
+    const loginPassword = loginPasswordRef.current?.value as string
+
+    if (loginEmail === '' || loginPassword === '') {
+      setLoginWelcomeText('로그인 정보를 다시 기입하여 주십시오.')
+      return
+    }
+
+    try {
+      const loginResult = await fetchLoginApi(loginEmail, loginPassword)
+      setCookie('token', `bearer ${loginResult.accessToken}`)
+      userDispatch(setUser(loginResult))
+      setShowLoginModal(false)
+    } catch (error) {
+      console.log(error)
+      setLoginWelcomeText('로그인 정보가 일치하지 않습니다.')
+    }
   }
 
   const handleJoin = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    if (joinPasswordRef.current?.value !== joinPassword2Ref.current?.value) {
-      if (joinWelcomeTextRef.current) {
-        joinWelcomeTextRef.current.style.color = 'red'
-      }
 
+    if (
+      (joinEmailRef.current?.value as string) === '' ||
+      (joinPasswordRef.current?.value as string) === '' ||
+      (joinPassword2Ref.current?.value as string) === '' ||
+      (joinNickNameRef.current?.value as string) === ''
+    ) {
+      setJoinWelcomeText('회원 정보를 모두 기입하여 주십시오.')
+      return
+    }
+
+    if (joinPasswordRef.current?.value !== joinPassword2Ref.current?.value) {
       setJoinWelcomeText('비밀번호가 일치하지 않습니다.')
       return
     }
 
-    console.log('이메일 : ', joinEmailRef.current?.value)
-    console.log('비밀번호 : ', joinPasswordRef.current?.value)
-    console.log('닉네임 : ', joinNickNameRef.current?.value)
+    console.log('이메일 : ', typeof joinEmailRef.current?.value)
+    console.log('비밀번호 : ', typeof joinPasswordRef.current?.value)
+    console.log('닉네임 : ', typeof joinNickNameRef.current?.value)
+
+    fetchJoinApi(
+      joinEmailRef.current?.value as string,
+      joinPasswordRef.current?.value as string,
+      joinNickNameRef.current?.value as string,
+    )
     setJoinForm(false)
     setShowLoginModal(false)
   }
 
   return (
     <ModalBackdrop show={show}>
-      <ModalContent>
+      <ModalContent theme={theme}>
         {joinForm ? (
           <>
             <ModalCloseTitleBox>
               <CloseIcon
+                theme={theme}
                 onClick={() => {
                   setShowLoginModal(false), setJoinForm(false)
                 }}
               />
               <ModalTitle>회원가입</ModalTitle>
             </ModalCloseTitleBox>
-            <Line />
+            <Line theme={theme} />
             <WelcomeText ref={joinWelcomeTextRef}>{joinWelcomeText}</WelcomeText>
             <InputGroupJoin>
               <Input
@@ -81,14 +121,15 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
           <>
             <ModalCloseTitleBox>
               <CloseIcon
+                theme={theme}
                 onClick={() => {
                   setShowLoginModal(false), setJoinForm(false)
                 }}
               />
               <ModalTitle>로그인</ModalTitle>
             </ModalCloseTitleBox>
-            <Line />
-            <WelcomeText>Compass에 오신 것을 환영합니다.</WelcomeText>
+            <Line theme={theme} />
+            <WelcomeText>{loginWelcomeText}</WelcomeText>
             <InputGroup>
               <Input
                 type='email'
@@ -100,9 +141,11 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
               <Input type='password' placeholder='비밀 번호' required ref={loginPasswordRef} />
             </InputGroup>
             <JoinFindPassBox>
-              <button onClick={() => setJoinForm(true)}>회원가입</button>
+              <JoinFindPassButton theme={theme} onClick={() => setJoinForm(true)}>
+                회원가입
+              </JoinFindPassButton>
               <TbSlash />
-              <button>비밀번호 찾기</button>
+              <JoinFindPassButton theme={theme}>비밀번호 찾기</JoinFindPassButton>
             </JoinFindPassBox>
             <LoginButton onClick={e => handleLogin(e)}>로그인</LoginButton>
             <Hrspan>또는</Hrspan>
@@ -121,20 +164,6 @@ interface ModalProps {
   show: boolean
 }
 
-const JoinForm = styled.form`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`
-
-const LoginForm = styled.form`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`
-
 const ModalBackdrop = styled.div<ModalProps>`
   position: fixed;
   top: 0;
@@ -151,7 +180,8 @@ const ModalContent = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #fff;
+  ${props => (props.theme === 'light' ? 'background-color: #fff;' : 'background-color: #1b1b1d;')}
+  ${props => (props.theme === 'light' ? '' : 'color: #fff;')}
   width: 35rem;
   height: 33rem;
   z-index: 1000;
@@ -173,7 +203,7 @@ const CloseIcon = styled(AiOutlineClose)`
   border-radius: 50%;
 
   &:hover {
-    background-color: #f7f7f7;
+    ${props => (props.theme === 'light' ? 'background-color: #f7f7f7;' : 'background-color: #5e5e5e;')}
   }
 `
 
@@ -235,16 +265,17 @@ const JoinFindPassBox = styled.div`
   justify-content: flex-end;
   margin-top: 1rem;
   align-items: center;
+`
 
-  button {
-    border: none;
-    cursor: pointer;
-    background: none;
-  }
+const JoinFindPassButton = styled.button`
+  border: none;
+  cursor: pointer;
+  background: none;
+  ${props => (props.theme === 'light' ? '' : 'color: #fff;')}
 `
 
 const Line = styled.hr`
-  background: #f0f0f0;
+  ${props => (props.theme === 'light' ? 'background: #f0f0f0;' : 'background: #7a7a7a;')}
   height: 1px;
   width: 100%;
   border: 0px;

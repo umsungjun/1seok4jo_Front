@@ -3,8 +3,13 @@ import {useState} from 'react'
 import styled, {keyframes} from 'styled-components'
 import {users} from '../Mock/users'
 import SendMessage from '../Modal/SendMessage'
+import {useSelector} from 'react-redux'
+import {RootState} from '../Store'
 
 export default function MyPageBanner() {
+  const user = useSelector((state: RootState) => state.user)
+  console.log(user)
+
   const [showMessageModal, setShowMessageModal] = useState<boolean>(false)
 
   const {email, password, nickName, myPage} = users[0]
@@ -21,7 +26,7 @@ export default function MyPageBanner() {
       ) : (
         <ProfileWrapper background={myPage.background}>
           <ProfileImg src={myPage.profile} />
-          <Name>KiKI</Name>
+          <Name>{user.nickName}</Name>
           <Text>안녕하세요 저는 바다를 좋아하는 여행가 입니다!</Text>
           <MessageButton onClick={() => setShowMessageModal(true)}>메세지 하기</MessageButton>{' '}
           {/* onMouseEnter={handleEditOn} */}

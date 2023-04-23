@@ -3,6 +3,8 @@ import MyPageBanner from '../Common/MyPageBanner'
 import styled from 'styled-components'
 import PostList from '../Component/PostList'
 import {scrollToTop} from '../util/scrollToTop'
+import {useSelector} from 'react-redux'
+import {RootState} from '../Store'
 
 export default function MyPage() {
   scrollToTop()
@@ -13,7 +15,7 @@ export default function MyPage() {
         <TypeSelect>작성 글</TypeSelect>
         <TypeSelect>좋아요</TypeSelect>
       </TypeSelectBox>
-      <PostList />
+      {/* <PostList /> */}
     </MyPageSection>
   )
 }

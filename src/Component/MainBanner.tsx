@@ -48,7 +48,7 @@ export default function MainBanner() {
 
 const BannerSwiper = styled.section`
   width: 100%;
-  padding-top: 4.8rem;
+  padding-top: 4.7rem;
 `
 const SwiperImage = styled.div`
   display: flex;

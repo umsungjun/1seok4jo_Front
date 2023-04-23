@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 
-import {users} from '../../Mock/users'
 import Login from '../../Popups/Login'
 
 import Notification from '../../Popups/Notification'
@@ -8,22 +7,44 @@ import Notification from '../../Popups/Notification'
 import {AiOutlineBell} from 'react-icons/ai'
 import {RxHamburgerMenu} from 'react-icons/rx'
 import styled, {keyframes} from 'styled-components'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
+import {useDispatch, useSelector} from 'react-redux'
+import {RootState} from '../../Store'
+import {changeThemeType} from '../../Store/themeTypeSlice'
 
-const {email, password, nickName, myPage} = users[0]
+import {MdSunny} from 'react-icons/md'
+import {IoMdMoon} from 'react-icons/io'
+import {useCookies} from 'react-cookie'
 
 export default function HeaderProfile() {
-  const [token, setToken] = useState(true) // TODO 로그인 상태
+  const themeDispatch = useDispatch()
+  const theme = useSelector((state: RootState) => state.themeType.theme)
+  const user = useSelector((state: RootState) => state.user)
+  const [token, setToken] = useCookies(['token']) // TODO 로그인 상태
   const [userUlList, setUserUlList] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [notification, setNotification] = useState(false)
+  const navigate = useNavigate()
 
   const handleOpenUserUl = () => {
     setUserUlList(!userUlList)
   }
 
   const handleLogout = () => {
-    setToken(false)
+    setToken('token', '', {expires: new Date(0)})
+    localStorage.setItem(
+      'USER',
+      JSON.stringify({
+        accessToken: '',
+        bannerUrl: '',
+        email: '',
+        introduction: '',
+        nickName: '',
+        profileUrl: '',
+        userId: 0,
+      }),
+    )
+    navigate('/')
   }
 
   const handleLogin = () => {
@@ -32,11 +53,22 @@ export default function HeaderProfile() {
 
   return (
     <>
-      {!token ? (
-        <LoginText onClick={handleLogin}>로그인</LoginText>
+      {Object.keys(token).length === 0 ? (
+        <NotLoginBox>
+          <ThemeBoxNotLogin onClick={() => themeDispatch(changeThemeType())}>
+            {theme === 'light' ? <MdSunny /> : <IoMdMoon style={{color: 'fff'}} />}
+          </ThemeBoxNotLogin>
+          <LoginText theme={theme} onClick={handleLogin}>
+            로그인
+          </LoginText>
+        </NotLoginBox>
       ) : (
         <LoginBox>
+          <ThemeBox onClick={() => themeDispatch(changeThemeType())}>
+            {theme === 'light' ? <MdSunny /> : <IoMdMoon style={{color: 'fff'}} />}
+          </ThemeBox>
           <Notifications
+            theme={theme}
             onMouseEnter={() => {
               setNotification(true)
             }}
@@ -46,8 +78,8 @@ export default function HeaderProfile() {
           </Notifications>
           {notification && <Notification setNotification={setNotification} />}
           <UserButton onClick={handleOpenUserUl}>
-            <RxHamburgerMenu />
-            <UserImg src={myPage.profile} alt='userImg' />
+            <RxHamburgerMenu style={{color: theme === 'light' ? '' : '#fff'}} />
+            <UserImg src={user.profileUrl} alt='userImg' />
             {userUlList && (
               <UserUl>
                 <UserLiLink to='PostWrite'>글쓰기</UserLiLink>
@@ -67,14 +99,36 @@ export default function HeaderProfile() {
 
 const LoginText = styled.span`
   cursor: pointer;
-  min-width: 9rem;
-  text-align: right;
+  padding-top: 0.2rem;
+  font-size: 1.2rem;
+  ${props => (props.theme === 'light' ? '' : 'color:#fff')}
+`
+
+const NotLoginBox = styled.div`
+  display: flex;
+  align-items: center;
 `
 
 const LoginBox = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+`
+
+const ThemeBoxNotLogin = styled.div`
+  display: flex;
+  font-size: 2rem;
+  padding: 0px 0px 0.1rem 0px;
+  margin-right: 1rem;
+  cursor: pointer;
+`
+
+const ThemeBox = styled.div`
+  display: flex;
+  font-size: 2rem;
+  padding: 0px 0px 0.1rem 0px;
+  margin-right: 1rem;
+  cursor: pointer;
 `
 
 const Notifications = styled.div`
@@ -89,9 +143,11 @@ const Notifications = styled.div`
   }
 
   &:hover {
-    background-color: #f7f7f7;
+    // background-color: #f7f7f7;
     color: #1877fe;
   }
+
+  ${props => (props.theme === 'light' ? '' : 'color: #fff;')}
 `
 
 const Count = styled.span`
