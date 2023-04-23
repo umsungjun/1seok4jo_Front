@@ -4,6 +4,7 @@ import {useNavigate} from 'react-router-dom'
 import {BsFillSuitHeartFill, BsSuitHeart} from 'react-icons/bs'
 import SlideImg from '../Popups/SlideImg'
 import {IoLocationSharp} from 'react-icons/io5'
+import {BeatLoader} from 'react-spinners'
 
 export interface ThemePostListProps {
   themePostList: {
@@ -108,7 +109,7 @@ const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostLis
           )
         })}
       </PostListStyled>
-      <div ref={infiniteRef}>{props.isLoading ? 'Loading' : null}</div>
+      <div ref={infiniteRef}>{props.isLoading ? <BeatLoader color='#1877f2' loading={true} size={21} /> : null}</div>
     </>
   )
 
