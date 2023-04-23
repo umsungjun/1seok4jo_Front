@@ -16,11 +16,11 @@ export interface ThemePostListProps {
     storeFileUrl: string[]
     title: string
   }[]
+  isLoading: boolean
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostList(props, ref) {
-  // (themePostList: ThemePostListProps, ref: ForwardedRef<HTMLDivElement>)
-
+const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostList(props, infiniteRef) {
   const [isLiked, setIsLiked] = useState(false)
   const [login, setLogin] = useState(null) // users[0]
   const [showHandleSlideImg, setShowHandleSlideImg] = useState<boolean>(false)
@@ -108,7 +108,7 @@ const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostLis
           )
         })}
       </PostListStyled>
-      <div ref={ref}>Loading</div>
+      <div ref={infiniteRef}>{props.isLoading ? 'Loading' : null}</div>
     </>
   )
 

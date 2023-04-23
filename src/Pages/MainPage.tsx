@@ -15,8 +15,12 @@ export default function MainPage() {
   const [themePostList, setThemePostList] = useState<ThemePostListProps['themePostList']>([])
   const [categoryId, setCategoryId] = useState(1)
   const [lastId, setLastId] = useState<number | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
+    if (themePostList.length === 10) {
+      setIsLoading(false)
+    }
     const lastPost = themePostList[themePostList.length - 1]
     if (lastPost) {
       setLastId(lastPost.postId)
@@ -26,15 +30,18 @@ export default function MainPage() {
   }, [themePostList])
 
   const onLoadMore = useCallback(async () => {
-    if (lastId !== null) {
-      const nextPosts = await fetchThemeScrollApi(categoryId, lastId)
-      setThemePostList([...themePostList, ...nextPosts.result])
-      console.log('nextPosts:', nextPosts)
+    if (lastId === null) {
+      return
     }
+    setIsLoading(true)
+    const nextPosts = await fetchThemeScrollApi(categoryId, lastId)
+    setThemePostList([...themePostList, ...nextPosts.result])
+    setIsLoading(false)
+    console.log('nextPosts:', nextPosts)
   }, [categoryId, lastId, themePostList])
 
   const [infiniteRef] = useInfiniteScroll({
-    loading: false,
+    loading: isLoading,
     hasNextPage: themePostList.length % 10 === 0 ? true : false,
     onLoadMore,
     disabled: false,
@@ -43,8 +50,10 @@ export default function MainPage() {
 
   useEffect(() => {
     ;(async () => {
+      setIsLoading(true)
       const postList = await fetchThemePostListApi(categoryId)
       setThemePostList(postList.result)
+      setIsLoading(false)
     })()
   }, [categoryId])
 
@@ -57,7 +66,7 @@ export default function MainPage() {
       <ThemeSlideWrapper>
         <ThemeSlide setCategoryId={setCategoryId} />
       </ThemeSlideWrapper>
-      <PostList ref={infiniteRef} themePostList={themePostList} />
+      <PostList ref={infiniteRef} themePostList={themePostList} isLoading={isLoading} setIsLoading={setIsLoading} />
     </MainSection>
   )
 }
