@@ -61,6 +61,10 @@ const ModalContent = styled.div`
   flex-direction: column;
   align-items: center;
 
+  @media (max-width: 576px) {
+    width: 30rem;
+  }
+
   transition: all 0.3s ease-in-out;
 `
 const ModalCloseTitleBox = styled.div`
@@ -93,7 +97,7 @@ const Line = styled.hr`
   margin-bottom: 2rem;
 `
 const Text = styled.h2`
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 500;
   margin-bottom: 3rem;
 `
