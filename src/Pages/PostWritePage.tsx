@@ -36,12 +36,12 @@ export default function PostWritePage() {
     themeId: 0,
   })
 
-  useEffect(() => {
-    ;(async () => {
-      const postWrite = await fetchPostWriteApi(postId)
-      setPostWrite(postWrite.result)
-    })()
-  }, [postId])
+  // useEffect(() => {
+  //   ;(async () => {
+  //     const postWrite = await fetchPostWriteApi(postId)
+  //     setPostWrite(postWrite.result)
+  //   })()
+  // }, [postId])
 
   const onChangeOpenPost = () => {
     setIsOpenPost(!isOpenPost)
