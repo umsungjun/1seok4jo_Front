@@ -1,35 +1,36 @@
 import {useState} from 'react'
 
 import styled, {keyframes} from 'styled-components'
-import {users} from '../Mock/users'
 import SendMessage from '../Modal/SendMessage'
 import {useSelector} from 'react-redux'
 import {RootState} from '../Store'
+import {useCookies} from 'react-cookie'
+import {useNavigate} from 'react-router-dom'
+import {basicUser} from '../Mock/users'
 
 export default function MyPageBanner() {
   const user = useSelector((state: RootState) => state.user)
-  console.log(user)
+  const navigate = useNavigate()
 
   const [showMessageModal, setShowMessageModal] = useState<boolean>(false)
-
-  const {email, password, nickName, myPage} = users[0]
-  const logined = false
+  const [token, setToken] = useCookies(['token'])
 
   return (
     <Section>
-      {logined ? (
-        <ProfileWrapper background={myPage.background}>
-          <ProfileImg src={myPage.profile} />
-          <Name>{nickName}</Name>
-          <Text>{myPage.ment}</Text>
+      {Object.keys(token).length === 0 ? (
+        <ProfileWrapper background={user.bannerUrl}>
+          <ProfileImg src={user.profileUrl} />
+          <Name>{user.nickName}</Name>
+          <Text>{user.introduction}</Text>
+          <MessageButton onClick={() => setShowMessageModal(true)}>메세지 하기</MessageButton>
+          {/* onMouseEnter={handleEditOn} */}
         </ProfileWrapper>
       ) : (
-        <ProfileWrapper background={myPage.background}>
-          <ProfileImg src={myPage.profile} />
+        <ProfileWrapper background={user.bannerUrl === null ? basicUser.background : user.bannerUrl}>
+          <ProfileImg src={user.profileUrl === null ? basicUser.profile : user.profileUrl} />
           <Name>{user.nickName}</Name>
-          <Text>안녕하세요 저는 바다를 좋아하는 여행가 입니다!</Text>
-          <MessageButton onClick={() => setShowMessageModal(true)}>메세지 하기</MessageButton>{' '}
-          {/* onMouseEnter={handleEditOn} */}
+          <Text>{user.introduction === null ? '나를 소개하는 한문장을 등록해주세요.' : user.introduction}</Text>
+          <GoEditProfile onClick={() => navigate('/ProfileEdit')}>회원정보 수정</GoEditProfile>
         </ProfileWrapper>
       )}
       <SendMessage show={showMessageModal} setShowMessageModal={setShowMessageModal} />
@@ -81,19 +82,6 @@ const Text = styled.span`
   margin-top: 2rem;
 `
 
-const EditButton = styled.button`
-  position: absolute;
-  right: 2rem;
-  bottom: 2rem;
-  cursor: pointer;
-  padding: 0.7rem 1.2rem;
-  border-radius: 0.5rem;
-  border: none;
-  background: #fff;
-  opacity: 1;
-  transition: opacity ease-in 0.2s;
-`
-
 const MessageButton = styled.button`
   position: absolute;
   right: 2rem;
@@ -106,41 +94,15 @@ const MessageButton = styled.button`
   opacity: 1;
   transition: opacity ease-in 0.2s;
 `
-const slideIn = keyframes`
-  from {
-    transform: translateY(0);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(15%);
-    opacity: 1;
-  }
-`
-
-const EditUl = styled.ul`
+const GoEditProfile = styled.button`
   position: absolute;
   right: 2rem;
-  bottom: 5rem;
-  background: #fff;
-  display: flex;
-  flex-direction: column;
-  border-radius: 0.5rem;
-  border: 1px solid #d0d0d0;
-  box-sizing: border-box;
-  animation: ${slideIn} 0.3s ease-in-out forwards;
-  li:last-child {
-    border-bottom: none;
-  }
-`
-
-const EditLi = styled.li`
-  width: 4rem;
-  padding: 0.5rem;
+  bottom: 2rem;
   cursor: pointer;
-  border-bottom: 1px solid #d0d0d0;
-  text-align: center;
-  opacity: 0.7;
-  &:hover {
-    opacity: 1;
-  }
+  padding: 0.7rem 1.2rem;
+  border-radius: 0.5rem;
+  border: none;
+  background: #fff;
+  opacity: 1;
+  transition: opacity ease-in 0.2s;
 `
