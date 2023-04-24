@@ -15,39 +15,42 @@ export default function MainPage() {
   const [themePostList, setThemePostList] = useState<ThemePostListProps['themePostList']>([])
   const [categoryId, setCategoryId] = useState(1)
   const [lastId, setLastId] = useState<number | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
+    const lastPost = themePostList[themePostList.length - 1]
+    if (lastPost) {
+      setLastId(lastPost.postId)
+    }
     console.log('themePostList', themePostList)
     console.log('lastId', lastId)
-    setLastId(
-      themePostList.length > 9
-        ? themePostList[9].postId
-        : themePostList.length > 0
-        ? themePostList[themePostList.length - 1].postId
-        : 0,
-    )
   }, [themePostList])
 
   const onLoadMore = useCallback(async () => {
-    if (lastId !== null) {
-      const nextPosts = await fetchThemeScrollApi(categoryId, lastId)
-      setThemePostList([...themePostList, ...nextPosts.result])
-      console.log('nextPosts:', nextPosts)
+    if (lastId === null) {
+      return
     }
-  }, [categoryId, lastId])
+    setIsLoading(true)
+    const nextPosts = await fetchThemeScrollApi(categoryId, lastId)
+    setThemePostList([...themePostList, ...nextPosts.result])
+    setIsLoading(false)
+    console.log('nextPosts:', nextPosts)
+  }, [categoryId, lastId, themePostList])
 
   const [infiniteRef] = useInfiniteScroll({
-    loading: false,
-    hasNextPage: true,
+    loading: isLoading,
+    hasNextPage: themePostList.length % 10 === 0 ? true : false,
     onLoadMore,
     disabled: false,
-    rootMargin: '0px 0px 500px 0px',
+    rootMargin: '0px 0px 400px 0px',
   })
 
   useEffect(() => {
     ;(async () => {
+      setIsLoading(true)
       const postList = await fetchThemePostListApi(categoryId)
       setThemePostList(postList.result)
+      setIsLoading(false)
     })()
   }, [categoryId])
 
@@ -60,7 +63,7 @@ export default function MainPage() {
       <ThemeSlideWrapper>
         <ThemeSlide setCategoryId={setCategoryId} />
       </ThemeSlideWrapper>
-      <PostList ref={infiniteRef} themePostList={themePostList} />
+      <PostList ref={infiniteRef} themePostList={themePostList} isLoading={isLoading} setIsLoading={setIsLoading} />
     </MainSection>
   )
 }

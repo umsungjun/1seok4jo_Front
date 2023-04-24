@@ -19,6 +19,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/scrollbar'
 import {PostDetailInterface, fetchThemePostDetailApi} from '../Service/postDetailService'
 import {fetchThemePostListApi} from '../Service/postThemeService'
+
 SwiperCore.use([Navigation, Scrollbar])
 
 const PostDetailPage = () => {
@@ -52,9 +53,23 @@ const PostDetailPage = () => {
   useEffect(() => {
     ;(async () => {
       const postList = await fetchThemePostListApi(categoryId)
-      setThemePostList(postList.result.slice(0, 4))
+      const randomPosts: number[] = []
+      const postListLength = postList.result.length
+      const excludedIndex = postList.result.findIndex((post: {postId: string | undefined}) => post.postId === id) // 현재 렌더링되는 게시글은 제외시키기
+
+      while (randomPosts.length < 4) {
+        const randomIndex = Math.floor(Math.random() * postListLength) // 0 ~ postListLength 사이의 랜덤한 정수
+        if (!randomPosts.includes(randomIndex) && randomIndex !== excludedIndex) {
+          // 중복되지 않고 현재 렌더링되는 게시글도 제외시키기
+          randomPosts.push(randomIndex)
+        }
+      }
+      const randomPostList = randomPosts
+        .filter(index => index < postList.result.length)
+        .map(index => postList.result[index])
+      setThemePostList(randomPostList)
     })()
-  }, [categoryId])
+  }, [categoryId, id])
 
   console.log(postDetail)
   console.log(themePostList)

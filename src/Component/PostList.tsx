@@ -4,6 +4,7 @@ import {useNavigate} from 'react-router-dom'
 import {BsFillSuitHeartFill, BsSuitHeart} from 'react-icons/bs'
 import SlideImg from '../Popups/SlideImg'
 import {IoLocationSharp} from 'react-icons/io5'
+import {BeatLoader} from 'react-spinners'
 
 export interface ThemePostListProps {
   themePostList: {
@@ -16,11 +17,11 @@ export interface ThemePostListProps {
     storeFileUrl: string[]
     title: string
   }[]
+  isLoading: boolean
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostList(props, ref) {
-  // (themePostList: ThemePostListProps, ref: ForwardedRef<HTMLDivElement>)
-
+const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostList(props, infiniteRef) {
   const [isLiked, setIsLiked] = useState(false)
   const [login, setLogin] = useState(null) // users[0]
   const [showHandleSlideImg, setShowHandleSlideImg] = useState<boolean>(false)
@@ -108,7 +109,7 @@ const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostLis
           )
         })}
       </PostListStyled>
-      <div ref={ref}>Loading</div>
+      <div ref={infiniteRef}>{props.isLoading ? <BeatLoader color='#1877f2' loading={true} size={21} /> : null}</div>
     </>
   )
 
