@@ -18,6 +18,9 @@ export default function MainPage() {
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
+    if (themePostList.length === 0) {
+      return
+    }
     const lastPost = themePostList[themePostList.length - 1]
     if (lastPost) {
       setLastId(lastPost.postId)
@@ -27,6 +30,9 @@ export default function MainPage() {
   }, [themePostList])
 
   const onLoadMore = useCallback(async () => {
+    if (themePostList.length === 0) {
+      return
+    }
     if (lastId === null) {
       return
     }

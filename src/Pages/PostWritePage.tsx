@@ -9,7 +9,7 @@ import {useNavigate} from 'react-router-dom'
 import {scrollToTop} from '../util/scrollToTop'
 import {FaMapMarkerAlt} from 'react-icons/fa'
 import {RiCloseFill} from 'react-icons/ri'
-import {PostWriteInterface, fetchPostWriteApi} from '../Service/postWriteService'
+import {fetchPostWriteApi} from '../Service/postWriteService'
 
 export default function PostWritePage() {
   scrollToTop()
@@ -22,26 +22,6 @@ export default function PostWritePage() {
   const [imageNames, setImageNames] = useState(['# 이미지첨부 버튼을 누르시고 이미지를 첨부해주세요.(최대 5장)'])
   const [hashtag, setHashtag] = useState<string[]>([])
   const [categoryId, setCategoryId] = useState(1)
-  const [postWrite, setPostWrite] = useState<PostWriteInterface>({
-    id: 0,
-    title: '',
-    detail: '',
-    location: '',
-    hashtag: '',
-    startDate: '',
-    endDate: '',
-    baseUrl: '',
-    storeFileUrl: [],
-    nickname: '',
-    themeId: 0,
-  })
-
-  useEffect(() => {
-    ;(async () => {
-      const postWrite = await fetchPostWriteApi(postId)
-      setPostWrite(postWrite.result)
-    })()
-  }, [postId])
 
   const onChangeOpenPost = () => {
     setIsOpenPost(!isOpenPost)
@@ -93,6 +73,31 @@ export default function PostWritePage() {
     setHashtag(prevHashtags => prevHashtags.filter((_, i) => i !== index))
   }
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const title = e.currentTarget.title.value
+    const content = e.currentTarget.content.value
+    const startDate = e.currentTarget.startDate.value
+    const finishDate = e.currentTarget.finishDate.value
+    const address = e.currentTarget.address.value
+    const hashtag = e.currentTarget.hashtag.value
+    const categoryId = e.currentTarget.categoryId.value
+    const image = e.currentTarget.image.files
+
+    const formData = new FormData()
+    formData.append('title', title)
+    formData.append('content', content)
+    formData.append('startDate', startDate)
+    formData.append('finishDate', finishDate)
+    formData.append('address', address)
+    formData.append('hashtag', hashtag)
+    formData.append('categoryId', categoryId)
+    for (let i = 0; i < image.length; i++) {
+      formData.append('image', image[i])
+    }
+
+    await fetchPostWriteApi(formData)
+  }
   return (
     <PostForm onSubmit={handlePostInfo} onKeyUp={e => e.key === 'Enter' && e.preventDefault()}>
       <PageTitle title='Writing Post' sub='나의 여행 경험을 다른 사람들에게 들려주세요.' />
@@ -184,7 +189,7 @@ export default function PostWritePage() {
             )}
           </HashtagBox>
         </ContentBox>
-        <SubmitInput type='submit' value={'작성 완료'} />
+        <SubmitInput type='submit' value={'작성 완료'} onClick={e => handleSubmit(e)} />
       </Section>
     </PostForm>
   )
