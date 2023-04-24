@@ -16,6 +16,7 @@ import {MdSunny} from 'react-icons/md'
 import {IoMdMoon} from 'react-icons/io'
 import {useCookies} from 'react-cookie'
 import {basicUser} from '../../Mock/users'
+import {darkTheme} from '../../Theme/theme'
 
 export default function HeaderProfile() {
   const themeDispatch = useDispatch()
@@ -102,7 +103,7 @@ const LoginText = styled.span`
   cursor: pointer;
   padding-top: 0.2rem;
   font-size: 1.2rem;
-  ${props => (props.theme === 'light' ? '' : 'color:#fff')}
+  ${props => (props.theme === 'light' ? '' : darkTheme.whiteColor)}
 `
 
 const NotLoginBox = styled.div`
@@ -148,7 +149,7 @@ const Notifications = styled.div`
     color: #1877fe;
   }
 
-  ${props => (props.theme === 'light' ? '' : 'color: #fff;')}
+  ${props => (props.theme === 'light' ? '' : darkTheme.whiteColor)}
 `
 
 const Count = styled.span`

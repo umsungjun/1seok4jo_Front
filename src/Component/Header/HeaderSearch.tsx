@@ -5,6 +5,7 @@ import {GoSearch} from 'react-icons/go'
 import {useNavigate} from 'react-router-dom'
 import {useSelector} from 'react-redux'
 import {RootState} from '../../Store'
+import {darkTheme, lightTheme} from '../../Theme/theme'
 
 const searchCondition = ['제목', '내용', '해시태그']
 
@@ -100,7 +101,7 @@ const SearchSelect = styled.button`
   cursor: pointer;
   min-width: 4rem;
   font-size: 1rem;
-  ${props => (props.theme === 'light' ? '' : 'color: #fff;')}
+  ${props => (props.theme === 'light' ? '' : darkTheme.whiteColor)}
   &:focus {
     outline: none;
   }
@@ -155,8 +156,8 @@ const Search = styled.input`
   border-radius: 0.2rem;
   padding-left: 0.5rem;
 
-  ${props => (props.theme === 'light' ? '' : 'color:#fff')};
-  ${props => (props.theme === 'light' ? 'background-color: #fff;' : 'background-color: #1b1b1d;')}
+  ${props => (props.theme === 'light' ? '' : darkTheme.whiteColor)};
+  ${props => (props.theme === 'light' ? lightTheme.background : darkTheme.background)}
   &:focus {
     outline: none;
   }

@@ -1,4 +1,4 @@
-import styled, {keyframes} from 'styled-components'
+import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 import {SlCompass} from 'react-icons/sl'
 
@@ -7,6 +7,7 @@ import HeaderProfile from './HeaderProfile'
 import {useSelector} from 'react-redux'
 import {RootState} from '../../Store'
 import {ThemeState} from '../../Store/themeTypeSlice'
+import {darkTheme, lightTheme} from '../../Theme/theme'
 
 export default function Header() {
   const theme = useSelector((state: RootState) => state.themeType.theme)
@@ -42,7 +43,7 @@ const HeaderSection = styled.section<ThemeState>`
   width: 100%;
   box-sizing: border-box;
   z-index: 10;
-  ${props => (props.theme === 'light' ? 'background-color: #fff;' : 'background-color: #1b1b1d;')}
+  ${props => (props.theme === 'light' ? lightTheme.background : darkTheme.background)}
 
   @media (max-width: 576px) {
     padding: 1rem 1rem;
