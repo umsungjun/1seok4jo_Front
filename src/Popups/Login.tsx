@@ -10,6 +10,7 @@ import {useCookies} from 'react-cookie'
 import {useDispatch, useSelector} from 'react-redux'
 import {setUser} from '../Store/user'
 import {RootState} from '../Store'
+import {darkTheme, lightTheme} from '../Theme/theme'
 
 interface PaymentModalProps {
   show: boolean
@@ -180,8 +181,8 @@ const ModalContent = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  ${props => (props.theme === 'light' ? 'background-color: #fff;' : 'background-color: #1b1b1d;')}
-  ${props => (props.theme === 'light' ? '' : 'color: #fff;')}
+  ${props => (props.theme === 'light' ? lightTheme.background : darkTheme.background)}
+  ${props => (props.theme === 'light' ? '' : darkTheme.whiteColor)}
   width: 35rem;
   height: 33rem;
   z-index: 1000;
@@ -208,7 +209,7 @@ const CloseIcon = styled(AiOutlineClose)`
   border-radius: 50%;
 
   &:hover {
-    ${props => (props.theme === 'light' ? 'background-color: #f7f7f7;' : 'background-color: #5e5e5e;')}
+    ${props => (props.theme === 'light' ? lightTheme.hoverBackground : darkTheme.hoverBackground)}
   }
 `
 
@@ -276,7 +277,7 @@ const JoinFindPassButton = styled.button`
   border: none;
   cursor: pointer;
   background: none;
-  ${props => (props.theme === 'light' ? '' : 'color: #fff;')}
+  ${props => (props.theme === 'light' ? '' : darkTheme.whiteColor)}
 `
 
 const Line = styled.hr`
