@@ -9,6 +9,7 @@ import {useNavigate} from 'react-router-dom'
 import {scrollToTop} from '../util/scrollToTop'
 import {FaMapMarkerAlt} from 'react-icons/fa'
 import {RiCloseFill} from 'react-icons/ri'
+import {AiOutlinePaperClip} from 'react-icons/ai'
 import {fetchPostWriteApi} from '../Service/postWriteService'
 
 export default function PostWritePage() {
@@ -186,7 +187,10 @@ export default function PostWritePage() {
         <ContentBox>
           <ImageBox>
             <ImgLabel htmlFor='image'>
-              <TitleImg># 이미지 첨부</TitleImg>
+              <TitleImg>
+                <span># 이미지 첨부</span>
+                <AiOutlinePaperClip />
+              </TitleImg>
               <ImageInput id='image' type='file' multiple accept='.jpg, .jpeg, .png' onChange={handleLoadImg} />
             </ImgLabel>
             <SelectImgs>
@@ -366,8 +370,14 @@ const TitleImg = styled.span`
   border-radius: 0.5rem;
   padding: 0.3rem 0.3rem 0.3rem 0;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  span {
+    margin-right: 0.5rem;
+  }
   &:hover {
-    background: #f0f0f0;
+    color: #1877fe;
+    // background: #f0f0f0;
   }
 `
 
