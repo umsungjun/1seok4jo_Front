@@ -15,12 +15,13 @@ import {changeThemeType} from '../../Store/themeTypeSlice'
 import {MdSunny} from 'react-icons/md'
 import {IoMdMoon} from 'react-icons/io'
 import {useCookies} from 'react-cookie'
+import {basicUser} from '../../Mock/users'
 
 export default function HeaderProfile() {
   const themeDispatch = useDispatch()
   const theme = useSelector((state: RootState) => state.themeType.theme)
   const user = useSelector((state: RootState) => state.user)
-  const [token, setToken] = useCookies(['token']) // TODO 로그인 상태
+  const [token, setToken] = useCookies(['token'])
   const [userUlList, setUserUlList] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [notification, setNotification] = useState(false)
@@ -79,7 +80,7 @@ export default function HeaderProfile() {
           {notification && <Notification setNotification={setNotification} />}
           <UserButton onClick={handleOpenUserUl}>
             <RxHamburgerMenu style={{color: theme === 'light' ? '' : '#fff'}} />
-            <UserImg src={user.profileUrl} alt='userImg' />
+            <UserImg src={user.profileUrl === null ? basicUser.profile : user.profileUrl} alt='userImg' />
             {userUlList && (
               <UserUl>
                 <UserLiLink to='PostWrite'>글쓰기</UserLiLink>
