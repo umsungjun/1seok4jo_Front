@@ -111,14 +111,14 @@ const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostLis
         })}
       </PostListStyled>
       <div ref={infiniteRef}>{props.isLoading && <BeatLoader color='#1877f2' loading={true} size={21} />}</div>
-      <PostNone>
+      <div>
         {props.themePostList.length === 0 && (
-          <div>
+          <PostNone>
             <RiErrorWarningLine />
             해당 테마의 게시물이 존재하지 않습니다.
-          </div>
+          </PostNone>
         )}
-      </PostNone>
+      </div>
     </>
   )
 
@@ -511,14 +511,13 @@ export const LikeButtonStyled = styled.button`
 
 const PostNone = styled.div`
   display: flex;
-  margin: 6rem 0;
-  div {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #000;
-    display: flex;
-    align-items: center;
-  }
+  height: 50vh;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #000;
+  display: flex;
+  align-items: center;
+
   svg {
     font-size: 2.2rem;
     margin-right: 0.5rem;
