@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 // import styled from 'styled-components'
 import styled from 'styled-components'
 import {MdOutlineSportsHandball, MdOutlineFoodBank, MdSportsTennis, MdFamilyRestroom} from 'react-icons/md'
