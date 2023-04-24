@@ -5,6 +5,7 @@ import {BsFillSuitHeartFill, BsSuitHeart} from 'react-icons/bs'
 import SlideImg from '../Popups/SlideImg'
 import {IoLocationSharp} from 'react-icons/io5'
 import {BeatLoader} from 'react-spinners'
+import {RiErrorWarningLine} from 'react-icons/ri'
 
 export interface ThemePostListProps {
   themePostList: {
@@ -109,7 +110,15 @@ const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostLis
           )
         })}
       </PostListStyled>
-      <div ref={infiniteRef}>{props.isLoading ? <BeatLoader color='#1877f2' loading={true} size={21} /> : null}</div>
+      <div ref={infiniteRef}>{props.isLoading && <BeatLoader color='#1877f2' loading={true} size={21} />}</div>
+      <PostNone>
+        {props.themePostList.length === 0 && (
+          <div>
+            <RiErrorWarningLine />
+            해당 테마의 게시물이 존재하지 않습니다.
+          </div>
+        )}
+      </PostNone>
     </>
   )
 
@@ -278,7 +287,8 @@ const PostListStyled = styled.ul`
   grid-template-columns: repeat(5, 1fr);
   grid-gap: 1.5rem;
   width: 90%;
-  min-height: 40rem;
+  // min-height: 40rem;
+  min-height: auto;
 
   @media (max-width: 1440px) {
     grid-template-columns: repeat(4, 1fr);
@@ -496,5 +506,21 @@ export const LikeButtonStyled = styled.button`
       width: 1.55rem;
       height: 1.55rem;
     }
+  }
+`
+
+const PostNone = styled.div`
+  display: flex;
+  margin: 6rem 0;
+  div {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000;
+    display: flex;
+    align-items: center;
+  }
+  svg {
+    font-size: 2.2rem;
+    margin-right: 0.5rem;
   }
 `

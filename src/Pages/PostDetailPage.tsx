@@ -17,10 +17,10 @@ import SwiperCore, {Navigation, Scrollbar} from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/scrollbar'
+SwiperCore.use([Navigation, Scrollbar])
 import {PostDetailInterface, fetchThemePostDetailApi} from '../Service/postDetailService'
 import {fetchThemePostListApi} from '../Service/postThemeService'
-
-SwiperCore.use([Navigation, Scrollbar])
+import {ThemePostListProps} from '../Component/PostList'
 
 const PostDetailPage = () => {
   scrollToTop()
