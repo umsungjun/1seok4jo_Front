@@ -1,5 +1,4 @@
-import React from 'react'
-import {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import PageTitle from '../Common/PageTitle'
 import styled from 'styled-components'
 import ThemeSlide from '../Common/ThemeSlide'
@@ -8,9 +7,9 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import {useNavigate} from 'react-router-dom'
 import {scrollToTop} from '../util/scrollToTop'
-
 import {FaMapMarkerAlt} from 'react-icons/fa'
 import {RiCloseFill} from 'react-icons/ri'
+import {PostWriteInterface, fetchPostWriteApi} from '../Service/postWriteService'
 
 export default function PostWritePage() {
   scrollToTop()
@@ -22,6 +21,27 @@ export default function PostWritePage() {
   const [finishDate, setFinishDate] = useState(new Date())
   const [imageNames, setImageNames] = useState(['# 이미지첨부 버튼을 누르시고 이미지를 첨부해주세요.(최대 5장)'])
   const [hashtag, setHashtag] = useState<string[]>([])
+  const [categoryId, setCategoryId] = useState(1)
+  const [postWrite, setPostWrite] = useState<PostWriteInterface>({
+    id: 0,
+    title: '',
+    detail: '',
+    location: '',
+    hashtag: '',
+    startDate: '',
+    endDate: '',
+    baseUrl: '',
+    storeFileUrl: [],
+    nickname: '',
+    themeId: 0,
+  })
+
+  useEffect(() => {
+    ;(async () => {
+      const postWrite = await fetchPostWriteApi(postId)
+      setPostWrite(postWrite.result)
+    })()
+  }, [postId])
 
   const onChangeOpenPost = () => {
     setIsOpenPost(!isOpenPost)
@@ -78,7 +98,7 @@ export default function PostWritePage() {
       <PageTitle title='Writing Post' sub='나의 여행 경험을 다른 사람들에게 들려주세요.' />
       <Section>
         <Title># 테마</Title>
-        <ThemeSlide />
+        <ThemeSlide setCategoryId={setCategoryId} />
         <ContentBox>
           <Title># 날짜</Title>
           <DateBox>

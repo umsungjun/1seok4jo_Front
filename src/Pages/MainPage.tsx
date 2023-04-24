@@ -18,9 +18,6 @@ export default function MainPage() {
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    if (themePostList.length === 10) {
-      setIsLoading(false)
-    }
     const lastPost = themePostList[themePostList.length - 1]
     if (lastPost) {
       setLastId(lastPost.postId)
