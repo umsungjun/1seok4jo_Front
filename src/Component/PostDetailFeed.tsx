@@ -1,16 +1,11 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import {useNavigate} from 'react-router-dom'
-import {BsFillSuitHeartFill, BsSuitHeart} from 'react-icons/bs'
-import {detailPostFeed} from '../Mock/detailPostFeed'
-import {users} from '../Mock/users'
+import {BsFillSuitHeartFill} from 'react-icons/bs'
+
 import SlideImg from '../Popups/SlideImg'
 import {IoLocationSharp} from 'react-icons/io5'
 import {ImgBox} from './PostList'
-import {MenuButton} from './PostList'
-import {OptionList} from './PostList'
-import {OptionsButton} from './PostList'
-import {LikeButton} from './PostList'
 import {FeedInfoStyled} from './PostList'
 import {FeedLikeStyled} from './PostList'
 import {LikeButtonStyled} from './PostList'
@@ -30,7 +25,7 @@ interface ThemePostListProps {
 
 const PostDetailFeed = ({themePostList}: ThemePostListProps) => {
   const [isLiked, setIsLiked] = useState(false)
-  const [login, setLogin] = useState(users[0]) //null
+
   const [showHandleSlideImg, setShowHandleSlideImg] = useState<boolean>(false)
   const [slideImgs, setSlideImgs] = useState<string[]>([])
   const [slideId, setSlideId] = useState<number>(0)
