@@ -56,7 +56,6 @@ export default function ProfileEditPage() {
   return (
     <ProfileEditPageSection>
       <MyPageBanner />
-
       <EditForm onSubmit={handleEditForm} onKeyUp={e => e.key === 'Enter' && e.preventDefault()}>
         <PageTitle>회원정보 수정</PageTitle>
         <Content>
@@ -138,6 +137,11 @@ const Content = styled.div`
   display: flex;
   align-items: center;
   margin-top: 3rem;
+
+  @media (max-width: 576px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `
 
 const Title = styled.h2`
@@ -145,6 +149,11 @@ const Title = styled.h2`
   margin-right: 2rem;
   width: 15rem;
   text-align: center;
+
+  @media (max-width: 576px) {
+    text-align: left;
+    margin-bottom: 1.5rem;
+  }
 `
 
 const Input = styled.input`
