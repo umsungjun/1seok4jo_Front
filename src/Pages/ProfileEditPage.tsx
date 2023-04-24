@@ -4,16 +4,26 @@ import styled from 'styled-components'
 
 import ChangePassword from '../Popups/ChangePassword'
 
-import {users} from '../Mock/users'
 import {scrollToTop} from '../util/scrollToTop'
+import {useCookies} from 'react-cookie'
+import NoToken from '../Common/NoToken'
+import {useSelector} from 'react-redux'
+import {RootState} from '../Store'
+import {basicUser} from '../Mock/users'
 
 export default function ProfileEditPage() {
   scrollToTop()
-  const {email, password, nickName, myPage} = users[0]
+  const user = useSelector((state: RootState) => state.user)
+  console.log(user)
 
+  const [token, setToken] = useCookies(['token'])
   const [changePassword, setChangePassword] = useState<boolean>(false)
-  const [profilePreview, setProfilePreview] = useState<string>(myPage.profile)
-  const [profileBackgroundPreview, setProfileBackgroundPreview] = useState<string>(myPage.background)
+  const [profilePreview, setProfilePreview] = useState<string>(
+    user.profileUrl === null ? basicUser.profile : user.profileUrl,
+  )
+  const [profileBackgroundPreview, setProfileBackgroundPreview] = useState<string>(
+    user.bannerUrl === null ? basicUser.background : user.bannerUrl,
+  )
 
   const handlePasswordChange = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -55,58 +65,68 @@ export default function ProfileEditPage() {
 
   return (
     <ProfileEditPageSection>
-      <MyPageBanner />
-      <EditForm onSubmit={handleEditForm} onKeyUp={e => e.key === 'Enter' && e.preventDefault()}>
-        <PageTitle>회원정보 수정</PageTitle>
-        <Content>
-          <Title># 이메일</Title>
-          <Input value={email} type='email' readOnly />
-        </Content>
-        <Content>
-          <Title># 비밀번호</Title>
-          <PasswordBox>
-            <Input type='password' required />
-            <PassWordChange
-              onClick={e => {
-                handlePasswordChange(e)
-              }}
-            >
-              *비밀번호 변경
-            </PassWordChange>
-          </PasswordBox>
-        </Content>
-        <Content>
-          <Title># 닉네임</Title>
-          <Input value={nickName} type='text' readOnly />
-        </Content>
-        <Content>
-          <Title># 나를 소개하는 한 줄</Title>
-          <Input type='text' maxLength={40} placeholder={myPage.ment} />
-        </Content>
-        <Content>
-          <Title># 프로필 이미지</Title>
-          <ProfileImgBox>
-            <ProfileImg src={profilePreview} alt='ProfileImg' />
-            <ImgLabel htmlFor='profileImg'>이미지 선택</ImgLabel>
-            <InputImg id='profileImg' type='file' accept='.jpg, .jpeg, .png' onChange={handleProfileImageChange} />
-          </ProfileImgBox>
-        </Content>
-        <Content>
-          <Title># 배경 이미지</Title>
-          <ProfileImgBox>
-            <ProfileBackgroundImg src={profileBackgroundPreview} alt='ProfileBackgroundImg' />
-            <ImgLabel htmlFor='profileBackgroundImg'>배경이미지 선택</ImgLabel>
-            <InputImg
-              id='profileBackgroundImg'
-              type='file'
-              accept='.jpg, .jpeg, .png'
-              onChange={handleProfileBackgroundImageChange}
-            />
-          </ProfileImgBox>
-        </Content>
-        <SubmitInput type='submit' value={'작성 완료'} />
-      </EditForm>
-      <ChangePassword show={changePassword} setChangePassword={setChangePassword} />
+      {Object.keys(token).length === 0 ? (
+        <NoToken />
+      ) : (
+        <>
+          <MyPageBanner />
+          <EditForm onSubmit={handleEditForm} onKeyUp={e => e.key === 'Enter' && e.preventDefault()}>
+            <PageTitle>회원정보 수정</PageTitle>
+            <Content>
+              <Title># 이메일</Title>
+              <Input value={user.email} type='email' readOnly />
+            </Content>
+            <Content>
+              <Title># 비밀번호</Title>
+              <PasswordBox>
+                <Input type='password' required />
+                <PassWordChange
+                  onClick={e => {
+                    handlePasswordChange(e)
+                  }}
+                >
+                  *비밀번호 변경
+                </PassWordChange>
+              </PasswordBox>
+            </Content>
+            <Content>
+              <Title># 닉네임</Title>
+              <Input value={user.nickName} type='text' readOnly />
+            </Content>
+            <Content>
+              <Title># 나를 소개하는 한 줄</Title>
+              <Input
+                type='text'
+                maxLength={40}
+                placeholder={user.introduction === null ? '나를 소개하는 한문장을 등록해주세요.' : user.introduction}
+              />
+            </Content>
+            <Content>
+              <Title># 프로필 이미지</Title>
+              <ProfileImgBox>
+                <ProfileImg src={profilePreview} alt='ProfileImg' />
+                <ImgLabel htmlFor='profileImg'>이미지 선택</ImgLabel>
+                <InputImg id='profileImg' type='file' accept='.jpg, .jpeg, .png' onChange={handleProfileImageChange} />
+              </ProfileImgBox>
+            </Content>
+            <Content>
+              <Title># 배경 이미지</Title>
+              <ProfileImgBox>
+                <ProfileBackgroundImg src={profileBackgroundPreview} alt='ProfileBackgroundImg' />
+                <ImgLabel htmlFor='profileBackgroundImg'>배경이미지 선택</ImgLabel>
+                <InputImg
+                  id='profileBackgroundImg'
+                  type='file'
+                  accept='.jpg, .jpeg, .png'
+                  onChange={handleProfileBackgroundImageChange}
+                />
+              </ProfileImgBox>
+            </Content>
+            <SubmitInput type='submit' value={'수정 완료'} />
+          </EditForm>
+          <ChangePassword show={changePassword} setChangePassword={setChangePassword} />
+        </>
+      )}
     </ProfileEditPageSection>
   )
 }
