@@ -21,7 +21,20 @@ export default function PostWritePage() {
   const [finishDate, setFinishDate] = useState(new Date())
   const [imageNames, setImageNames] = useState(['# 이미지첨부 버튼을 누르시고 이미지를 첨부해주세요.(최대 5장)'])
   const [hashtag, setHashtag] = useState<string[]>([])
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
   const [categoryId, setCategoryId] = useState(1)
+
+  useEffect(() => {
+    console.log('테마 : ', categoryId)
+    console.log('시작일 : ', startDate)
+    console.log('종료일 : ', finishDate)
+    console.log('주소 : ', address)
+    console.log('이미지 : ', imageNames)
+    console.log('해쉬태그 : ', hashtag)
+    console.log('제목 : ', title)
+    console.log('내용 : ', content)
+  }, [startDate, finishDate])
 
   const onChangeOpenPost = () => {
     setIsOpenPost(!isOpenPost)
@@ -75,27 +88,17 @@ export default function PostWritePage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const title = e.currentTarget.title.value
-    const content = e.currentTarget.content.value
-    const startDate = e.currentTarget.startDate.value
-    const finishDate = e.currentTarget.finishDate.value
-    const address = e.currentTarget.address.value
-    const hashtag = e.currentTarget.hashtag.value
-    const categoryId = e.currentTarget.categoryId.value
-    const image = e.currentTarget.image.files
-
     const formData = new FormData()
     formData.append('title', title)
     formData.append('content', content)
-    formData.append('startDate', startDate)
-    formData.append('finishDate', finishDate)
+    formData.append('startDate', String(startDate))
+    formData.append('finishDate', String(finishDate))
     formData.append('address', address)
-    formData.append('hashtag', hashtag)
-    formData.append('categoryId', categoryId)
-    for (let i = 0; i < image.length; i++) {
-      formData.append('image', image[i])
+    formData.append('hashtag', hashtag.toString())
+    formData.append('categoryId', `${categoryId}`)
+    for (let i = 0; i < imageNames.length; i++) {
+      formData.append('image', imageNames[i])
     }
-
     await fetchPostWriteApi(formData)
   }
   return (
@@ -150,11 +153,28 @@ export default function PostWritePage() {
         </ContentBox>
         <ContentBox>
           <Title># 제목</Title>
-          <TitleInput type='text' maxLength={20} placeholder='# 제목을 입력하세요 (최대 20자)' required />
+          <TitleInput
+            type='text'
+            maxLength={20}
+            placeholder='# 제목을 입력하세요 (최대 20자)'
+            value={title}
+            required
+            onChange={e => {
+              setTitle(e.target.value)
+            }}
+          />
         </ContentBox>
         <ContentBox>
           <Title># 내용</Title>
-          <TextArea maxLength={500} placeholder='# 내용을 입력하세요 (최대 500자)' required />
+          <TextArea
+            maxLength={500}
+            placeholder='# 내용을 입력하세요 (최대 500자)'
+            value={content}
+            required
+            onChange={e => {
+              setContent(e.target.value)
+            }}
+          />
         </ContentBox>
         <ContentBox>
           <ImageBox>
@@ -189,7 +209,9 @@ export default function PostWritePage() {
             )}
           </HashtagBox>
         </ContentBox>
-        <SubmitInput type='submit' value={'작성 완료'} onClick={e => handleSubmit(e)} />
+        <form onSubmit={handleSubmit}>
+          <SubmitInput type='submit' value={'작성 완료'} />
+        </form>
       </Section>
     </PostForm>
   )
