@@ -110,8 +110,8 @@ export default function PostWritePage() {
       <PageTitle title='Writing Post' sub='나의 여행 경험을 다른 사람들에게 들려주세요.' />
       <Section>
         <TodayDate>
-          <Title># 작성일 </Title>
-          <div>{createdAt.toLocaleDateString('ko-KR', {year: 'numeric', month: 'short', day: 'numeric'})}</div>
+          <Title># 작성일 : </Title>
+          <span>{createdAt.toLocaleDateString('ko-KR', {year: 'numeric', month: 'short', day: 'numeric'})}</span>
         </TodayDate>
         <Title># 테마</Title>
         <ThemeSlide setCategoryId={setCategoryId} />
@@ -249,11 +249,10 @@ export const ContentBox = styled.div`
   margin-top: 5rem;
 `
 
-const Title = styled.h2`
+export const Title = styled.h2`
   font-size: 1.5rem;
   margin-right: 2rem;
 `
-
 const TitleInput = styled.input`
   border: none;
   border-bottom: 1px solid #c0c0c0;
@@ -431,14 +430,13 @@ const TagDel = styled.div`
   }
 `
 
-const TodayDate = styled(ContentBox)`
-  display: flex;
-  justify-content: flex-end;
+const TodayDate = styled.div`
+  display: flex !important;
   margin-bottom: 5rem;
-  div {
-    font-size: 1.3rem;
+  span {
+    font-size: 1.35rem;
     display: flex;
-    margin-top: 1.5rem;
+    align-items: center;
   }
 `
 
