@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import {AiOutlineClose} from 'react-icons/ai'
-import {useState} from 'react'
+import {useRef, useState} from 'react'
+import {fetchEditPassWordApi, fetchMailPassWordApi} from '../Service/userService'
+import {useCookies} from 'react-cookie'
 
 interface ChangePasswordModalProps {
   show: boolean
@@ -9,7 +11,25 @@ interface ChangePasswordModalProps {
 
 export default function ChangePassword({show, setChangePassword}: ChangePasswordModalProps) {
   const [text, SetText] = useState('Compass에 오신 것을 환영합니다.')
+  const [cookies, setCookie] = useCookies(['token'])
+  const currentPasswordRef = useRef<HTMLInputElement>(null)
+  const newPasswordRef = useRef<HTMLInputElement>(null)
+  const token = cookies.token
+  const handleChangePassword = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
 
+    console.log('현재 비밀번호 ', currentPasswordRef.current?.value as string)
+    console.log('새 비밀번호', newPasswordRef.current?.value as string)
+    const password = currentPasswordRef.current?.value as string
+    const newPassword = newPasswordRef.current?.value as string
+    fetchEditPassWordApi(password, newPassword, token)
+  }
+
+  const handleInitPassword = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    SetText('초기화 된 비밀번호가 등록된 메일로 발송되었습니다.')
+    fetchMailPassWordApi()
+  }
   return (
     <ModalBackdrop show={show}>
       <ModalContent>
@@ -20,14 +40,12 @@ export default function ChangePassword({show, setChangePassword}: ChangePassword
         <Line />
         <Text>{text}</Text>
         <InputGroupJoin>
-          <Input type='password' placeholder='현재 비밀번호' required />
-          <Input type='password' placeholder='새 비밀번호' required />
+          <Input type='password' placeholder='현재 비밀번호' required ref={currentPasswordRef} />
+          <Input type='password' placeholder='새 비밀번호' required ref={newPasswordRef} />
           <Input type='password' placeholder='새 비밀번호 확인' required />
         </InputGroupJoin>
-        <FindPass onClick={() => SetText('초기화 된 비밀번호가 등록된 메일로 발송되었습니다.')}>
-          비밀번호 초기화
-        </FindPass>
-        <FindPassButton>비밀번호 변경</FindPassButton>
+        <FindPass onClick={e => handleInitPassword(e)}>비밀번호 초기화</FindPass>
+        <FindPassButton onClick={e => handleChangePassword(e)}>비밀번호 변경</FindPassButton>
       </ModalContent>
     </ModalBackdrop>
   )

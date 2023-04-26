@@ -15,7 +15,7 @@ import Secession from '../Popups/Secession'
 export default function ProfileEditPage() {
   scrollToTop()
   const user = useSelector((state: RootState) => state.user)
-  console.log(user)
+  // console.log(user)
 
   const [token, setToken] = useCookies(['token'])
   const [changePassword, setChangePassword] = useState<boolean>(false)
@@ -68,7 +68,8 @@ export default function ProfileEditPage() {
   return (
     <ProfileEditPageSection>
       {Object.keys(token).length === 0 ? (
-        // <NoToken />
+        <NoToken />
+      ) : (
         <>
           <MyPageBanner />
           <EditForm onSubmit={handleEditForm} onKeyUp={e => e.key === 'Enter' && e.preventDefault()}>
@@ -130,65 +131,6 @@ export default function ProfileEditPage() {
           </EditForm>
           <ChangePassword show={changePassword} setChangePassword={setChangePassword} />
           <Secession show={secession} setSecession={setSecession} />
-        </>
-      ) : (
-        <>
-          <MyPageBanner />
-          <EditForm onSubmit={handleEditForm} onKeyUp={e => e.key === 'Enter' && e.preventDefault()}>
-            <PageTitle>회원정보 수정</PageTitle>
-            <Content>
-              <Title># 이메일</Title>
-              <Input value={user.email} type='email' readOnly />
-            </Content>
-            <Content>
-              <Title># 비밀번호</Title>
-              <PasswordBox>
-                <Input type='password' required />
-                <PassWordChange
-                  onClick={e => {
-                    handlePasswordChange(e)
-                  }}
-                >
-                  *비밀번호 변경
-                </PassWordChange>
-              </PasswordBox>
-            </Content>
-            <Content>
-              <Title># 닉네임</Title>
-              <Input value={user.nickName} type='text' readOnly />
-            </Content>
-            <Content>
-              <Title># 나를 소개하는 한 줄</Title>
-              <Input
-                type='text'
-                maxLength={40}
-                placeholder={user.introduction === null ? '나를 소개하는 한문장을 등록해주세요.' : user.introduction}
-              />
-            </Content>
-            <Content>
-              <Title># 프로필 이미지</Title>
-              <ProfileImgBox>
-                <ProfileImg src={profilePreview} alt='ProfileImg' />
-                <ImgLabel htmlFor='profileImg'>이미지 선택</ImgLabel>
-                <InputImg id='profileImg' type='file' accept='.jpg, .jpeg, .png' onChange={handleProfileImageChange} />
-              </ProfileImgBox>
-            </Content>
-            <Content>
-              <Title># 배경 이미지</Title>
-              <ProfileImgBox>
-                <ProfileBackgroundImg src={profileBackgroundPreview} alt='ProfileBackgroundImg' />
-                <ImgLabel htmlFor='profileBackgroundImg'>배경이미지 선택</ImgLabel>
-                <InputImg
-                  id='profileBackgroundImg'
-                  type='file'
-                  accept='.jpg, .jpeg, .png'
-                  onChange={handleProfileBackgroundImageChange}
-                />
-              </ProfileImgBox>
-            </Content>
-            <SubmitInput type='submit' value={'수정 완료'} />
-          </EditForm>
-          <ChangePassword show={changePassword} setChangePassword={setChangePassword} />
         </>
       )}
     </ProfileEditPageSection>
