@@ -36,8 +36,8 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
 
   const handleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    console.log('이메일 : ', loginEmailRef.current?.value)
-    console.log('비밀번호 : ', loginPasswordRef.current?.value)
+    // console.log('이메일 : ', loginEmailRef.current?.value)
+    // console.log('비밀번호 : ', loginPasswordRef.current?.value)
     const loginEmail = loginEmailRef.current?.value as string
     const loginPassword = loginPasswordRef.current?.value as string
 
@@ -75,9 +75,9 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
       return
     }
 
-    console.log('이메일 : ', joinEmailRef.current?.value)
-    console.log('비밀번호 : ', joinPasswordRef.current?.value)
-    console.log('닉네임 : ', joinNickNameRef.current?.value)
+    // console.log('이메일 : ', joinEmailRef.current?.value)
+    // console.log('비밀번호 : ', joinPasswordRef.current?.value)
+    // console.log('닉네임 : ', joinNickNameRef.current?.value)
 
     const joinData = JSON.stringify({
       email: joinEmailRef.current?.value as string,
