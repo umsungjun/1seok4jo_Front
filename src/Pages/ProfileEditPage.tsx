@@ -10,14 +10,16 @@ import NoToken from '../Common/NoToken'
 import {useSelector} from 'react-redux'
 import {RootState} from '../Store'
 import {basicUser} from '../Mock/users'
+import Secession from '../Popups/Secession'
 
 export default function ProfileEditPage() {
   scrollToTop()
   const user = useSelector((state: RootState) => state.user)
-  console.log(user)
+  // console.log(user)
 
   const [token, setToken] = useCookies(['token'])
   const [changePassword, setChangePassword] = useState<boolean>(false)
+  const [secession, setSecession] = useState<boolean>(false)
   const [profilePreview, setProfilePreview] = useState<string>(
     user.profileUrl === null ? basicUser.profile : user.profileUrl,
   )
@@ -122,9 +124,13 @@ export default function ProfileEditPage() {
                 />
               </ProfileImgBox>
             </Content>
-            <SubmitInput type='submit' value={'수정 완료'} />
+            <ButtonBox>
+              <SecessionButton onClick={() => setSecession(true)}>탈퇴 하기</SecessionButton>
+              <SubmitInput type='submit' value={'수정 완료'} />
+            </ButtonBox>
           </EditForm>
           <ChangePassword show={changePassword} setChangePassword={setChangePassword} />
+          <Secession show={secession} setSecession={setSecession} />
         </>
       )}
     </ProfileEditPageSection>
@@ -232,6 +238,7 @@ const ProfileBackgroundImg = styled.img`
   height: 25rem;
   border-radius: 1rem;
   padding-bottom: 0.3rem;
+  min-width: 27.5rem;
 `
 
 const InputImg = styled.input`
@@ -255,9 +262,15 @@ const ImgLabel = styled.label`
     border-color: #1877fe;
   }
 `
-const SubmitInput = styled.input`
+
+const ButtonBox = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
   margin-top: 5rem;
-  margin-left: auto;
+`
+
+const SubmitInput = styled.input`
   padding: 0.7rem 1.5rem;
   font-size: 1.2rem;
   cursor: pointer;
@@ -265,4 +278,20 @@ const SubmitInput = styled.input`
   background: #1877f2;
   border: none;
   border-radius: 0.5rem;
+`
+
+const SecessionButton = styled.button`
+  padding: 0.7rem 1.5rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #fff;
+  background: #c0c0c0;
+  border: none;
+  border-radius: 0.5rem;
+  margin-right: 1rem;
+
+  &:hover {
+    background: #fff;
+    color: red;
+  }
 `

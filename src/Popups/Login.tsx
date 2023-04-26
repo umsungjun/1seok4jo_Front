@@ -4,8 +4,8 @@ import styled from 'styled-components'
 import {AiOutlineClose} from 'react-icons/ai'
 import {ImBubble} from 'react-icons/im'
 import {TbSlash} from 'react-icons/tb'
-import {fetchJoinApi} from '../Service/joinService'
-import {fetchLoginApi} from '../Service/loginService'
+import {fetchJoinApi, fetchLoginApi} from '../Service/userService'
+
 import {useCookies} from 'react-cookie'
 import {useDispatch, useSelector} from 'react-redux'
 import {setUser} from '../Store/user'
@@ -36,8 +36,8 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
 
   const handleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    console.log('이메일 : ', loginEmailRef.current?.value)
-    console.log('비밀번호 : ', loginPasswordRef.current?.value)
+    // console.log('이메일 : ', loginEmailRef.current?.value)
+    // console.log('비밀번호 : ', loginPasswordRef.current?.value)
     const loginEmail = loginEmailRef.current?.value as string
     const loginPassword = loginPasswordRef.current?.value as string
 
@@ -57,7 +57,7 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
     }
   }
 
-  const handleJoin = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleJoin = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
 
     if (
@@ -75,15 +75,22 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
       return
     }
 
-    console.log('이메일 : ', typeof joinEmailRef.current?.value)
-    console.log('비밀번호 : ', typeof joinPasswordRef.current?.value)
-    console.log('닉네임 : ', typeof joinNickNameRef.current?.value)
+    // console.log('이메일 : ', joinEmailRef.current?.value)
+    // console.log('비밀번호 : ', joinPasswordRef.current?.value)
+    // console.log('닉네임 : ', joinNickNameRef.current?.value)
 
-    fetchJoinApi(
-      joinEmailRef.current?.value as string,
-      joinPasswordRef.current?.value as string,
-      joinNickNameRef.current?.value as string,
-    )
+    const joinData = JSON.stringify({
+      email: joinEmailRef.current?.value as string,
+      password: joinPasswordRef.current?.value as string,
+      nickname: joinNickNameRef.current?.value as string,
+    })
+
+    const blob = new Blob([joinData], {
+      type: 'application/json',
+    })
+
+    await fetchJoinApi(blob)
+
     setJoinForm(false)
     setShowLoginModal(false)
   }
