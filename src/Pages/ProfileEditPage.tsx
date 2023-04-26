@@ -10,6 +10,7 @@ import NoToken from '../Common/NoToken'
 import {useSelector} from 'react-redux'
 import {RootState} from '../Store'
 import {basicUser} from '../Mock/users'
+import Secession from '../Popups/Secession'
 
 export default function ProfileEditPage() {
   scrollToTop()
@@ -18,6 +19,7 @@ export default function ProfileEditPage() {
 
   const [token, setToken] = useCookies(['token'])
   const [changePassword, setChangePassword] = useState<boolean>(false)
+  const [secession, setSecession] = useState<boolean>(false)
   const [profilePreview, setProfilePreview] = useState<string>(
     user.profileUrl === null ? basicUser.profile : user.profileUrl,
   )
@@ -66,7 +68,69 @@ export default function ProfileEditPage() {
   return (
     <ProfileEditPageSection>
       {Object.keys(token).length === 0 ? (
-        <NoToken />
+        // <NoToken />
+        <>
+          <MyPageBanner />
+          <EditForm onSubmit={handleEditForm} onKeyUp={e => e.key === 'Enter' && e.preventDefault()}>
+            <PageTitle>회원정보 수정</PageTitle>
+            <Content>
+              <Title># 이메일</Title>
+              <Input value={user.email} type='email' readOnly />
+            </Content>
+            <Content>
+              <Title># 비밀번호</Title>
+              <PasswordBox>
+                <Input type='password' required />
+                <PassWordChange
+                  onClick={e => {
+                    handlePasswordChange(e)
+                  }}
+                >
+                  *비밀번호 변경
+                </PassWordChange>
+              </PasswordBox>
+            </Content>
+            <Content>
+              <Title># 닉네임</Title>
+              <Input value={user.nickName} type='text' readOnly />
+            </Content>
+            <Content>
+              <Title># 나를 소개하는 한 줄</Title>
+              <Input
+                type='text'
+                maxLength={40}
+                placeholder={user.introduction === null ? '나를 소개하는 한문장을 등록해주세요.' : user.introduction}
+              />
+            </Content>
+            <Content>
+              <Title># 프로필 이미지</Title>
+              <ProfileImgBox>
+                <ProfileImg src={profilePreview} alt='ProfileImg' />
+                <ImgLabel htmlFor='profileImg'>이미지 선택</ImgLabel>
+                <InputImg id='profileImg' type='file' accept='.jpg, .jpeg, .png' onChange={handleProfileImageChange} />
+              </ProfileImgBox>
+            </Content>
+            <Content>
+              <Title># 배경 이미지</Title>
+              <ProfileImgBox>
+                <ProfileBackgroundImg src={profileBackgroundPreview} alt='ProfileBackgroundImg' />
+                <ImgLabel htmlFor='profileBackgroundImg'>배경이미지 선택</ImgLabel>
+                <InputImg
+                  id='profileBackgroundImg'
+                  type='file'
+                  accept='.jpg, .jpeg, .png'
+                  onChange={handleProfileBackgroundImageChange}
+                />
+              </ProfileImgBox>
+            </Content>
+            <ButtonBox>
+              <SecessionButton onClick={() => setSecession(true)}>탈퇴 하기</SecessionButton>
+              <SubmitInput type='submit' value={'수정 완료'} />
+            </ButtonBox>
+          </EditForm>
+          <ChangePassword show={changePassword} setChangePassword={setChangePassword} />
+          <Secession show={secession} setSecession={setSecession} />
+        </>
       ) : (
         <>
           <MyPageBanner />
@@ -232,6 +296,7 @@ const ProfileBackgroundImg = styled.img`
   height: 25rem;
   border-radius: 1rem;
   padding-bottom: 0.3rem;
+  min-width: 27.5rem;
 `
 
 const InputImg = styled.input`
@@ -255,9 +320,15 @@ const ImgLabel = styled.label`
     border-color: #1877fe;
   }
 `
-const SubmitInput = styled.input`
+
+const ButtonBox = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
   margin-top: 5rem;
-  margin-left: auto;
+`
+
+const SubmitInput = styled.input`
   padding: 0.7rem 1.5rem;
   font-size: 1.2rem;
   cursor: pointer;
@@ -265,4 +336,20 @@ const SubmitInput = styled.input`
   background: #1877f2;
   border: none;
   border-radius: 0.5rem;
+`
+
+const SecessionButton = styled.button`
+  padding: 0.7rem 1.5rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #fff;
+  background: #c0c0c0;
+  border: none;
+  border-radius: 0.5rem;
+  margin-right: 1rem;
+
+  &:hover {
+    background: #fff;
+    color: red;
+  }
 `
