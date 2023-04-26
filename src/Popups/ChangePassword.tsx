@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import {AiOutlineClose} from 'react-icons/ai'
 import {useRef, useState} from 'react'
-import {fetchEditPassWordApi, fetchMailPassWordApi} from '../Service/userService'
+import {fetchEditPassWordApi} from '../Service/userService'
 import {useCookies} from 'react-cookie'
 
 interface ChangePasswordModalProps {
@@ -25,11 +25,6 @@ export default function ChangePassword({show, setChangePassword}: ChangePassword
     fetchEditPassWordApi(password, newPassword, token)
   }
 
-  const handleInitPassword = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    SetText('초기화 된 비밀번호가 등록된 메일로 발송되었습니다.')
-    fetchMailPassWordApi()
-  }
   return (
     <ModalBackdrop show={show}>
       <ModalContent>
@@ -44,7 +39,6 @@ export default function ChangePassword({show, setChangePassword}: ChangePassword
           <Input type='password' placeholder='새 비밀번호' required ref={newPasswordRef} />
           <Input type='password' placeholder='새 비밀번호 확인' required />
         </InputGroupJoin>
-        <FindPass onClick={e => handleInitPassword(e)}>비밀번호 초기화</FindPass>
         <FindPassButton onClick={e => handleChangePassword(e)}>비밀번호 변경</FindPassButton>
       </ModalContent>
     </ModalBackdrop>
@@ -72,7 +66,7 @@ const ModalContent = styled.div`
   transform: translate(-50%, -50%);
   background-color: #fff;
   width: 35rem;
-  height: 33rem;
+  height: 30rem;
   z-index: 1000;
   border-radius: 1rem;
   display: flex;

@@ -11,6 +11,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {setUser} from '../Store/user'
 import {RootState} from '../Store'
 import {darkTheme, lightTheme} from '../Theme/theme'
+import FindPassword from './FindPassword'
 
 interface PaymentModalProps {
   show: boolean
@@ -22,6 +23,7 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
   const userDispatch = useDispatch()
   const [cookies, setCookie] = useCookies(['token'])
   const [joinForm, setJoinForm] = useState(false)
+  const [FindPassForm, setFindPassForm] = useState(false)
   const [joinWelcomeText, setJoinWelcomeText] = useState('Compass에 오신 것을 환영합니다.')
   const [loginWelcomeText, setLoginWelcomeText] = useState('Compass에 오신 것을 환영합니다.')
 
@@ -51,6 +53,7 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
       setCookie('token', `bearer ${loginResult.accessToken}`)
       userDispatch(setUser(loginResult))
       setShowLoginModal(false)
+      setLoginWelcomeText('Compass에 오신 것을 환영합니다.')
     } catch (error) {
       console.log(error)
       setLoginWelcomeText('로그인 정보가 일치하지 않습니다.')
@@ -96,75 +99,86 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
   }
 
   return (
-    <ModalBackdrop show={show}>
-      <ModalContent theme={theme}>
-        {joinForm ? (
-          <>
-            <ModalCloseTitleBox>
-              <CloseIcon
-                theme={theme}
-                onClick={() => {
-                  setShowLoginModal(false), setJoinForm(false)
-                }}
-              />
-              <ModalTitle>회원가입</ModalTitle>
-            </ModalCloseTitleBox>
-            <Line theme={theme} />
-            <WelcomeText ref={joinWelcomeTextRef}>{joinWelcomeText}</WelcomeText>
-            <InputGroupJoin>
-              <Input
-                type='email'
-                pattern='[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.]+[a-zA-Z]+[.]*[a-zA-Z]*'
-                placeholder='이메일'
-                required
-                ref={joinEmailRef}
-              />
-              <Input type='password' placeholder='비밀 번호' required ref={joinPasswordRef} />
-              <Input type='password' placeholder='비밀 번호 확인' required ref={joinPassword2Ref} />
-              <Input type='text' placeholder='닉네임' required ref={joinNickNameRef} />
-            </InputGroupJoin>
-            <LoginButton onClick={e => handleJoin(e)}>회원가입</LoginButton>
-          </>
-        ) : (
-          <>
-            <ModalCloseTitleBox>
-              <CloseIcon
-                theme={theme}
-                onClick={() => {
-                  setShowLoginModal(false), setJoinForm(false)
-                }}
-              />
-              <ModalTitle>로그인</ModalTitle>
-            </ModalCloseTitleBox>
-            <Line theme={theme} />
-            <WelcomeText>{loginWelcomeText}</WelcomeText>
-            <InputGroup>
-              <Input
-                type='email'
-                pattern='[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.]+[a-zA-Z]+[.]*[a-zA-Z]*'
-                placeholder='이메일'
-                required
-                ref={loginEmailRef}
-              />
-              <Input type='password' placeholder='비밀 번호' required ref={loginPasswordRef} />
-            </InputGroup>
-            <JoinFindPassBox>
-              <JoinFindPassButton theme={theme} onClick={() => setJoinForm(true)}>
-                회원가입
-              </JoinFindPassButton>
-              <TbSlash />
-              <JoinFindPassButton theme={theme}>비밀번호 찾기</JoinFindPassButton>
-            </JoinFindPassBox>
-            <LoginButton onClick={e => handleLogin(e)}>로그인</LoginButton>
-            <Hrspan>또는</Hrspan>
-            <KaKaoLoginButton>
-              <ImBubble />
-              카카오 로그인
-            </KaKaoLoginButton>
-          </>
-        )}
-      </ModalContent>
-    </ModalBackdrop>
+    <>
+      <ModalBackdrop show={show}>
+        <ModalContent theme={theme}>
+          {joinForm ? (
+            <>
+              <ModalCloseTitleBox>
+                <CloseIcon
+                  theme={theme}
+                  onClick={() => {
+                    setShowLoginModal(false), setJoinForm(false)
+                  }}
+                />
+                <ModalTitle>회원가입</ModalTitle>
+              </ModalCloseTitleBox>
+              <Line theme={theme} />
+              <WelcomeText ref={joinWelcomeTextRef}>{joinWelcomeText}</WelcomeText>
+              <InputGroupJoin>
+                <Input
+                  type='email'
+                  pattern='[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.]+[a-zA-Z]+[.]*[a-zA-Z]*'
+                  placeholder='이메일'
+                  required
+                  ref={joinEmailRef}
+                />
+                <Input type='password' placeholder='비밀 번호' required ref={joinPasswordRef} />
+                <Input type='password' placeholder='비밀 번호 확인' required ref={joinPassword2Ref} />
+                <Input type='text' placeholder='닉네임' required ref={joinNickNameRef} />
+              </InputGroupJoin>
+              <LoginButton onClick={e => handleJoin(e)}>회원가입</LoginButton>
+            </>
+          ) : (
+            <>
+              <ModalCloseTitleBox>
+                <CloseIcon
+                  theme={theme}
+                  onClick={() => {
+                    setShowLoginModal(false), setJoinForm(false)
+                  }}
+                />
+                <ModalTitle>로그인</ModalTitle>
+              </ModalCloseTitleBox>
+              <Line theme={theme} />
+              <WelcomeText>{loginWelcomeText}</WelcomeText>
+              <InputGroup>
+                <Input
+                  type='email'
+                  pattern='[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.]+[a-zA-Z]+[.]*[a-zA-Z]*'
+                  placeholder='이메일'
+                  required
+                  ref={loginEmailRef}
+                />
+                <Input type='password' placeholder='비밀 번호' required ref={loginPasswordRef} />
+              </InputGroup>
+              <JoinFindPassBox>
+                <JoinFindPassButton theme={theme} onClick={() => setJoinForm(true)}>
+                  회원가입
+                </JoinFindPassButton>
+                <TbSlash />
+                <JoinFindPassButton
+                  theme={theme}
+                  onClick={() => {
+                    setFindPassForm(true)
+                    setShowLoginModal(false)
+                  }}
+                >
+                  비밀번호 찾기
+                </JoinFindPassButton>
+              </JoinFindPassBox>
+              <LoginButton onClick={e => handleLogin(e)}>로그인</LoginButton>
+              <Hrspan>또는</Hrspan>
+              <KaKaoLoginButton>
+                <ImBubble />
+                카카오 로그인
+              </KaKaoLoginButton>
+            </>
+          )}
+        </ModalContent>
+      </ModalBackdrop>
+      <FindPassword show={FindPassForm} setFindPassForm={setFindPassForm} />
+    </>
   )
 }
 
