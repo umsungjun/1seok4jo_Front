@@ -8,19 +8,19 @@ const remote = axios.create()
 //   nickname: string
 // }
 
-export const fetchJoinApi = async (email: string, password: string, nickname: string) => {
+export const fetchJoinApi = async (blobData: Blob) => {
   const postJoinURL = `http://localhost:8080/api/member/signup`
+  // console.log(blobData)
+
+  const joinData = new FormData()
+  joinData.append('data', blobData)
+
   const params = {
     method: 'POST',
     url: `${postJoinURL}`,
-    data: {
-      email: `${email}`,
-      password: `${password}`,
-      nickname: `${nickname}`,
-    },
+    data: joinData,
   }
-
   const response = await remote(params)
 
-  return response.data
+  // console.log(response.data)
 }
