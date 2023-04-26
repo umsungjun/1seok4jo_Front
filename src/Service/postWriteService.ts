@@ -8,7 +8,6 @@ export const fetchPostWriteApi = async (formData: FormData) => {
     const response = await remote.post(postWriteURL, formData)
     return response.data
   } catch (error) {
-    // Handle the error here
     console.error(error)
     throw error
   }

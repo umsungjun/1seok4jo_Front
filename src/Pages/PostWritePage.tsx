@@ -9,6 +9,7 @@ import {useNavigate} from 'react-router-dom'
 import {scrollToTop} from '../util/scrollToTop'
 import {FaMapMarkerAlt} from 'react-icons/fa'
 import {RiCloseFill} from 'react-icons/ri'
+import {AiOutlinePaperClip} from 'react-icons/ai'
 import {fetchPostWriteApi} from '../Service/postWriteService'
 
 export default function PostWritePage() {
@@ -23,6 +24,7 @@ export default function PostWritePage() {
   const [hashtag, setHashtag] = useState<string[]>([])
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const [createdAt, setCreatedAt] = useState(new Date())
   const [categoryId, setCategoryId] = useState(1)
 
   useEffect(() => {
@@ -96,15 +98,21 @@ export default function PostWritePage() {
     formData.append('address', address)
     formData.append('hashtag', hashtag.toString())
     formData.append('categoryId', `${categoryId}`)
+    formData.append('createdAt', String(createdAt))
     for (let i = 0; i < imageNames.length; i++) {
       formData.append('image', imageNames[i])
     }
     await fetchPostWriteApi(formData)
+    return false
   }
   return (
     <PostForm onSubmit={handlePostInfo} onKeyUp={e => e.key === 'Enter' && e.preventDefault()}>
       <PageTitle title='Writing Post' sub='나의 여행 경험을 다른 사람들에게 들려주세요.' />
       <Section>
+        <TodayDate>
+          <Title># 작성일 : </Title>
+          <span>{createdAt.toLocaleDateString('ko-KR', {year: 'numeric', month: 'short', day: 'numeric'})}</span>
+        </TodayDate>
         <Title># 테마</Title>
         <ThemeSlide setCategoryId={setCategoryId} />
         <ContentBox>
@@ -179,7 +187,10 @@ export default function PostWritePage() {
         <ContentBox>
           <ImageBox>
             <ImgLabel htmlFor='image'>
-              <TitleImg># 이미지 첨부</TitleImg>
+              <TitleImg>
+                <span># 이미지 첨부</span>
+                <AiOutlinePaperClip />
+              </TitleImg>
               <ImageInput id='image' type='file' multiple accept='.jpg, .jpeg, .png' onChange={handleLoadImg} />
             </ImgLabel>
             <SelectImgs>
@@ -209,9 +220,10 @@ export default function PostWritePage() {
             )}
           </HashtagBox>
         </ContentBox>
-        <form onSubmit={handleSubmit}>
+
+        <SubmitForm onSubmit={handleSubmit}>
           <SubmitInput type='submit' value={'작성 완료'} />
-        </form>
+        </SubmitForm>
       </Section>
     </PostForm>
   )
@@ -231,17 +243,16 @@ const Section = styled.section`
   width: 80%;
 `
 
-const ContentBox = styled.div`
+export const ContentBox = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 5rem;
 `
 
-const Title = styled.h2`
+export const Title = styled.h2`
   font-size: 1.5rem;
   margin-right: 2rem;
 `
-
 const TitleInput = styled.input`
   border: none;
   border-bottom: 1px solid #c0c0c0;
@@ -358,8 +369,14 @@ const TitleImg = styled.span`
   border-radius: 0.5rem;
   padding: 0.3rem 0.3rem 0.3rem 0;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  span {
+    margin-right: 0.5rem;
+  }
   &:hover {
-    background: #f0f0f0;
+    color: #1877fe;
+    // background: #f0f0f0;
   }
 `
 
@@ -413,14 +430,29 @@ const TagDel = styled.div`
   }
 `
 
+const TodayDate = styled.div`
+  display: flex !important;
+  margin-bottom: 5rem;
+  span {
+    font-size: 1.35rem;
+    display: flex;
+    align-items: center;
+  }
+`
+
 const SubmitInput = styled.input`
   margin-top: 5rem;
-  margin-left: auto;
-  padding: 0.7rem 1.5rem;
-  font-size: 1.2rem;
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem 1.5rem;
+  font-size: 1.35rem;
   cursor: pointer;
   color: #fff;
   background: #1877f2;
   border: none;
   border-radius: 0.5rem;
+`
+const SubmitForm = styled.form`
+  display: flex;
+  justify-content: flex-end;
 `

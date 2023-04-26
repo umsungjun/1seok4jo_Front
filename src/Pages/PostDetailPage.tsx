@@ -48,6 +48,7 @@ const PostDetailPage = () => {
       const postDetail = await fetchThemePostDetailApi(Number(id))
       setPostDetail(postDetail.result)
     })()
+    console.log(id)
   }, [id])
 
   useEffect(() => {

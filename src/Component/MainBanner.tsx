@@ -1,5 +1,6 @@
+import React, {useState, useEffect} from 'react'
 import {Link} from 'react-router-dom'
-import styled from 'styled-components'
+import styled, {keyframes} from 'styled-components'
 import {Swiper, SwiperSlide} from 'swiper/react'
 import SwiperCore, {Navigation, Pagination, Autoplay} from 'swiper'
 import 'swiper/css'
@@ -22,6 +23,12 @@ export default function MainBanner() {
     className: 'picture-swiper',
   }
 
+  const [isVisible, setIsVisible] = useState(false)
+
+  useEffect(() => {
+    setIsVisible(true)
+  }, [])
+
   return (
     <BannerSwiper>
       <Swiper {...slide_settings}>
@@ -30,7 +37,7 @@ export default function MainBanner() {
             <div className='swiper-slide'>
               <SwiperImage>
                 <img key={index} src={data.image} alt={data.name} />
-                <TextContentStyled>
+                <TextContentStyled style={{visibility: isVisible ? 'visible' : 'hidden'}}>
                   <p>{data.content}</p>
                   <Link to={data.link} target='_blank'>
                     <FaExternalLinkAlt />
@@ -68,7 +75,14 @@ const SwiperImage = styled.div`
     }
   }
 `
-
+const slideIn = keyframes`
+  from {
+    bottom: -100%;
+  }
+  to {
+    bottom: 0%;
+  }
+`
 const TextContentStyled = styled.section`
   position: absolute;
   display: flex;
@@ -80,6 +94,11 @@ const TextContentStyled = styled.section`
   padding: 2rem;
   margin-bottom: 2rem;
   color: #fff;
+  bottom: -100%;
+  animation-name: ${slideIn};
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
   p {
     font-size: 3rem;
     font-weight: bold;
