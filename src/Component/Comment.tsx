@@ -1,19 +1,24 @@
 import React, {useState, useRef} from 'react'
 import styled from 'styled-components'
 import sangchu from '../Assets/sangchu.png'
-import type {ChatBubbleProps} from '../Interface/interface'
+import type {CommentBubbleProps} from '../Interface/interface'
 import type {CommentProps} from '../Interface/interface'
 
 const Comment: React.FC<CommentProps> = () => {
   const [newCommentText, setNewCommentText] = useState<string>('')
-  const [comments, setComments] = useState<ChatBubbleProps[]>([])
+  const [comments, setComments] = useState<CommentBubbleProps[]>([])
 
   const handleNewCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log('inputValue', newCommentText)
-    const newComment: ChatBubbleProps = {
-      text: newCommentText,
-      createdAt: new Date(),
+    const newComment: CommentBubbleProps = {
+      content: '',
+      createdAt: '',
+      commentId: 0,
+      userId: 0,
+      nickname: '',
+      imageUrl: [],
+      updatedAt: '',
     }
 
     setComments([...comments, newComment])
@@ -36,16 +41,17 @@ const Comment: React.FC<CommentProps> = () => {
         {comments.map((comment, index) => (
           <NewChat key={index}>
             <div className='date'>
-              {comments.createdAt.toLocaleString('ko-KR', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: 'numeric',
-                minute: 'numeric',
-              })}
+              {
+                comment.createdAt
+                // .toLocaleString('ko-KR', {
+                // year: 'numeric',
+                // month: 'long',
+                // day: 'numeric',
+                // })
+              }
             </div>
             {/* <h1>{user}</h1> */}
-            <div className='new-text'>{comments.content}</div>
+            <div className='new-text'>{comment.content}</div>
             <img src={sangchu} alt='유저프로필' />
             {/* <p>Chat room id: {id}</p>s */}
           </NewChat>

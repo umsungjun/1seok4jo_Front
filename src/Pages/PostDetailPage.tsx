@@ -20,7 +20,7 @@ import 'swiper/css/scrollbar'
 SwiperCore.use([Navigation, Scrollbar])
 import {PostDetailInterface, fetchThemePostDetailApi} from '../Service/postDetailService'
 import {fetchThemePostListApi} from '../Service/postThemeService'
-import Chat from '../Component/Chat'
+import Comment from '../Component/Comment'
 import {ThemePostListProps} from '../Component/PostList'
 import {PostCommentInterface, fetchPostCommentApi} from '../Service/postCommentService'
 
@@ -44,15 +44,7 @@ const PostDetailPage = () => {
     themeId: 0,
     title: '',
   })
-  // const [comment, setComment] = useState<PostCommentInterface>({
-  //   commentId: 1,
-  //   userId: 1,
-  //   nickname: '',
-  //   imageUrl: [],
-  //   content: '',
-  //   createdAt: '',
-  //   updatedAt: '',
-  // })
+
   useEffect(() => {
     ;(async () => {
       const postDetail = await fetchThemePostDetailApi(Number(id))
@@ -199,26 +191,11 @@ const PostDetailPage = () => {
         </HashtagTitle>
       </Body>
       <Bottom>
-        <Chat />
-        {/* <CommentBox>
+        <CommentBox>
           <div className='scroll-box'>
-            {post?.comments?.map(data => {
-              const {nickName, date, comment} = data
-              return (
-                <CommentList key={nickName}>
-                  <UserProfile>
-                    <img src={sangchu} alt='하상츄' />
-                    <UserInfo>
-                      <div>{nickName}</div>
-                      <div>{date}</div>
-                    </UserInfo>
-                  </UserProfile>
-                  <Comment>{comment}</Comment>
-                </CommentList>
-              )
-            })}
+            <Comment commentId={0} userId={0} nickname={''} imageUrl={[]} content={''} createdAt={''} updatedAt={''} />
           </div>
-        </CommentBox> */}
+        </CommentBox>
         <MapContainer />
       </Bottom>
       <h4>같은 테마의 이런 곳은 어떨까요?</h4>
@@ -421,7 +398,7 @@ const Bottom = styled.section`
 `
 const CommentBox = styled.section`
   width: 50%;
-  height: 50rem;
+  height: auto;
   border: 1px solid #c0c0c0;
   border-radius: 3rem;
   padding: 2rem;
@@ -458,9 +435,6 @@ const CommentList = styled.li`
   @media (max-width: 576px) {
     font-size: 1.5rem;
   }
-`
-const Comment = styled.div`
-  width: auto;
 `
 
 const UserProfile = styled.div`
