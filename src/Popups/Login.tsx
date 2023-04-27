@@ -117,7 +117,7 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
                 <CloseIcon
                   theme={theme}
                   onClick={() => {
-                    setShowLoginModal(false), setJoinForm(false)
+                    setShowLoginModal(false), setJoinForm(false), setLoginWelcomeText('Compass에 오신 것을 환영합니다.')
                   }}
                 />
                 <ModalTitle>회원가입</ModalTitle>
