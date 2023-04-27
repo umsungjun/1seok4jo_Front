@@ -28,7 +28,7 @@ import {fetchPostCommentApi, fetchGetCommentApi} from '../Service/postCommentSer
 const PostDetailPage = () => {
   scrollToTop()
   const {id} = useParams()
-  const [themePostList, setThemePostList] = useState<ThemePostListProps[]>([])
+  const [themePostList, setThemePostList] = useState([])
   const [categoryId, setCategoryId] = useState(1)
   const [postDetail, setPostDetail] = useState<PostDetailInterface>({
     baseUrl: '',
@@ -77,19 +77,7 @@ const PostDetailPage = () => {
         }
       }
 
-      const randomPostList: ThemePostListProps[] = randomPosts?.map(
-        index =>
-          postList?.result[index] && {
-            postId: postList.result[index].postId,
-            title: postList.result[index].title,
-            storeFileUrl: postList.result[index].storeFileUrl,
-            startDate: postList.result[index].startDate,
-            endDate: postList.result[index].endDate,
-            location: postList.result[index].location,
-            likeCount: postList.result[index].likeCount,
-            baseUrl: postList.result[index].baseUrl,
-          },
-      )
+      const randomPostList = randomPosts?.map(index => postList?.result[index])
       setThemePostList(randomPostList)
     })()
   }, [categoryId, id])
