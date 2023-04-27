@@ -1,7 +1,8 @@
-import React, {useRef} from 'react'
+import React, {useRef, useState} from 'react'
 import styled from 'styled-components'
 
 import {AiOutlineClose} from 'react-icons/ai'
+import {fetchMailPassWordApi} from '../Service/userService'
 
 interface FindPasswordProps {
   show: boolean
@@ -9,27 +10,47 @@ interface FindPasswordProps {
 }
 
 export default function FindPassword({show, setFindPassForm}: FindPasswordProps) {
+  const [emailMent, setEmailMent] = useState('# 가입된 이메일 정보를 입력해주세요.')
+  const [afterEmailMent, setAfterEmailMent] = useState('# 인증번호와 새로운 비밀번호를 기입해주세요.')
+
   const emailSubmitButtonRef = useRef<HTMLButtonElement>(null)
   const mailRef = useRef<HTMLInputElement>(null)
   const handleInitMail = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    if (mailRef.current?.value === null) return
+    console.log(mailRef.current?.value)
+
+    if (!mailRef.current || mailRef.current.value === '') return
 
     emailSubmitButtonRef.current?.style &&
-      ((emailSubmitButtonRef.current.style.background = '#c0c0c0'),
+      ((mailRef.current.style.color = '#c0c0c0'),
+      (emailSubmitButtonRef.current.style.background = '#c0c0c0'),
       (emailSubmitButtonRef.current.style.cursor = 'context-menu'))
-    // fetchMailPassWordApi()
+
+    setEmailMent('# 기입된 메일정보로 메일이 발송되었습니다.')
+    fetchMailPassWordApi()
   }
 
   return (
     <ModalBackdrop show={show}>
       <ModalContent>
         <ModalCloseTitleBox>
-          <CloseIcon onClick={() => setFindPassForm(false)} />
+          <CloseIcon
+            onClick={() => {
+              if (mailRef.current) {
+                mailRef.current.value = '' // set to empty string
+                mailRef.current.style.color = 'black' // set to black color
+              }
+              emailSubmitButtonRef.current?.style &&
+                ((emailSubmitButtonRef.current.style.background = '#1877fe'),
+                (emailSubmitButtonRef.current.style.cursor = 'pointer'))
+              setEmailMent('# 가입된 이메일 정보를 입력해주세요.')
+              setFindPassForm(false)
+            }}
+          />
           <ModalTitle>비밀번호 찾기</ModalTitle>
         </ModalCloseTitleBox>
         <Line />
-        <EmailMent># 가입된 이메일 정보를 입력해주세요.</EmailMent>
+        <EmailMent>{emailMent}</EmailMent>
         <MailInputBox>
           <MailInput
             type='email'
@@ -42,6 +63,13 @@ export default function FindPassword({show, setFindPassForm}: FindPasswordProps)
             전송
           </EmailSubmitButton>
         </MailInputBox>
+        <AfterEmailMent>{afterEmailMent}</AfterEmailMent>
+        <InputGroup>
+          <Input type='text' placeholder='인증번호' required />
+          <Input type='password' placeholder='새로운 비밀 번호' required />
+          <Input type='password' placeholder='비밀 번호 확인' required />
+        </InputGroup>
+        <SubmitButton>새 비밀번호 설정</SubmitButton>
       </ModalContent>
     </ModalBackdrop>
   )
@@ -69,7 +97,7 @@ const ModalContent = styled.div`
   transform: translate(-50%, -50%);
   background-color: #fff;
   width: 35rem;
-  height: 30rem;
+  height: 33rem;
   z-index: 1000;
   border-radius: 1rem;
   display: flex;
@@ -111,12 +139,11 @@ const Line = styled.hr`
   width: 100%;
   border: 0px;
   margin: 0;
-  margin-bottom: 2rem;
 `
 
 const EmailMent = styled.h2`
   font-size: 1.3rem;
-  margin-top: 1rem;
+  margin-top: 2rem;
 `
 
 const MailInputBox = styled.div`
@@ -146,4 +173,49 @@ const EmailSubmitButton = styled.button`
   border-radius: 1rem;
   color: #fff;
   background: #1877f2;
+`
+const InputGroup = styled.section`
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  input:first-child {
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+  input:nth-child(2) {
+    border-top: none;
+  }
+
+  input:last-child {
+    border-top: none;
+    border-radius: 0 0 0.5rem 0.5rem;
+  }
+`
+const Input = styled.input`
+  width: 100%;
+  height: 3.5rem;
+  padding: 0 1rem;
+  font-size: 1.3rem;
+  box-sizing: border-box;
+  border: 1px solid #c0c0c0;
+  &:focus {
+    outline: none;
+  }
+`
+
+const AfterEmailMent = styled.h2`
+  font-size: 1.3rem;
+  margin-top: 2rem;
+`
+const SubmitButton = styled.button`
+  margin-top: 1rem;
+  width: 80%;
+  height: 3rem;
+  background: #1877f2;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 0.5rem;
 `
