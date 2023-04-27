@@ -199,22 +199,7 @@ const PostDetailPage = () => {
       </Body>
       <Bottom>
         <CommentBox>
-          <div className='scroll-box'>
-            {commentList.map(comment => (
-              <Comment
-                commentId={comment.commentId}
-                userId={comment.userId}
-                nickname={comment.nickname}
-                imageUrl={comment.imageUrl}
-                content={comment.content}
-                createdAt={comment.createdAt}
-                updatedAt={comment.updatedAt}
-              />
-            ))}
-          </div>
-          {/* <div className='scroll-box'>
-            <Comment commentId={0} userId={0} nickname={''} imageUrl={[]} content={''} createdAt={''} updatedAt={''} />
-          </div> */}
+          <Comment commentId={0} userId={0} nickname={''} imageUrl={[]} content={''} createdAt={''} updatedAt={''} />
         </CommentBox>
         <MapContainer />
       </Bottom>
@@ -418,7 +403,7 @@ const Bottom = styled.section`
 `
 const CommentBox = styled.section`
   width: 50%;
-  height: auto;
+  height: 50rem;
   border: 1px solid #c0c0c0;
   border-radius: 3rem;
   padding: 2rem;
@@ -428,25 +413,22 @@ const CommentBox = styled.section`
     padding: 1.5rem;
   }
 
-  .scroll-box {
-    width: 100%;
-    height: 45rem;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
-    ::-webkit-scrollbar {
-      width: 0.5rem;
-      height: 0.2rem;
-      background-color: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-      border-radius: 1rem;
-      background-color: #c0c0c0;
-    }
-    @media (max-width: 576px) {
-      width: 100%;
-    }
-  }
+  // .scroll-box {
+  //   width: 100%;
+  //   height: 45rem;
+  //   ::-webkit-scrollbar {
+  //     width: 0.5rem;
+  //     height: 0.2rem;
+  //     background-color: transparent;
+  //   }
+  //   ::-webkit-scrollbar-thumb {
+  //     border-radius: 1rem;
+  //     background-color: #c0c0c0;
+  //   }
+  //   @media (max-width: 576px) {
+  //     width: 100%;
+  //   }
+  // }
 `
 const CommentList = styled.li`
   display: block;

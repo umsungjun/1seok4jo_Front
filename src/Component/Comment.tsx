@@ -73,7 +73,8 @@ const Comment: React.FC<CommentProps> = () => {
             </div>
 
             <div className='new-text'>{comment.content}</div>
-
+            <button className='delete'>삭제</button>
+            <button className='edit'>수정</button>
             {/* <p>Comment room id: {id}</p>s */}
           </NewComment>
         ))}
@@ -92,24 +93,19 @@ export default Comment
 
 const CommentContainer = styled.section`
   width: 100%;
-  height: 100%;
-  @media (max-width: 576px) {
-    width: 90%;
-    height: 85vh;
-    position: absolute;
-    top: 12.5%;
-    left: 5%;
-    margin: 0 auto;
-    border: 1px solid #ccc;
-    border-radius: 1rem;
-    padding: 1rem 0.5rem;
-  }
+  height: 50rem;
+  // @media (max-width: 576px) {
+  //   width: 90%;
+  //   height: 85vh;
+  //   // position: relative;
+  //   top: 12.5%;
+  //   left: 5%;
+  // }
 `
 const CommentBox = styled.div`
-  height: 100vh;
-  border: 1px solid red;
+  height: 42rem;
   overflow: scroll;
-
+  padding-bottom: 2rem;
   ::-webkit-scrollbar {
     width: 0.625rem;
     height: 0.3125rem;
@@ -134,13 +130,13 @@ const CommentForm = styled.form`
   align-items: center;
   width: 100%;
   height: 10%;
-  @media (max-width: 576px) {
-    position: absolute;
-    bottom: 0;
-    height: 12%;
-    justify-content: space-evenly;
-    width: 98%;
-  }
+  // @media (max-width: 576px) {
+  //   position: absolute;
+  //   bottom: 0;
+  //   height: 12%;
+  //   justify-content: space-evenly;
+  //   width: 98%;
+  // }
   input {
     width: 76%;
     height: 3rem;
@@ -175,8 +171,9 @@ const CommentForm = styled.form`
 `
 
 const NewComment = styled.div`
-  display: block;
+  display: flex;
   padding: 0rem;
+  margin: 2rem 1.5rem 2rem 0rem;
   @media (max-width: 576px) {
     padding: 1.5rem;
   }
@@ -196,17 +193,20 @@ const NewComment = styled.div`
     height: auto;
     padding: 1rem;
     border-radius: 10px;
-    background-color: #1877f2;
     border: transparent;
     font-size: 1.2rem;
     line-height: 1.5;
     display: flex;
     align-items: center;
-    color: #fff;
+    color: #000;
     overflow-wrap: anywhere;
   }
   img {
     border-radius: 5rem;
     margin-left: 1rem;
+  }
+  .delete {
+    padding: 0;
+    margin: 0;
   }
 `
