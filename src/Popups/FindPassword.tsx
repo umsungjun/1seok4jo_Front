@@ -53,6 +53,25 @@ export default function FindPassword({show, setFindPassForm}: FindPasswordProps)
     }
 
     fetchInitPassWordApi(uuid, newPassword1)
+    setFindPassForm(false)
+    setEmailMent('# 가입된 이메일 정보를 입력해주세요.')
+    setAfterEmailMent('# 인증번호와 새로운 비밀번호를 기입해주세요.')
+    if (uuidRef.current !== null) {
+      uuidRef.current.value = ''
+    }
+    if (newPassword1Ref.current !== null) {
+      newPassword1Ref.current.value = ''
+    }
+    if (newPassword2Ref.current !== null) {
+      newPassword2Ref.current.value = ''
+    }
+    if (mailRef.current !== null) {
+      mailRef.current.style.color = '#black'
+      mailRef.current.value = ''
+    }
+    if (emailSubmitButtonRef.current) {
+      emailSubmitButtonRef.current.style.background = '#1652fe'
+    }
   }
 
   return (
