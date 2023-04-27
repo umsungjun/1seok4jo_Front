@@ -27,17 +27,6 @@ export default function PostWritePage() {
   const [createdAt, setCreatedAt] = useState(new Date())
   const [categoryId, setCategoryId] = useState(1)
 
-  useEffect(() => {
-    console.log('테마 : ', categoryId)
-    console.log('시작일 : ', startDate)
-    console.log('종료일 : ', finishDate)
-    console.log('주소 : ', address)
-    console.log('이미지 : ', imageNames)
-    console.log('해쉬태그 : ', hashtag)
-    console.log('제목 : ', title)
-    console.log('내용 : ', content)
-  }, [startDate, finishDate])
-
   const onChangeOpenPost = () => {
     setIsOpenPost(!isOpenPost)
   }
@@ -49,10 +38,34 @@ export default function PostWritePage() {
     setIsOpenPost(false)
   }
 
-  const handlePostInfo = (e: React.FormEvent<HTMLFormElement>) => {
-    // console.log(e)
+  const handlePostInfo = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    navigate('/MyPage')
+
+    const formData = new FormData()
+    formData.append('title', title)
+    formData.append('content', content)
+    formData.append('startDate', String(startDate))
+    formData.append('finishDate', String(finishDate))
+    formData.append('address', address)
+    formData.append('hashtag', hashtag.toString())
+    formData.append('categoryId', `${categoryId}`)
+    formData.append('createdAt', String(createdAt))
+    for (let i = 0; i < imageNames.length; i++) {
+      formData.append('image', imageNames[i])
+    }
+    const getData = await fetchPostWriteApi(formData)
+    console.log(formData)
+    if (getData.data.code === 200) {
+      alert('게시글이 등록되었습니다.')
+      navigate('/MyPage')
+    } else {
+      alert(getData.data.message)
+    }
+
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ', ' + pair[1])
+    }
+    return false
   }
 
   const handleLoadImg = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,23 +101,6 @@ export default function PostWritePage() {
     setHashtag(prevHashtags => prevHashtags.filter((_, i) => i !== index))
   }
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const formData = new FormData()
-    formData.append('title', title)
-    formData.append('content', content)
-    formData.append('startDate', String(startDate))
-    formData.append('finishDate', String(finishDate))
-    formData.append('address', address)
-    formData.append('hashtag', hashtag.toString())
-    formData.append('categoryId', `${categoryId}`)
-    formData.append('createdAt', String(createdAt))
-    for (let i = 0; i < imageNames.length; i++) {
-      formData.append('image', imageNames[i])
-    }
-    await fetchPostWriteApi(formData)
-    return false
-  }
   return (
     <PostForm onSubmit={handlePostInfo} onKeyUp={e => e.key === 'Enter' && e.preventDefault()}>
       <PageTitle title='Writing Post' sub='나의 여행 경험을 다른 사람들에게 들려주세요.' />
@@ -220,10 +216,7 @@ export default function PostWritePage() {
             )}
           </HashtagBox>
         </ContentBox>
-
-        <SubmitForm onSubmit={handleSubmit}>
-          <SubmitInput type='submit' value={'작성 완료'} />
-        </SubmitForm>
+        <SubmitInput type='submit' value={'작성 완료'} />
       </Section>
     </PostForm>
   )
@@ -442,6 +435,7 @@ const TodayDate = styled.div`
 
 const SubmitInput = styled.input`
   margin-top: 5rem;
+  width: 8rem;
   display: flex;
   justify-content: flex-end;
   padding: 1rem 1.5rem;
@@ -451,8 +445,4 @@ const SubmitInput = styled.input`
   background: #1877f2;
   border: none;
   border-radius: 0.5rem;
-`
-const SubmitForm = styled.form`
-  display: flex;
-  justify-content: flex-end;
 `

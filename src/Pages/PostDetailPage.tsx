@@ -20,7 +20,9 @@ import 'swiper/css/scrollbar'
 SwiperCore.use([Navigation, Scrollbar])
 import {PostDetailInterface, fetchThemePostDetailApi} from '../Service/postDetailService'
 import {fetchThemePostListApi} from '../Service/postThemeService'
+import Chat from '../Component/Chat'
 import {ThemePostListProps} from '../Component/PostList'
+import {PostCommentInterface, fetchPostCommentApi} from '../Service/postCommentService'
 
 const PostDetailPage = () => {
   scrollToTop()
@@ -42,11 +44,21 @@ const PostDetailPage = () => {
     themeId: 0,
     title: '',
   })
-
+  // const [comment, setComment] = useState<PostCommentInterface>({
+  //   commentId: 1,
+  //   userId: 1,
+  //   nickname: '',
+  //   imageUrl: [],
+  //   content: '',
+  //   createdAt: '',
+  //   updatedAt: '',
+  // })
   useEffect(() => {
     ;(async () => {
       const postDetail = await fetchThemePostDetailApi(Number(id))
+      // const comment = await fetchPostCommentApi(Number(id))
       setPostDetail(postDetail.result)
+      // setComment(comment.result)
     })()
     console.log(id)
   }, [id])
@@ -187,7 +199,8 @@ const PostDetailPage = () => {
         </HashtagTitle>
       </Body>
       <Bottom>
-        <CommentBox>
+        <Chat />
+        {/* <CommentBox>
           <div className='scroll-box'>
             {post?.comments?.map(data => {
               const {nickName, date, comment} = data
@@ -205,7 +218,7 @@ const PostDetailPage = () => {
               )
             })}
           </div>
-        </CommentBox>
+        </CommentBox> */}
         <MapContainer />
       </Bottom>
       <h4>같은 테마의 이런 곳은 어떨까요?</h4>

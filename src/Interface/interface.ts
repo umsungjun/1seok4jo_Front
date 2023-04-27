@@ -8,6 +8,16 @@ export interface ChatProps {
   // user: string
 }
 
+export interface CommentProps {
+  commentId: number
+  userId: number
+  nickname: string
+  imageUrl: string[]
+  content: string
+  createdAt: string
+  updatedAt: string
+}
+
 // ChatBubble
 export interface SpeechBubbleProps {
   text: string
