@@ -1,4 +1,5 @@
 export const lightTheme = {
+  grayColor: 'color:#808080;',
   background: 'background-color : #fff;',
   hoverBackground: 'background-color: #f7f7f7;',
 }
