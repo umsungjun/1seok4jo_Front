@@ -54,7 +54,7 @@ export const fetchLoginApi = async (email: string, password: string) => {
 
 // 비밀번호 수정
 export const fetchEditPassWordApi = async (password: string, newPassword: string, token: string) => {
-  console.log(token)
+  // console.log(token)
 
   const postEditPasswordURL = `http://localhost:8080/api/member/password/update`
   const params = {
@@ -67,7 +67,7 @@ export const fetchEditPassWordApi = async (password: string, newPassword: string
     headers: {Authorization: token},
   }
   const response = await remote(params)
-  console.log(response)
+  // console.log(response)
 
   return response.data
 }
