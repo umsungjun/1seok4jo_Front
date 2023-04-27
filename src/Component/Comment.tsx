@@ -3,29 +3,49 @@ import styled from 'styled-components'
 import sangchu from '../Assets/sangchu.png'
 import type {CommentBubbleProps} from '../Interface/interface'
 import type {CommentProps} from '../Interface/interface'
+import axios from 'axios'
 
 const Comment: React.FC<CommentProps> = () => {
   const [newCommentText, setNewCommentText] = useState<string>('')
   const [comments, setComments] = useState<CommentBubbleProps[]>([])
 
-  const handleNewCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleNewCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log('inputValue', newCommentText)
     const newComment: CommentBubbleProps = {
-      content: '',
-      createdAt: '',
+      content: newCommentText,
+      createdAt: new Date().toLocaleString('ko-KR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }),
       commentId: 0,
       userId: 0,
       nickname: '',
       imageUrl: [],
       updatedAt: '',
     }
-
     setComments([...comments, newComment])
     setNewCommentText('')
-    // if (file) {
-    //   // file을 서버로 업로드하는 코드 나중에 작성
-    // }
+    //     try {
+    //       const response = await fetch('/comments', {
+    //         method: 'POST',
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify(newComment),
+    //       })
+    //
+    //       if (response.ok) {
+    //         // The comment was successfully added to the server.
+    //         setComments([...comments, newComment])
+    //         setNewCommentText('')
+    //       } else {
+    //         console.error('Failed to add comment to server.')
+    //       }
+    //     } catch (error) {
+    //       console.error('Failed to fetch comments from server.', error)
+    //     }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,41 +56,42 @@ const Comment: React.FC<CommentProps> = () => {
   const isInputEmpty = newCommentText.trim() === ''
 
   return (
-    <ChatContainer>
-      <ChatBox>
+    <CommentContainer>
+      <CommentBox>
         {comments.map((comment, index) => (
-          <NewChat key={index}>
-            <div className='date'>
-              {
-                comment.createdAt
-                // .toLocaleString('ko-KR', {
-                // year: 'numeric',
-                // month: 'long',
-                // day: 'numeric',
-                // })
-              }
+          <NewComment key={index}>
+            <div>
+              <img src={sangchu} alt='유저프로필' />
+              <h1>{comment.nickname}</h1>
+              <div className='date'>
+                {new Date(comment.createdAt).toLocaleString('ko-KR', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </div>
             </div>
-            {/* <h1>{user}</h1> */}
-            <div className='new-text'>{comment.content}</div>
-            <img src={sangchu} alt='유저프로필' />
-            {/* <p>Chat room id: {id}</p>s */}
-          </NewChat>
-        ))}
-      </ChatBox>
 
-      <ChatForm onSubmit={handleNewCommentSubmit}>
+            <div className='new-text'>{comment.content}</div>
+
+            {/* <p>Comment room id: {id}</p>s */}
+          </NewComment>
+        ))}
+      </CommentBox>
+
+      <CommentForm onSubmit={handleNewCommentSubmit}>
         <input type='text' value={newCommentText} onChange={handleChange} />
         <button type='submit' disabled={isInputEmpty}>
-          전송
+          댓글추가
         </button>
-      </ChatForm>
-    </ChatContainer>
+      </CommentForm>
+    </CommentContainer>
   )
 }
 export default Comment
 
-const ChatContainer = styled.section`
-  width: 80%;
+const CommentContainer = styled.section`
+  width: 100%;
   height: 100%;
   @media (max-width: 576px) {
     width: 90%;
@@ -84,8 +105,9 @@ const ChatContainer = styled.section`
     padding: 1rem 0.5rem;
   }
 `
-const ChatBox = styled.div`
-  height: 90%;
+const CommentBox = styled.div`
+  height: 100vh;
+  border: 1px solid red;
   overflow: scroll;
 
   ::-webkit-scrollbar {
@@ -105,9 +127,9 @@ const ChatBox = styled.div`
     }
   }
 `
-const ChatForm = styled.form`
+const CommentForm = styled.form`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   -webkit-box-align: center;
   align-items: center;
   width: 100%;
@@ -119,16 +141,8 @@ const ChatForm = styled.form`
     justify-content: space-evenly;
     width: 98%;
   }
-  label {
-    cursor: pointer;
-    color: #c0c0c0;
-    svg {
-      width: 1.8rem;
-      height: 1.8rem;
-    }
-  }
   input {
-    width: 80%;
+    width: 76%;
     height: 3rem;
     border-radius: 1rem;
     text-indent: 1.2rem;
@@ -144,7 +158,7 @@ const ChatForm = styled.form`
     }
   }
   button {
-    width: 10%;
+    width: 20%;
     height: 3rem;
     color: #fff;
     font-size: 1.2rem;
@@ -160,15 +174,15 @@ const ChatForm = styled.form`
   }
 `
 
-const NewChat = styled.div`
-  display: flex;
-  padding: 2rem;
+const NewComment = styled.div`
+  display: block;
+  padding: 0rem;
   @media (max-width: 576px) {
     padding: 1.5rem;
   }
   .date {
-    margin-left: auto;
-    margin-right: 1rem;
+    margin-right: auto;
+    margin-left: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;

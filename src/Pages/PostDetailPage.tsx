@@ -10,6 +10,7 @@ import {BsSuitHeart} from 'react-icons/bs'
 import {BsSuitHeartFill} from 'react-icons/bs'
 import {PostDetailInfo} from '../Mock/postDetail'
 import type {PostDetailInfoInterface} from '../Interface/interface'
+import type {PostCommentInterface} from '../Interface/interface'
 import {scrollToTop} from '../util/scrollToTop'
 import {useParams} from 'react-router-dom'
 import {Swiper, SwiperSlide} from 'swiper/react'
@@ -22,12 +23,12 @@ import {PostDetailInterface, fetchThemePostDetailApi} from '../Service/postDetai
 import {fetchThemePostListApi} from '../Service/postThemeService'
 import Comment from '../Component/Comment'
 import {ThemePostListProps} from '../Component/PostList'
-import {PostCommentInterface, fetchPostCommentApi} from '../Service/postCommentService'
+import {fetchPostCommentApi, fetchGetCommentApi} from '../Service/postCommentService'
 
 const PostDetailPage = () => {
   scrollToTop()
   const {id} = useParams()
-  const [themePostList, setThemePostList] = useState([])
+  const [themePostList, setThemePostList] = useState<ThemePostListProps[]>([])
   const [categoryId, setCategoryId] = useState(1)
   const [postDetail, setPostDetail] = useState<PostDetailInterface>({
     baseUrl: '',
@@ -44,12 +45,15 @@ const PostDetailPage = () => {
     themeId: 0,
     title: '',
   })
+  const [commentList, setCommentList] = useState<PostCommentInterface[]>([])
 
   useEffect(() => {
     ;(async () => {
       const postDetail = await fetchThemePostDetailApi(Number(id))
+      const commentList = await fetchGetCommentApi(Number(id))
       // const comment = await fetchPostCommentApi(Number(id))
       setPostDetail(postDetail.result)
+      setCommentList(commentList.result)
       // setComment(comment.result)
     })()
     console.log(id)
@@ -59,25 +63,40 @@ const PostDetailPage = () => {
     ;(async () => {
       const postList = await fetchThemePostListApi(categoryId)
       const randomPosts: number[] = []
-      const postListLength = postList.result.length
-      const excludedIndex = postList.result.findIndex((post: {postId: string | undefined}) => post.postId === id) // 현재 렌더링되는 게시글은 제외시키기
+      const postListLength = postList?.result.length
+      const currentPost = postList?.result.find((post: {postId: string | undefined}) => post.postId === id)
 
       while (randomPosts.length < 4) {
-        const randomIndex = Math.floor(Math.random() * postListLength) // 0 ~ postListLength 사이의 랜덤한 정수
-        if (!randomPosts.includes(randomIndex) && randomIndex !== excludedIndex) {
-          // 중복되지 않고 현재 렌더링되는 게시글도 제외시키기
+        const randomIndex = Math.floor(Math.random() * postListLength)
+        const randomPost = postList?.result[randomIndex]
+        if (
+          randomPost.postId !== currentPost?.postId && // 현재 게시물과 다른 게시물
+          randomPost.categoryId === currentPost?.categoryId // 현재 게시물과 같은 카테고리
+        ) {
           randomPosts.push(randomIndex)
         }
       }
-      const randomPostList = randomPosts
-        .filter(index => index < postList.result.length)
-        .map(index => postList.result[index])
+
+      const randomPostList: ThemePostListProps[] = randomPosts?.map(
+        index =>
+          postList?.result[index] && {
+            postId: postList.result[index].postId,
+            title: postList.result[index].title,
+            storeFileUrl: postList.result[index].storeFileUrl,
+            startDate: postList.result[index].startDate,
+            endDate: postList.result[index].endDate,
+            location: postList.result[index].location,
+            likeCount: postList.result[index].likeCount,
+            baseUrl: postList.result[index].baseUrl,
+          },
+      )
       setThemePostList(randomPostList)
     })()
   }, [categoryId, id])
 
   console.log(postDetail)
   console.log(themePostList)
+  console.log(commentList)
 
   const [post, setPost] = useState<PostDetailInfoInterface>()
   const [isLiked, setIsLiked] = useState(false)
@@ -193,8 +212,21 @@ const PostDetailPage = () => {
       <Bottom>
         <CommentBox>
           <div className='scroll-box'>
-            <Comment commentId={0} userId={0} nickname={''} imageUrl={[]} content={''} createdAt={''} updatedAt={''} />
+            {commentList.map(comment => (
+              <Comment
+                commentId={comment.commentId}
+                userId={comment.userId}
+                nickname={comment.nickname}
+                imageUrl={comment.imageUrl}
+                content={comment.content}
+                createdAt={comment.createdAt}
+                updatedAt={comment.updatedAt}
+              />
+            ))}
           </div>
+          {/* <div className='scroll-box'>
+            <Comment commentId={0} userId={0} nickname={''} imageUrl={[]} content={''} createdAt={''} updatedAt={''} />
+          </div> */}
         </CommentBox>
         <MapContainer />
       </Bottom>

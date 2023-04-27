@@ -85,6 +85,16 @@ export interface PostDetailInfoInterface {
   }[]
 }
 
+export interface PostCommentInterface {
+  commentId: number
+  content: string
+  createdAt: string
+  userId: number
+  nickname: string
+  imageUrl: string[]
+  updatedAt: string
+}
+
 // ChatList
 export interface InboxListInterface {
   readonly id: number
