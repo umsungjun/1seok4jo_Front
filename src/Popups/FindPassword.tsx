@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react'
 import styled from 'styled-components'
 
 import {AiOutlineClose} from 'react-icons/ai'
-import {fetchMailPassWordApi} from '../Service/userService'
+import {fetchMailPassWordApi, fetchInitPassWordApi} from '../Service/userService'
 
 interface FindPasswordProps {
   show: boolean
@@ -15,6 +15,11 @@ export default function FindPassword({show, setFindPassForm}: FindPasswordProps)
 
   const emailSubmitButtonRef = useRef<HTMLButtonElement>(null)
   const mailRef = useRef<HTMLInputElement>(null)
+
+  const uuidRef = useRef<HTMLInputElement>(null)
+  const newPassword1Ref = useRef<HTMLInputElement>(null)
+  const newPassword2Ref = useRef<HTMLInputElement>(null)
+
   const handleInitMail = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     console.log(mailRef.current?.value)
@@ -28,6 +33,26 @@ export default function FindPassword({show, setFindPassForm}: FindPasswordProps)
 
     setEmailMent('# 기입된 메일정보로 메일이 발송되었습니다.')
     fetchMailPassWordApi()
+  }
+
+  const handleInitPassword = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+
+    const uuid = uuidRef.current?.value as string
+    const newPassword1 = newPassword1Ref.current?.value as string
+    const newPassword2 = newPassword2Ref.current?.value as string
+
+    if (!uuid || !newPassword1 || !newPassword2) {
+      setAfterEmailMent('# 모든 정보를 기입해주세요.')
+      return
+    }
+
+    if (newPassword1 !== newPassword2) {
+      setAfterEmailMent('# 비밀번호가 일치하지 않습니다.')
+      return
+    }
+
+    fetchInitPassWordApi(uuid, newPassword1)
   }
 
   return (
@@ -65,11 +90,11 @@ export default function FindPassword({show, setFindPassForm}: FindPasswordProps)
         </MailInputBox>
         <AfterEmailMent>{afterEmailMent}</AfterEmailMent>
         <InputGroup>
-          <Input type='text' placeholder='인증번호' required />
-          <Input type='password' placeholder='새로운 비밀 번호' required />
-          <Input type='password' placeholder='비밀 번호 확인' required />
+          <Input type='text' placeholder='인증번호' required ref={uuidRef} />
+          <Input type='password' placeholder='새로운 비밀 번호' required ref={newPassword1Ref} />
+          <Input type='password' placeholder='비밀 번호 확인' required ref={newPassword2Ref} />
         </InputGroup>
-        <SubmitButton>새 비밀번호 설정</SubmitButton>
+        <SubmitButton onClick={e => handleInitPassword(e)}>새 비밀번호 설정</SubmitButton>
       </ModalContent>
     </ModalBackdrop>
   )
