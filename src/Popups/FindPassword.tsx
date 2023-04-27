@@ -3,6 +3,9 @@ import styled from 'styled-components'
 
 import {AiOutlineClose} from 'react-icons/ai'
 import {fetchMailPassWordApi, fetchInitPassWordApi} from '../Service/userService'
+import {darkTheme, lightTheme} from '../Theme/theme'
+import {useSelector} from 'react-redux'
+import {RootState} from '../Store'
 
 interface FindPasswordProps {
   show: boolean
@@ -10,6 +13,7 @@ interface FindPasswordProps {
 }
 
 export default function FindPassword({show, setFindPassForm}: FindPasswordProps) {
+  const theme = useSelector((state: RootState) => state.themeType.theme)
   const [emailMent, setEmailMent] = useState('# 가입된 이메일 정보를 입력해주세요.')
   const [afterEmailMent, setAfterEmailMent] = useState('# 인증번호와 새로운 비밀번호를 기입해주세요.')
 
@@ -76,9 +80,10 @@ export default function FindPassword({show, setFindPassForm}: FindPasswordProps)
 
   return (
     <ModalBackdrop show={show}>
-      <ModalContent>
+      <ModalContent theme={theme}>
         <ModalCloseTitleBox>
           <CloseIcon
+            theme={theme}
             onClick={() => {
               if (mailRef.current) {
                 mailRef.current.value = '' // set to empty string
@@ -139,7 +144,8 @@ const ModalContent = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #fff;
+  ${props => (props.theme === 'light' ? lightTheme.background : darkTheme.background)}
+  ${props => (props.theme === 'light' ? '' : darkTheme.whiteColor)}
   width: 35rem;
   height: 33rem;
   z-index: 1000;
@@ -165,7 +171,7 @@ const CloseIcon = styled(AiOutlineClose)`
   border-radius: 50%;
 
   &:hover {
-    background-color: #f7f7f7;
+    ${props => (props.theme === 'light' ? lightTheme.hoverBackground : darkTheme.hoverBackground)}
   }
 `
 
