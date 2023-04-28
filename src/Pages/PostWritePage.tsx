@@ -1,4 +1,6 @@
 import React, {useEffect, useState} from 'react'
+import axios from 'axios'
+import {useCookies} from 'react-cookie'
 import PageTitle from '../Common/PageTitle'
 import styled from 'styled-components'
 import ThemeSlide from '../Common/ThemeSlide'
@@ -15,17 +17,22 @@ import {fetchPostWriteApi} from '../Service/postWriteService'
 export default function PostWritePage() {
   scrollToTop()
   const navigate = useNavigate()
+  const remote = axios.create()
 
   const [address, setAddress] = useState('')
   const [isOpenPost, setIsOpenPost] = useState(false)
   const [startDate, setStartDate] = useState(new Date())
   const [finishDate, setFinishDate] = useState(new Date())
-  const [imageNames, setImageNames] = useState(['# 이미지첨부 버튼을 누르시고 이미지를 첨부해주세요.(최대 5장)'])
+  const [imageNames, setImageNames] = useState<string[]>([
+    '# 이미지첨부 버튼을 누르시고 이미지를 첨부해주세요.(최대 5장)',
+  ])
   const [hashtag, setHashtag] = useState<string[]>([])
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [createdAt, setCreatedAt] = useState(new Date())
   const [categoryId, setCategoryId] = useState(1)
+  const [cookies] = useCookies(['token'])
+  const token = cookies.token
 
   const onChangeOpenPost = () => {
     setIsOpenPost(!isOpenPost)
@@ -42,30 +49,53 @@ export default function PostWritePage() {
     e.preventDefault()
 
     const formData = new FormData()
-    formData.append('title', title)
-    formData.append('content', content)
-    formData.append('startDate', String(startDate))
-    formData.append('finishDate', String(finishDate))
-    formData.append('address', address)
-    formData.append('hashtag', hashtag.toString())
-    formData.append('categoryId', `${categoryId}`)
-    formData.append('createdAt', String(createdAt))
+    // formData.append('title', title)
+    // formData.append('detail', content)
+    // formData.append('startDate', String(startDate))
+    // formData.append('endDate', String(finishDate))
+    // formData.append('location', address)
+    // formData.append('hashtag', hashtag.toString())
+    // formData.append('themeId', `${categoryId}`)
+
     for (let i = 0; i < imageNames.length; i++) {
-      formData.append('image', imageNames[i])
-    }
-    const getData = await fetchPostWriteApi(formData)
-    console.log(formData)
-    if (getData.data.code === 200) {
-      alert('게시글이 등록되었습니다.')
-      navigate('/MyPage')
-    } else {
-      alert(getData.data.message)
+      formData.append('images', imageNames[i])
+      typeof imageNames[i] === 'string' && console.log('imageNames[i]', imageNames[i])
     }
 
-    for (let pair of formData.entries()) {
-      console.log(pair[0] + ', ' + pair[1])
+    const data = {
+      title,
+      detail: content,
+      startDate: String(startDate),
+      endDate: String(finishDate),
+      location: address,
+      hashtag: hashtag.toString(),
+      themeId: `${categoryId}`,
     }
-    return false
+    formData.append('data', JSON.stringify(data))
+    typeof data === 'object' && console.log('data', data)
+    // formData.set('data', JSON.stringify(data))
+    // formData.set('data', new Blob([JSON.stringify(data)], {type: 'application/json'}))
+
+    // formData.append('data', JSON.stringify(data), {contentType: 'application/json'})
+    const headers = {
+      'Content-Type': 'multipart/form-data',
+      // 'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    }
+    try {
+      const response = await remote.post('http://localhost:8080/post', formData, {headers})
+      console.log(response.data)
+      if (response.data.code === 200) {
+        alert('게시글이 등록되었습니다.')
+        navigate('/MyPage')
+      } else {
+        alert(response.data.message)
+        console.log(response.data.message)
+      }
+    } catch (error) {
+      console.error(error)
+      throw error
+    }
   }
 
   const handleLoadImg = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,10 +104,11 @@ export default function PostWritePage() {
       alert('이미지 첨부 갯수를 조정해주세요!')
       return
     }
-    let imageNames = []
-
+    const imageNames: string[] = []
     for (let i = 0; i < fileList.length; i++) {
-      imageNames.push(fileList[i].name)
+      const file = fileList[i]
+      const blob = new Blob([file], {type: file.type})
+      imageNames.push(URL.createObjectURL(blob))
     }
     setImageNames(imageNames)
   }

@@ -3,8 +3,6 @@ import MyPageBanner from '../Common/MyPageBanner'
 import styled from 'styled-components'
 import PostList from '../Component/PostList'
 import {scrollToTop} from '../util/scrollToTop'
-import {useSelector} from 'react-redux'
-import {RootState} from '../Store'
 
 export default function MyPage() {
   scrollToTop()

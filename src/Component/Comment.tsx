@@ -14,11 +14,7 @@ const Comment: React.FC<CommentProps> = () => {
     console.log('inputValue', newCommentText)
     const newComment: CommentBubbleProps = {
       content: newCommentText,
-      createdAt: new Date().toLocaleString('ko-KR', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      }),
+      createdAt: new Date().toISOString(),
       commentId: 0,
       userId: 0,
       nickname: '',
@@ -60,7 +56,7 @@ const Comment: React.FC<CommentProps> = () => {
       <CommentBox>
         {comments.map((comment, index) => (
           <NewComment key={index}>
-            <div>
+            <div className='info'>
               <img src={sangchu} alt='유저프로필' />
               <h1>{comment.nickname}</h1>
               <div className='date'>
@@ -72,9 +68,12 @@ const Comment: React.FC<CommentProps> = () => {
               </div>
             </div>
 
-            <div className='new-text'>{comment.content}</div>
-            <button className='delete'>삭제</button>
-            <button className='edit'>수정</button>
+            <div className='content'>{comment.content}</div>
+            <div className='buttons'>
+              <button className='delete'>삭제</button>
+              <button className='edit'>수정</button>
+            </div>
+
             {/* <p>Comment room id: {id}</p>s */}
           </NewComment>
         ))}
@@ -103,6 +102,7 @@ const CommentContainer = styled.section`
   // }
 `
 const CommentBox = styled.div`
+  width: 100%;
   height: 42rem;
   overflow: scroll;
   padding-bottom: 2rem;
@@ -172,41 +172,57 @@ const CommentForm = styled.form`
 
 const NewComment = styled.div`
   display: flex;
-  padding: 0rem;
-  margin: 2rem 1.5rem 2rem 0rem;
+  width: 90%;
+  :not(:last-child) {
+    margin-bottom: 3rem;
+  ]
   @media (max-width: 576px) {
     padding: 1.5rem;
   }
-  .date {
-    margin-right: auto;
-    margin-left: 1rem;
+  .info {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    @media (max-width: 576px) {
-      width: 35%;
+    width: 30%;
+    border: 1px solid red;
+    .date {
+      margin-right: auto;
+      margin-left: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      @media (max-width: 576px) {
+        width: 35%;
+      }
+    }
+    img {
+      border-radius: 5rem;
     }
   }
-  .new-text {
+  .content {
     position: relative;
-    width: 20rem;
+    left: 0;
+    border: 1px solid red;
+    width: 80%;
     height: auto;
     padding: 1rem;
     border-radius: 10px;
     border: transparent;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     line-height: 1.5;
     display: flex;
     align-items: center;
     color: #000;
     overflow-wrap: anywhere;
   }
-  img {
-    border-radius: 5rem;
-    margin-left: 1rem;
+  .buttons {
+    display: flex;
+    width: 20%;
+    justify-content: flex-end;
+    .delete {
+      padding: 0;
+      margin: 0;
+      
+    }
   }
-  .delete {
-    padding: 0;
-    margin: 0;
-  }
+ 
+
 `
