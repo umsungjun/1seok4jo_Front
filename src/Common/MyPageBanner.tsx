@@ -9,6 +9,7 @@ import {useNavigate} from 'react-router-dom'
 import {basicUser} from '../Mock/users'
 
 export default function MyPageBanner() {
+  const theme = useSelector((state: RootState) => state.themeType.theme)
   const user = useSelector((state: RootState) => state.user)
   const navigate = useNavigate()
 
@@ -26,7 +27,7 @@ export default function MyPageBanner() {
           {/* onMouseEnter={handleEditOn} */}
         </ProfileWrapper>
       ) : (
-        <ProfileWrapper background={user.bannerUrl === null ? basicUser.background : user.bannerUrl}>
+        <ProfileWrapper background={user.bannerUrl === null ? basicUser.background : user.bannerUrl} theme={theme}>
           <ProfileImg src={user.profileUrl === null ? basicUser.profile : user.profileUrl} />
           <Name>{user.nickName}</Name>
           <Text>{user.introduction === null ? '나를 소개하는 한문장을 등록해주세요.' : user.introduction}</Text>
@@ -62,7 +63,7 @@ const ProfileWrapper = styled.div<ProfileWrapperProps>`
   background-size: cover;
   background-position: center;
   border-radius: 1rem;
-  box-shadow: 0px 5px 5px 1px rgb(247, 247, 247);
+  ${props => (props.theme === 'light' ? 'box-shadow: 0px 5px 5px 1px rgb(247, 247, 247);' : '')}
 `
 
 const ProfileImg = styled.img`

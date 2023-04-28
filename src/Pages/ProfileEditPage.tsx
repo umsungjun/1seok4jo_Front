@@ -11,11 +11,12 @@ import {useSelector} from 'react-redux'
 import {RootState} from '../Store'
 import {basicUser} from '../Mock/users'
 import Secession from '../Popups/Secession'
+import {darkTheme, lightTheme} from '../Theme/theme'
 
 export default function ProfileEditPage() {
   scrollToTop()
   const user = useSelector((state: RootState) => state.user)
-  // console.log(user)
+  const theme = useSelector((state: RootState) => state.themeType.theme)
 
   const [token, setToken] = useCookies(['token'])
   const [changePassword, setChangePassword] = useState<boolean>(false)
@@ -66,7 +67,7 @@ export default function ProfileEditPage() {
   }
 
   return (
-    <ProfileEditPageSection>
+    <ProfileEditPageSection theme={theme}>
       {Object.keys(token).length === 0 ? (
         <NoToken />
       ) : (
@@ -141,6 +142,7 @@ const ProfileEditPageSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
+  ${props => (props.theme === 'light' ? lightTheme.background : darkTheme.background)}
 `
 
 const PageTitle = styled.h1`

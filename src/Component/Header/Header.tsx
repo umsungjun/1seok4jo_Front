@@ -43,6 +43,7 @@ const HeaderSection = styled.section<ThemeState>`
   width: 100%;
   box-sizing: border-box;
   z-index: 10;
+  ${props => (props.theme === 'light' ? lightTheme.boxShadow : darkTheme.boxShadow)}
   ${props => (props.theme === 'light' ? lightTheme.background : darkTheme.background)}
 
   @media (max-width: 576px) {
