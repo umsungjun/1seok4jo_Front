@@ -10,6 +10,7 @@ import {BsSuitHeart} from 'react-icons/bs'
 import {BsSuitHeartFill} from 'react-icons/bs'
 import {PostDetailInfo} from '../Mock/postDetail'
 import type {PostDetailInfoInterface} from '../Interface/interface'
+import type {PostCommentInterface} from '../Interface/interface'
 import {scrollToTop} from '../util/scrollToTop'
 import {useParams} from 'react-router-dom'
 import {Swiper, SwiperSlide} from 'swiper/react'
@@ -20,7 +21,9 @@ import 'swiper/css/scrollbar'
 SwiperCore.use([Navigation, Scrollbar])
 import {PostDetailInterface, fetchThemePostDetailApi} from '../Service/postDetailService'
 import {fetchThemePostListApi} from '../Service/postThemeService'
+import Comment from '../Component/Comment'
 import {ThemePostListProps} from '../Component/PostList'
+import {fetchPostCommentApi, fetchGetCommentApi} from '../Service/postCommentService'
 
 const PostDetailPage = () => {
   scrollToTop()
@@ -42,11 +45,16 @@ const PostDetailPage = () => {
     themeId: 0,
     title: '',
   })
+  const [commentList, setCommentList] = useState<PostCommentInterface[]>([])
 
   useEffect(() => {
     ;(async () => {
       const postDetail = await fetchThemePostDetailApi(Number(id))
+      const commentList = await fetchGetCommentApi(Number(id))
+      // const comment = await fetchPostCommentApi(Number(id))
       setPostDetail(postDetail.result)
+      setCommentList(commentList.result)
+      // setComment(comment.result)
     })()
     console.log(id)
   }, [id])
@@ -55,25 +63,28 @@ const PostDetailPage = () => {
     ;(async () => {
       const postList = await fetchThemePostListApi(categoryId)
       const randomPosts: number[] = []
-      const postListLength = postList.result.length
-      const excludedIndex = postList.result.findIndex((post: {postId: string | undefined}) => post.postId === id) // 현재 렌더링되는 게시글은 제외시키기
+      const postListLength = postList?.result.length
+      const currentPost = postList?.result.find((post: {postId: string | undefined}) => post.postId === id)
 
       while (randomPosts.length < 4) {
-        const randomIndex = Math.floor(Math.random() * postListLength) // 0 ~ postListLength 사이의 랜덤한 정수
-        if (!randomPosts.includes(randomIndex) && randomIndex !== excludedIndex) {
-          // 중복되지 않고 현재 렌더링되는 게시글도 제외시키기
+        const randomIndex = Math.floor(Math.random() * postListLength)
+        const randomPost = postList?.result[randomIndex]
+        if (
+          randomPost.postId !== currentPost?.postId && // 현재 게시물과 다른 게시물
+          randomPost.categoryId === currentPost?.categoryId // 현재 게시물과 같은 카테고리
+        ) {
           randomPosts.push(randomIndex)
         }
       }
-      const randomPostList = randomPosts
-        .filter(index => index < postList.result.length)
-        .map(index => postList.result[index])
+
+      const randomPostList = randomPosts?.map(index => postList?.result[index])
       setThemePostList(randomPostList)
     })()
   }, [categoryId, id])
 
   console.log(postDetail)
   console.log(themePostList)
+  console.log(commentList)
 
   const [post, setPost] = useState<PostDetailInfoInterface>()
   const [isLiked, setIsLiked] = useState(false)
@@ -188,23 +199,7 @@ const PostDetailPage = () => {
       </Body>
       <Bottom>
         <CommentBox>
-          <div className='scroll-box'>
-            {post?.comments?.map(data => {
-              const {nickName, date, comment} = data
-              return (
-                <CommentList key={nickName}>
-                  <UserProfile>
-                    <img src={sangchu} alt='하상츄' />
-                    <UserInfo>
-                      <div>{nickName}</div>
-                      <div>{date}</div>
-                    </UserInfo>
-                  </UserProfile>
-                  <Comment>{comment}</Comment>
-                </CommentList>
-              )
-            })}
-          </div>
+          <Comment commentId={0} userId={0} nickname={''} imageUrl={[]} content={''} createdAt={''} updatedAt={''} />
         </CommentBox>
         <MapContainer />
       </Bottom>
@@ -418,25 +413,22 @@ const CommentBox = styled.section`
     padding: 1.5rem;
   }
 
-  .scroll-box {
-    width: 100%;
-    height: 45rem;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
-    ::-webkit-scrollbar {
-      width: 0.5rem;
-      height: 0.2rem;
-      background-color: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-      border-radius: 1rem;
-      background-color: #c0c0c0;
-    }
-    @media (max-width: 576px) {
-      width: 100%;
-    }
-  }
+  // .scroll-box {
+  //   width: 100%;
+  //   height: 45rem;
+  //   ::-webkit-scrollbar {
+  //     width: 0.5rem;
+  //     height: 0.2rem;
+  //     background-color: transparent;
+  //   }
+  //   ::-webkit-scrollbar-thumb {
+  //     border-radius: 1rem;
+  //     background-color: #c0c0c0;
+  //   }
+  //   @media (max-width: 576px) {
+  //     width: 100%;
+  //   }
+  // }
 `
 const CommentList = styled.li`
   display: block;
@@ -445,9 +437,6 @@ const CommentList = styled.li`
   @media (max-width: 576px) {
     font-size: 1.5rem;
   }
-`
-const Comment = styled.div`
-  width: auto;
 `
 
 const UserProfile = styled.div`

@@ -37,7 +37,7 @@ export default function MainPage() {
     if (themePostList.length === 0) {
       return
     }
-    if (lastId === null) {
+    if (lastId === null || 1) {
       return
     }
     setIsLoading(true)
