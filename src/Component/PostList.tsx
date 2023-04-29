@@ -1,5 +1,6 @@
-import React, {useState, forwardRef, ForwardedRef} from 'react'
+import React, {useState, forwardRef, ForwardedRef, useEffect} from 'react'
 import styled from 'styled-components'
+import axios from 'axios'
 import {useNavigate} from 'react-router-dom'
 import {BsFillSuitHeartFill, BsSuitHeart} from 'react-icons/bs'
 import SlideImg from '../Popups/SlideImg'
@@ -9,6 +10,7 @@ import {RiErrorWarningLine} from 'react-icons/ri'
 import {darkTheme, lightTheme} from '../Theme/theme'
 import {useSelector} from 'react-redux'
 import {RootState} from '../Store'
+import {useCookies} from 'react-cookie'
 
 export interface ThemePostListProps {
   themePostList: {
@@ -33,9 +35,11 @@ const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostLis
   const [slideImgs, setSlideImgs] = useState<string[]>([])
   const [slideId, setSlideId] = useState<number>(0)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
-
+  const [cookies] = useCookies(['token'])
+  const token = cookies.token
   const navigate = useNavigate()
-  const menuOptions = ['삭제', '편집']
+  const remote = axios.create()
+  // const menuOptions = ['삭제', '편집']
 
   const setSlideImgAndShow = (images: string[], id: number) => {
     setSlideImgs(images)
@@ -62,17 +66,35 @@ const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostLis
     }
   }
 
-  const handleDeletePost = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleDeletePost = async (e: React.MouseEvent<HTMLButtonElement>, postId: number) => {
     e.stopPropagation()
     console.log('삭제 클릭')
     confirm('정말 삭제하시겠습니까?') // TODO 팝업
+    const headers = {
+      'Content-Type': 'multipart/form-data',
+      Authorization: token,
+    }
+    try {
+      const response = await remote.delete(`http://localhost:8080/post/${postId}`, {headers})
+      console.log(response.data)
+      if (response.data.code === 200) {
+        alert('게시글이 삭제되었습니다.')
+        navigate('/MyPage')
+      } else {
+        alert(response.data.message)
+        console.log(response.data.message)
+      }
+    } catch (error) {
+      console.error(error)
+      throw error
+    }
     setIsMenuOpen(!isMenuOpen)
   }
 
-  const handleEditPost = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleEditPost = (e: React.MouseEvent<HTMLButtonElement>, postId: number) => {
     e.stopPropagation()
     console.log('편집 클릭')
-    navigate(`/PostEdit`)
+    navigate(`/PostEdit/${postId}`)
   }
 
   return (
@@ -84,6 +106,19 @@ const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostLis
             <FeedStyled key={post.postId}>
               <ImgBox onClick={() => setSlideImgAndShow(storeFileUrl, postId)}>
                 <img src={`${baseUrl}${storeFileUrl[0]}`} />
+                <div onClick={handleClickOutside}>
+                  <MenuButton className='circle-button' onClick={handleOptionClick}>
+                    <div className='circle'></div>
+                    <div className='circle'></div>
+                    <div className='circle'></div>
+                  </MenuButton>
+                  {isMenuOpen && (
+                    <OptionList>
+                      <OptionsButton onClick={e => handleDeletePost(e, postId)}>삭제</OptionsButton>
+                      <OptionsButton onClick={e => handleEditPost(e, postId)}>편집</OptionsButton>
+                    </OptionList>
+                  )}
+                </div>
               </ImgBox>
               <div className='text'>
                 <FeedInfoStyled>
@@ -380,7 +415,8 @@ export const MenuButton = styled.button`
     width: 0.5rem;
     height: 0.5rem;
     border-radius: 50%;
-    background-color: #fff;
+    // background-color: #fff;
+    background-color: #187fd9;
     margin-bottom: 5px;
     display: block;
     @media (max-width: 576px) {

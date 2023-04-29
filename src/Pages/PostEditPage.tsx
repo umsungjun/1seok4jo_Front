@@ -1,5 +1,5 @@
-import {useState} from 'react'
-import {useNavigate} from 'react-router-dom'
+import {FormEventHandler, useEffect, useState} from 'react'
+import {useNavigate, useParams} from 'react-router-dom'
 import axios from 'axios'
 import {useCookies} from 'react-cookie'
 import DatePicker from 'react-datepicker'
@@ -10,11 +10,14 @@ import ThemeSlide from '../Common/ThemeSlide'
 import {FaMapMarkerAlt} from 'react-icons/fa'
 import {RiCloseFill} from 'react-icons/ri'
 import {scrollToTop} from '../util/scrollToTop'
+import {fetchThemePostDetailApi} from '../Service/postDetailService'
 
 export default function PostEditPage() {
   scrollToTop()
   const navigate = useNavigate()
   const remote = axios.create()
+  const {id} = useParams()
+
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [address, setAddress] = useState('')
@@ -39,16 +42,14 @@ export default function PostEditPage() {
     setIsOpenPost(false)
   }
 
-  const handlePostInfo = async (e: React.FormEvent<HTMLFormElement>, postId: number) => {
+  const handlePostInfo: React.FormEvent<HTMLFormElement> = async (e: {preventDefault: () => void}, postId: number) => {
     e.preventDefault()
-
     const formData = new FormData()
-
     const data = {
       title,
       detail: content,
-      startDate: String(startDate),
-      endDate: String(finishDate),
+      startDate: String(startDate.toLocaleDateString('ko-KR', {year: 'numeric', month: 'short', day: 'numeric'})),
+      endDate: String(finishDate.toLocaleDateString('ko-KR', {year: 'numeric', month: 'short', day: 'numeric'})),
       location: address,
       hashtag: hashtag.toString(),
       themeId: `${categoryId}`,
@@ -109,7 +110,7 @@ export default function PostEditPage() {
   }
 
   return (
-    <PostForm onSubmit={handlePostInfo} onKeyUp={e => e.key === 'Enter' && e.preventDefault()}>
+    <PostForm onSubmit={e => handlePostInfo} onKeyUp={e => e.key === 'Enter' && e.preventDefault()}>
       <PageTitle title='Edit Post' sub='나의 여행 정보를 수정할 수 있습니다.' />
       <Section>
         <Title># 테마</Title>

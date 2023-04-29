@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
+import {useParams} from 'react-router-dom'
 import axios from 'axios'
 import {useCookies} from 'react-cookie'
 import PageTitle from '../Common/PageTitle'
@@ -18,7 +19,7 @@ export default function PostWritePage() {
   scrollToTop()
   const navigate = useNavigate()
   const remote = axios.create()
-
+  const {id} = useParams()
   const [address, setAddress] = useState('')
   const [isOpenPost, setIsOpenPost] = useState(false)
   const [startDate, setStartDate] = useState(new Date())
@@ -29,6 +30,7 @@ export default function PostWritePage() {
   const [content, setContent] = useState('')
   const [createdAt, setCreatedAt] = useState(new Date())
   const [categoryId, setCategoryId] = useState(1)
+
   const [cookies] = useCookies(['token'])
   const token = cookies.token
   const [fileList, setFileList] = useState<File[]>([])
