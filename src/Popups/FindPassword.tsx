@@ -124,7 +124,7 @@ export default function FindPassword({show, setFindPassForm}: FindPasswordProps)
           <Input type='password' placeholder='새로운 비밀 번호' required ref={newPassword1Ref} />
           <Input type='password' placeholder='비밀 번호 확인' required ref={newPassword2Ref} />
         </InputGroup>
-        <SubmitButton onClick={e => handleInitPassword(e)}>새 비밀번호 설정</SubmitButton>
+        <SubmitButton onClick={e => handleInitPassword(e)}>비밀번호 재 설정</SubmitButton>
       </ModalContent>
     </ModalBackdrop>
   )

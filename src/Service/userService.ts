@@ -103,4 +103,15 @@ export const fetchMailPassWordApi = async (mail: string) => {
   const responseMail = await remote(paramsMail)
 }
 
-// /api/member/password/reset
+// 회원 탈퇴
+export const fetchDeleteUserApi = async (token: string) => {
+  const deleteUserURL = `http://localhost:8080/api/member/withdraw`
+
+  const paramsMail = {
+    method: 'DELETE',
+    url: `${deleteUserURL}`,
+    headers: {Authorization: token},
+  }
+  const response = await remote(paramsMail)
+  console.log(response)
+}
