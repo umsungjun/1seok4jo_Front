@@ -26,7 +26,8 @@ export default function FindPassword({show, setFindPassForm}: FindPasswordProps)
 
   const handleInitMail = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    console.log(mailRef.current?.value)
+
+    const mail = mailRef.current?.value as string
 
     if (!mailRef.current || mailRef.current.value === '') return
 
@@ -36,12 +37,17 @@ export default function FindPassword({show, setFindPassForm}: FindPasswordProps)
       (emailSubmitButtonRef.current.style.cursor = 'context-menu'))
 
     setEmailMent('# 기입된 메일정보로 메일이 발송되었습니다.')
-    fetchMailPassWordApi()
+
+    try {
+      await fetchMailPassWordApi(mail)
+    } catch (error) {
+      setEmailMent('# 잘못된 메일형식이거나 존재하지않는 회원입니다.')
+    }
   }
 
-  const handleInitPassword = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleInitPassword = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-
+    const mail = mailRef.current?.value as string
     const uuid = uuidRef.current?.value as string
     const newPassword1 = newPassword1Ref.current?.value as string
     const newPassword2 = newPassword2Ref.current?.value as string
@@ -55,9 +61,9 @@ export default function FindPassword({show, setFindPassForm}: FindPasswordProps)
       setAfterEmailMent('# 비밀번호가 일치하지 않습니다.')
       return
     }
-
-    fetchInitPassWordApi(uuid, newPassword1)
+    fetchInitPassWordApi(mail, uuid, newPassword1)
     setFindPassForm(false)
+
     setEmailMent('# 가입된 이메일 정보를 입력해주세요.')
     setAfterEmailMent('# 인증번호와 새로운 비밀번호를 기입해주세요.')
     if (uuidRef.current !== null) {
