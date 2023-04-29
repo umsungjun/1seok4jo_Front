@@ -1,4 +1,4 @@
-import {FormEventHandler, useEffect, useState} from 'react'
+import {FormEvent, FormEventHandler, useEffect, useState} from 'react'
 import {useNavigate, useParams} from 'react-router-dom'
 import axios from 'axios'
 import {useCookies} from 'react-cookie'
@@ -10,7 +10,6 @@ import ThemeSlide from '../Common/ThemeSlide'
 import {FaMapMarkerAlt} from 'react-icons/fa'
 import {RiCloseFill} from 'react-icons/ri'
 import {scrollToTop} from '../util/scrollToTop'
-import {fetchThemePostDetailApi} from '../Service/postDetailService'
 
 export default function PostEditPage() {
   scrollToTop()
@@ -30,6 +29,7 @@ export default function PostEditPage() {
   const [cookies] = useCookies(['token'])
   const token = cookies.token
   const [fileList, setFileList] = useState<File[]>([])
+  const [postId, setPostId] = useState(id)
 
   const onChangeOpenPost = () => {
     setIsOpenPost(!isOpenPost)
@@ -42,7 +42,7 @@ export default function PostEditPage() {
     setIsOpenPost(false)
   }
 
-  const handlePostInfo: React.FormEvent<HTMLFormElement> = async (e: {preventDefault: () => void}, postId: number) => {
+  const handlePostInfo = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData()
     const data = {
@@ -54,7 +54,7 @@ export default function PostEditPage() {
       hashtag: hashtag.toString(),
       themeId: `${categoryId}`,
     }
-
+    console.log('data', data)
     for (let list of fileList) {
       formData.append('images', list)
     }
@@ -110,7 +110,7 @@ export default function PostEditPage() {
   }
 
   return (
-    <PostForm onSubmit={e => handlePostInfo} onKeyUp={e => e.key === 'Enter' && e.preventDefault()}>
+    <PostForm onSubmit={handlePostInfo} onKeyUp={e => e.key === 'Enter' && e.preventDefault()}>
       <PageTitle title='Edit Post' sub='나의 여행 정보를 수정할 수 있습니다.' />
       <Section>
         <Title># 테마</Title>
@@ -161,11 +161,26 @@ export default function PostEditPage() {
         </ContentBox>
         <ContentBox>
           <Title># 제목</Title>
-          <TitleInput type='text' maxLength={20} placeholder='# 제목을 입력하세요 (최대 20자)' required />
+          <TitleInput
+            type='text'
+            maxLength={20}
+            placeholder='# 제목을 입력하세요 (최대 20자)'
+            required
+            onChange={e => {
+              setTitle(e.target.value)
+            }}
+          />
         </ContentBox>
         <ContentBox>
           <Title># 내용</Title>
-          <TextArea maxLength={500} placeholder='# 내용을 입력하세요 (최대 500자)' required />
+          <TextArea
+            maxLength={500}
+            placeholder='# 내용을 입력하세요 (최대 500자)'
+            required
+            onChange={e => {
+              setContent(e.target.value)
+            }}
+          />
         </ContentBox>
         <ContentBox>
           <ImageBox>
