@@ -1,5 +1,7 @@
 import {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
+import axios from 'axios'
+import {useCookies} from 'react-cookie'
 import DatePicker from 'react-datepicker'
 import DaumPostcode from 'react-daum-postcode'
 import styled from 'styled-components'
@@ -12,13 +14,19 @@ import {scrollToTop} from '../util/scrollToTop'
 export default function PostEditPage() {
   scrollToTop()
   const navigate = useNavigate()
-
+  const remote = axios.create()
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
   const [address, setAddress] = useState('')
   const [isOpenPost, setIsOpenPost] = useState(false)
   const [startDate, setStartDate] = useState(new Date())
   const [finishDate, setFinishDate] = useState(new Date())
   const [imageNames, setImageNames] = useState(['# 이미지첨부 버튼을 누르시고 이미지를 첨부해주세요.(최대 5장)'])
   const [hashtag, setHashtag] = useState<string[]>([])
+  const [categoryId, setCategoryId] = useState(1)
+  const [cookies] = useCookies(['token'])
+  const token = cookies.token
+  const [fileList, setFileList] = useState<File[]>([])
 
   const onChangeOpenPost = () => {
     setIsOpenPost(!isOpenPost)
@@ -31,24 +39,54 @@ export default function PostEditPage() {
     setIsOpenPost(false)
   }
 
-  const handlePostInfo = (e: React.FormEvent<HTMLFormElement>) => {
-    // console.log(e)
+  const handlePostInfo = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    navigate('/MyPage')
+
+    const formData = new FormData()
+
+    const data = {
+      title,
+      detail: content,
+      startDate: String(startDate),
+      endDate: String(finishDate),
+      location: address,
+      hashtag: hashtag.toString(),
+      themeId: `${categoryId}`,
+    }
+
+    for (let list of fileList) {
+      formData.append('images', list)
+    }
+    const dataBlob = new Blob([JSON.stringify(data)], {type: 'application/json'})
+    formData.append('data', dataBlob)
+    const headers = {
+      'Content-Type': 'multipart/form-data',
+      Authorization: token,
+    }
+    try {
+      const response = await remote.put('http://localhost:8080/post', formData, {headers})
+      console.log(response.data)
+      if (response.data.code === 200) {
+        alert('게시글이 등록되었습니다.')
+        navigate('/MyPage')
+      } else {
+        alert(response.data.message)
+        console.log(response.data.message)
+      }
+    } catch (error) {
+      console.error(error)
+      throw error
+    }
   }
 
-  const handleLoadImg = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const fileList = e.target.files
-    if (!fileList || fileList.length > 5) {
+  const handleLoadImg = ({target}: React.ChangeEvent<HTMLInputElement>) => {
+    const file = target.files
+    if (!file || file.length > 5) {
       alert('이미지 첨부 갯수를 조정해주세요!')
       return
     }
-    let imageNames = []
-
-    for (let i = 0; i < fileList.length; i++) {
-      imageNames.push(fileList[i].name)
-    }
-    setImageNames(imageNames)
+    setImageNames(Array.from(file).map(file => file.name))
+    setFileList(prev => prev.concat(Array.from(file)))
   }
 
   const handleEnterHash = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -75,7 +113,7 @@ export default function PostEditPage() {
       <PageTitle title='Edit Post' sub='나의 여행 정보를 수정할 수 있습니다.' />
       <Section>
         <Title># 테마</Title>
-        <ThemeSlide />
+        <ThemeSlide setCategoryId={setCategoryId} />
         <ContentBox>
           <Title># 날짜</Title>
           <DateBox>
