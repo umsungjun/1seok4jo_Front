@@ -54,9 +54,18 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
       userDispatch(setUser(loginResult))
       setShowLoginModal(false)
       setLoginWelcomeText('Compass에 오신 것을 환영합니다.')
+      if (loginEmailRef.current !== null) {
+        loginEmailRef.current.value = ''
+      }
+      if (loginPasswordRef.current !== null) {
+        loginPasswordRef.current.value = ''
+      }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
       setLoginWelcomeText('로그인 정보가 일치하지 않습니다.')
+      if (loginPasswordRef.current !== null) {
+        loginPasswordRef.current.value = ''
+      }
     }
   }
 
@@ -108,7 +117,7 @@ export default function Login({show, setShowLoginModal}: PaymentModalProps) {
                 <CloseIcon
                   theme={theme}
                   onClick={() => {
-                    setShowLoginModal(false), setJoinForm(false)
+                    setShowLoginModal(false), setJoinForm(false), setLoginWelcomeText('Compass에 오신 것을 환영합니다.')
                   }}
                 />
                 <ModalTitle>회원가입</ModalTitle>

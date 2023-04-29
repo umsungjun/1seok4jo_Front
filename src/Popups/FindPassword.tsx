@@ -2,7 +2,10 @@ import React, {useRef, useState} from 'react'
 import styled from 'styled-components'
 
 import {AiOutlineClose} from 'react-icons/ai'
-import {fetchMailPassWordApi} from '../Service/userService'
+import {fetchMailPassWordApi, fetchInitPassWordApi} from '../Service/userService'
+import {darkTheme, lightTheme} from '../Theme/theme'
+import {useSelector} from 'react-redux'
+import {RootState} from '../Store'
 
 interface FindPasswordProps {
   show: boolean
@@ -10,11 +13,17 @@ interface FindPasswordProps {
 }
 
 export default function FindPassword({show, setFindPassForm}: FindPasswordProps) {
+  const theme = useSelector((state: RootState) => state.themeType.theme)
   const [emailMent, setEmailMent] = useState('# 가입된 이메일 정보를 입력해주세요.')
   const [afterEmailMent, setAfterEmailMent] = useState('# 인증번호와 새로운 비밀번호를 기입해주세요.')
 
   const emailSubmitButtonRef = useRef<HTMLButtonElement>(null)
   const mailRef = useRef<HTMLInputElement>(null)
+
+  const uuidRef = useRef<HTMLInputElement>(null)
+  const newPassword1Ref = useRef<HTMLInputElement>(null)
+  const newPassword2Ref = useRef<HTMLInputElement>(null)
+
   const handleInitMail = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     console.log(mailRef.current?.value)
@@ -30,11 +39,51 @@ export default function FindPassword({show, setFindPassForm}: FindPasswordProps)
     fetchMailPassWordApi()
   }
 
+  const handleInitPassword = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+
+    const uuid = uuidRef.current?.value as string
+    const newPassword1 = newPassword1Ref.current?.value as string
+    const newPassword2 = newPassword2Ref.current?.value as string
+
+    if (!uuid || !newPassword1 || !newPassword2) {
+      setAfterEmailMent('# 모든 정보를 기입해주세요.')
+      return
+    }
+
+    if (newPassword1 !== newPassword2) {
+      setAfterEmailMent('# 비밀번호가 일치하지 않습니다.')
+      return
+    }
+
+    fetchInitPassWordApi(uuid, newPassword1)
+    setFindPassForm(false)
+    setEmailMent('# 가입된 이메일 정보를 입력해주세요.')
+    setAfterEmailMent('# 인증번호와 새로운 비밀번호를 기입해주세요.')
+    if (uuidRef.current !== null) {
+      uuidRef.current.value = ''
+    }
+    if (newPassword1Ref.current !== null) {
+      newPassword1Ref.current.value = ''
+    }
+    if (newPassword2Ref.current !== null) {
+      newPassword2Ref.current.value = ''
+    }
+    if (mailRef.current !== null) {
+      mailRef.current.style.color = '#black'
+      mailRef.current.value = ''
+    }
+    if (emailSubmitButtonRef.current) {
+      emailSubmitButtonRef.current.style.background = '#1652fe'
+    }
+  }
+
   return (
     <ModalBackdrop show={show}>
-      <ModalContent>
+      <ModalContent theme={theme}>
         <ModalCloseTitleBox>
           <CloseIcon
+            theme={theme}
             onClick={() => {
               if (mailRef.current) {
                 mailRef.current.value = '' // set to empty string
@@ -65,11 +114,11 @@ export default function FindPassword({show, setFindPassForm}: FindPasswordProps)
         </MailInputBox>
         <AfterEmailMent>{afterEmailMent}</AfterEmailMent>
         <InputGroup>
-          <Input type='text' placeholder='인증번호' required />
-          <Input type='password' placeholder='새로운 비밀 번호' required />
-          <Input type='password' placeholder='비밀 번호 확인' required />
+          <Input type='text' placeholder='인증번호' required ref={uuidRef} />
+          <Input type='password' placeholder='새로운 비밀 번호' required ref={newPassword1Ref} />
+          <Input type='password' placeholder='비밀 번호 확인' required ref={newPassword2Ref} />
         </InputGroup>
-        <SubmitButton>새 비밀번호 설정</SubmitButton>
+        <SubmitButton onClick={e => handleInitPassword(e)}>새 비밀번호 설정</SubmitButton>
       </ModalContent>
     </ModalBackdrop>
   )
@@ -95,7 +144,8 @@ const ModalContent = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #fff;
+  ${props => (props.theme === 'light' ? lightTheme.background : darkTheme.background)}
+  ${props => (props.theme === 'light' ? '' : darkTheme.whiteColor)}
   width: 35rem;
   height: 33rem;
   z-index: 1000;
@@ -121,7 +171,7 @@ const CloseIcon = styled(AiOutlineClose)`
   border-radius: 50%;
 
   &:hover {
-    background-color: #f7f7f7;
+    ${props => (props.theme === 'light' ? lightTheme.hoverBackground : darkTheme.hoverBackground)}
   }
 `
 

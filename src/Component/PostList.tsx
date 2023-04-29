@@ -6,6 +6,9 @@ import SlideImg from '../Popups/SlideImg'
 import {IoLocationSharp} from 'react-icons/io5'
 import {BeatLoader} from 'react-spinners'
 import {RiErrorWarningLine} from 'react-icons/ri'
+import {darkTheme, lightTheme} from '../Theme/theme'
+import {useSelector} from 'react-redux'
+import {RootState} from '../Store'
 
 export interface ThemePostListProps {
   themePostList: {
@@ -23,6 +26,7 @@ export interface ThemePostListProps {
 }
 
 const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostList(props, infiniteRef) {
+  const theme = useSelector((state: RootState) => state.themeType.theme)
   const [isLiked, setIsLiked] = useState(false)
   const [login, setLogin] = useState(null) // users[0]
   const [showHandleSlideImg, setShowHandleSlideImg] = useState<boolean>(false)
@@ -113,7 +117,7 @@ const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostLis
       <div ref={infiniteRef}>{props.isLoading && <BeatLoader color='#1877f2' loading={true} size={21} />}</div>
       <div>
         {props.themePostList.length === 0 && (
-          <PostNone>
+          <PostNone theme={theme}>
             <RiErrorWarningLine />
             해당 테마의 게시물이 존재하지 않습니다.
           </PostNone>
@@ -514,7 +518,7 @@ const PostNone = styled.div`
   height: 50vh;
   font-size: 1.5rem;
   font-weight: bold;
-  color: #000;
+  ${props => (props.theme === 'light' ? lightTheme.grayColor : darkTheme.whiteColor)}
   display: flex;
   align-items: center;
 

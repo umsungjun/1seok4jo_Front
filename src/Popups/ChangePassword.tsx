@@ -13,16 +13,36 @@ export default function ChangePassword({show, setChangePassword}: ChangePassword
   const [text, SetText] = useState('Compass에 오신 것을 환영합니다.')
   const [cookies, setCookie] = useCookies(['token'])
   const currentPasswordRef = useRef<HTMLInputElement>(null)
-  const newPasswordRef = useRef<HTMLInputElement>(null)
+  const newPassword1Ref = useRef<HTMLInputElement>(null)
+  const newPassword2Ref = useRef<HTMLInputElement>(null)
+
   const token = cookies.token
   const handleChangePassword = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
 
-    console.log('현재 비밀번호 ', currentPasswordRef.current?.value as string)
-    console.log('새 비밀번호', newPasswordRef.current?.value as string)
+    // console.log('현재 비밀번호 ', currentPasswordRef.current?.value as string)
+    // console.log('새 비밀번호', newPasswordRef.current?.value as string)
     const password = currentPasswordRef.current?.value as string
-    const newPassword = newPasswordRef.current?.value as string
-    fetchEditPassWordApi(password, newPassword, token)
+    const newPassword1 = newPassword1Ref.current?.value as string
+
+    if (currentPasswordRef.current !== null && newPassword1Ref.current !== null && newPassword2Ref.current !== null) {
+      if (newPassword1Ref.current.value !== newPassword2Ref.current.value) {
+        SetText('# 비밀번호가 일치하지 않습니다.')
+        return
+      } else {
+        try {
+          await fetchEditPassWordApi(password, newPassword1, token)
+          setChangePassword(false)
+          currentPasswordRef.current.value = ''
+          newPassword1Ref.current.value = ''
+          newPassword2Ref.current.value = ''
+          alert('비밀번호 변경이 완료되었습니다.')
+        } catch (error) {
+          // console.log(error)
+          SetText('현재 비밀번호가 일치하지 않습니다.')
+        }
+      }
+    }
   }
 
   return (
@@ -36,8 +56,8 @@ export default function ChangePassword({show, setChangePassword}: ChangePassword
         <Text>{text}</Text>
         <InputGroupJoin>
           <Input type='password' placeholder='현재 비밀번호' required ref={currentPasswordRef} />
-          <Input type='password' placeholder='새 비밀번호' required ref={newPasswordRef} />
-          <Input type='password' placeholder='새 비밀번호 확인' required />
+          <Input type='password' placeholder='새 비밀번호' required ref={newPassword1Ref} />
+          <Input type='password' placeholder='새 비밀번호 확인' required ref={newPassword2Ref} />
         </InputGroupJoin>
         <FindPassButton onClick={e => handleChangePassword(e)}>비밀번호 변경</FindPassButton>
       </ModalContent>

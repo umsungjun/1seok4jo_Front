@@ -9,9 +9,13 @@ import {fetchThemePostListApi} from '../Service/postThemeService'
 import {fetchThemeScrollApi} from '../Service/postThemeScrollService'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 import {ThemePostListProps} from '../Component/PostList'
+import {useSelector} from 'react-redux'
+import {RootState} from '../Store'
+import {darkTheme, lightTheme} from '../Theme/theme'
 
 export default function MainPage() {
   scrollToTop()
+  const theme = useSelector((state: RootState) => state.themeType.theme)
   const [themePostList, setThemePostList] = useState<ThemePostListProps['themePostList']>([])
   const [categoryId, setCategoryId] = useState(1)
   const [lastId, setLastId] = useState<number | null>(null)
@@ -61,7 +65,7 @@ export default function MainPage() {
   }, [categoryId])
 
   return (
-    <MainSection>
+    <MainSection theme={theme}>
       <MainBanner />
       <HeaderSearchBoxWarper>
         <HeaderSearchBox />
@@ -87,6 +91,7 @@ const MainSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
+  ${props => (props.theme === 'light' ? lightTheme.background : darkTheme.background)}
 `
 
 const ThemeSlideWrapper = styled.div`

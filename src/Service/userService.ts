@@ -54,7 +54,7 @@ export const fetchLoginApi = async (email: string, password: string) => {
 
 // 비밀번호 수정
 export const fetchEditPassWordApi = async (password: string, newPassword: string, token: string) => {
-  console.log(token)
+  // console.log(token)
 
   const postEditPasswordURL = `http://localhost:8080/api/member/password/update`
   const params = {
@@ -67,27 +67,27 @@ export const fetchEditPassWordApi = async (password: string, newPassword: string
     headers: {Authorization: token},
   }
   const response = await remote(params)
-  console.log(response)
+  // console.log(response)
 
   return response.data
 }
 
 // 비밀번호 초기화
-// export const fetchInitPassWordApi = async (password: string, uuid: string) => {
-//   const postInitPasswordURL = `http://localhost:8080/api/member/password/reset`
+export const fetchInitPassWordApi = async (uuid: string, password: string) => {
+  const postInitPasswordURL = `http://localhost:8080/api/member/password/reset`
 
-//   const paramsInit = {
-//     method: 'POST',
-//     url: `${postInitPasswordURL}`,
-//     data: {
-//       password: `${password}`,
-//       uuid: `${newPassword}`,
-//     },
-//     headers: {Authorization: token},
-//   }
-//   const responseInit = await remote(paramsInit)
-//   console.log(responseInit)
-// }
+  // const paramsInit = {
+  //   method: 'POST',
+  //   url: `${postInitPasswordURL}`,
+  //   data: {
+  //     password: `${password}`,
+  //     uuid: `${newPassword}`,
+  //   },
+  //   headers: {Authorization: token},
+  // }
+  // const responseInit = await remote(paramsInit)
+  // console.log(responseInit)
+}
 
 // 초기화 메일
 export const fetchMailPassWordApi = async () => {
