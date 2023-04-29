@@ -39,7 +39,7 @@ export default function PostEditPage() {
     setIsOpenPost(false)
   }
 
-  const handlePostInfo = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handlePostInfo = async (e: React.FormEvent<HTMLFormElement>, postId: number) => {
     e.preventDefault()
 
     const formData = new FormData()
@@ -64,10 +64,10 @@ export default function PostEditPage() {
       Authorization: token,
     }
     try {
-      const response = await remote.put('http://localhost:8080/post', formData, {headers})
+      const response = await remote.put(`http://localhost:8080/post/${postId}`, formData, {headers})
       console.log(response.data)
       if (response.data.code === 200) {
-        alert('게시글이 등록되었습니다.')
+        alert('게시글이 수정되었습니다.')
         navigate('/MyPage')
       } else {
         alert(response.data.message)

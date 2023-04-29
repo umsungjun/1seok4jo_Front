@@ -51,8 +51,8 @@ export default function PostWritePage() {
     const data = {
       title,
       detail: content,
-      startDate: String(startDate),
-      endDate: String(finishDate),
+      startDate: String(startDate.toLocaleDateString('ko-KR', {year: 'numeric', month: 'short', day: 'numeric'})),
+      endDate: String(finishDate.toLocaleDateString('ko-KR', {year: 'numeric', month: 'short', day: 'numeric'})),
       location: address,
       hashtag: hashtag.toString(),
       themeId: `${categoryId}`,
