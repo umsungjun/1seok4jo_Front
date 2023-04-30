@@ -64,6 +64,21 @@ export default function ProfileEditPage() {
   const handleEditForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log(e)
+
+    const form = e.target as HTMLFormElement
+    const emailInput = form.elements[0] as HTMLInputElement
+    const passwordInput = form.elements[1] as HTMLInputElement
+    const nickNameInput = form.elements[3] as HTMLInputElement
+    const introductionInput = form.elements[4] as HTMLInputElement
+    const profileImgInput = form.elements[5] as HTMLInputElement
+    const bannerImgInput = form.elements[6] as HTMLInputElement
+
+    console.log(emailInput.value)
+    console.log(passwordInput.value)
+    console.log(nickNameInput.value)
+    console.log(introductionInput.value)
+    // console.log(profileImgInput.files[0])
+    console.log(bannerImgInput.value)
   }
 
   return (

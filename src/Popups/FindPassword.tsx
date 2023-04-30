@@ -26,7 +26,8 @@ export default function FindPassword({show, setFindPassForm}: FindPasswordProps)
 
   const handleInitMail = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    console.log(mailRef.current?.value)
+
+    const mail = mailRef.current?.value as string
 
     if (!mailRef.current || mailRef.current.value === '') return
 
@@ -36,12 +37,17 @@ export default function FindPassword({show, setFindPassForm}: FindPasswordProps)
       (emailSubmitButtonRef.current.style.cursor = 'context-menu'))
 
     setEmailMent('# 기입된 메일정보로 메일이 발송되었습니다.')
-    fetchMailPassWordApi()
+
+    try {
+      await fetchMailPassWordApi(mail)
+    } catch (error) {
+      setEmailMent('# 잘못된 메일형식이거나 존재하지않는 회원입니다.')
+    }
   }
 
-  const handleInitPassword = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleInitPassword = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-
+    const mail = mailRef.current?.value as string
     const uuid = uuidRef.current?.value as string
     const newPassword1 = newPassword1Ref.current?.value as string
     const newPassword2 = newPassword2Ref.current?.value as string
@@ -55,9 +61,9 @@ export default function FindPassword({show, setFindPassForm}: FindPasswordProps)
       setAfterEmailMent('# 비밀번호가 일치하지 않습니다.')
       return
     }
-
-    fetchInitPassWordApi(uuid, newPassword1)
+    fetchInitPassWordApi(mail, uuid, newPassword1)
     setFindPassForm(false)
+
     setEmailMent('# 가입된 이메일 정보를 입력해주세요.')
     setAfterEmailMent('# 인증번호와 새로운 비밀번호를 기입해주세요.')
     if (uuidRef.current !== null) {
@@ -118,7 +124,7 @@ export default function FindPassword({show, setFindPassForm}: FindPasswordProps)
           <Input type='password' placeholder='새로운 비밀 번호' required ref={newPassword1Ref} />
           <Input type='password' placeholder='비밀 번호 확인' required ref={newPassword2Ref} />
         </InputGroup>
-        <SubmitButton onClick={e => handleInitPassword(e)}>새 비밀번호 설정</SubmitButton>
+        <SubmitButton onClick={e => handleInitPassword(e)}>비밀번호 재 설정</SubmitButton>
       </ModalContent>
     </ModalBackdrop>
   )

@@ -73,30 +73,45 @@ export const fetchEditPassWordApi = async (password: string, newPassword: string
 }
 
 // 비밀번호 초기화
-export const fetchInitPassWordApi = async (uuid: string, password: string) => {
+export const fetchInitPassWordApi = async (mail: string, uuid: string, newPassword: string) => {
   const postInitPasswordURL = `http://localhost:8080/api/member/password/reset`
 
-  // const paramsInit = {
-  //   method: 'POST',
-  //   url: `${postInitPasswordURL}`,
-  //   data: {
-  //     password: `${password}`,
-  //     uuid: `${newPassword}`,
-  //   },
-  //   headers: {Authorization: token},
-  // }
-  // const responseInit = await remote(paramsInit)
-  // console.log(responseInit)
+  const paramsInit = {
+    method: 'POST',
+    url: `${postInitPasswordURL}`,
+    data: {
+      email: mail,
+      password: newPassword,
+      uuid: uuid,
+    },
+  }
+  const responseInit = await remote(paramsInit)
+  console.log(responseInit)
 }
 
 // 초기화 메일
-export const fetchMailPassWordApi = async () => {
+export const fetchMailPassWordApi = async (mail: string) => {
   const sendMailURL = `http://localhost:8080/api/member/password/send`
 
   const paramsMail = {
     method: 'POST',
     url: `${sendMailURL}`,
+    data: {
+      email: mail,
+    },
   }
   const responseMail = await remote(paramsMail)
-  console.log(responseMail)
+}
+
+// 회원 탈퇴
+export const fetchDeleteUserApi = async (token: string) => {
+  const deleteUserURL = `http://localhost:8080/api/member/withdraw`
+
+  const paramsMail = {
+    method: 'DELETE',
+    url: `${deleteUserURL}`,
+    headers: {Authorization: token},
+  }
+  const response = await remote(paramsMail)
+  console.log(response)
 }
