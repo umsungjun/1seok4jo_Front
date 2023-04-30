@@ -77,8 +77,15 @@ export default function ProfileEditPage() {
     console.log(passwordInput.value)
     console.log(nickNameInput.value)
     console.log(introductionInput.value)
-    // console.log(profileImgInput.files[0])
-    console.log(bannerImgInput.value)
+    console.log(profileImgInput.files?.item(0))
+    console.log(bannerImgInput.files?.item(0))
+
+    const editData = JSON.stringify({
+      password: passwordInput.value,
+      introduction: introductionInput.value,
+      userProfileImgUrl: profileImgInput.files?.item(0),
+      userBannerImgUrl: bannerImgInput.files?.item(0),
+    })
   }
 
   return (

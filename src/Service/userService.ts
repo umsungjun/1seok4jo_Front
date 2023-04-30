@@ -36,21 +36,23 @@ export const fetchLoginApi = async (email: string, password: string) => {
   return response.data
 }
 
-// TODO 회원정보 수정
-// export const fetchProfileEditApi = async () => {
-//   const postEditURL = `http://localhost:8080/api/member/update`
-//   const params = {
-//     method: 'PUT',
-//     url: `${postEditURL}`,
-//     data: {
-//       email: `${email}`,
-//       password: `${password}`,
-//     },
-//   }
-//   const response = await remote(params)
+// 회원정보 수정
+export const fetchProfileEditApi = async () => {
+  const postEditURL = `http://localhost:8080/api/member/update`
+  const params = {
+    method: 'PUT',
+    url: `${postEditURL}`,
+    data: {
+      // // password: `${password}`,
+      // // introduction: `${introduction}`,
+      // userProfileImgUrl:`${userProfileImgUrl}`,
+      // userBannerImgUrl:`${}`
+    },
+  }
+  const response = await remote(params)
 
-//   return response.data
-// }
+  return response.data
+}
 
 // 비밀번호 수정
 export const fetchEditPassWordApi = async (password: string, newPassword: string, token: string) => {
