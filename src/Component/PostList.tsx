@@ -415,8 +415,8 @@ export const MenuButton = styled.button`
     width: 0.5rem;
     height: 0.5rem;
     border-radius: 50%;
-    // background-color: #fff;
-    background-color: #187fd9;
+    background-color: #fff;
+    // background-color: #187fd9;
     margin-bottom: 5px;
     display: block;
     @media (max-width: 576px) {
