@@ -19,13 +19,9 @@ export interface CommentProps {
 }
 
 export interface CommentBubbleProps {
-  commentId: number
+  postId: number
   userId: number
-  nickname: string
-  imageUrl: string[]
   content: string
-  createdTime: string
-  updatedTime: string
 }
 
 // ChatBubble

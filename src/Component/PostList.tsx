@@ -1,4 +1,4 @@
-import React, {useState, forwardRef, ForwardedRef, useEffect} from 'react'
+import React, {useState, forwardRef, ForwardedRef} from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
 import {useNavigate} from 'react-router-dom'
@@ -35,6 +35,8 @@ const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostLis
   const [slideImgs, setSlideImgs] = useState<string[]>([])
   const [slideId, setSlideId] = useState<number>(0)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
+  const [openMenuPostId, setOpenMenuPostId] = useState<number | null>(null) // Add new state variable
+
   const [cookies] = useCookies(['token'])
   const token = cookies.token
   const navigate = useNavigate()
@@ -53,17 +55,22 @@ const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostLis
     setIsLiked(!isLiked)
   }
 
-  const handleOptionClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleOptionClick = (e: React.MouseEvent<HTMLButtonElement>, postId: number) => {
     e.stopPropagation()
     console.log('옵션 클릭')
-    setIsMenuOpen(!isMenuOpen)
+    // setIsMenuOpen(!isMenuOpen)
+    setOpenMenuPostId(postId === openMenuPostId ? null : postId) // Set the postId to open the menu only for the selected post
   }
 
-  const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>, postId: number) => {
     e.stopPropagation()
-    if (isMenuOpen) {
-      setIsMenuOpen(false)
+    if (openMenuPostId === postId) {
+      // Close the menu only for the selected post
+      setOpenMenuPostId(null)
     }
+    // if (isMenuOpen) {
+    //   setIsMenuOpen(false)
+    // }
   }
 
   const handleDeletePost = async (e: React.MouseEvent<HTMLButtonElement>, postId: number) => {
@@ -106,13 +113,13 @@ const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostLis
             <FeedStyled key={post.postId}>
               <ImgBox onClick={() => setSlideImgAndShow(storeFileUrl, postId)}>
                 <img src={`${baseUrl}${storeFileUrl[0]}`} />
-                <div onClick={handleClickOutside}>
-                  <MenuButton className='circle-button' onClick={handleOptionClick}>
+                <div onClick={e => handleClickOutside(e, postId)}>
+                  <MenuButton className='circle-button' onClick={e => handleOptionClick(e, postId)}>
                     <div className='circle'></div>
                     <div className='circle'></div>
                     <div className='circle'></div>
                   </MenuButton>
-                  {isMenuOpen && (
+                  {openMenuPostId === postId && ( // Render the menu only for the selected post
                     <OptionList>
                       <OptionsButton onClick={e => handleDeletePost(e, postId)}>삭제</OptionsButton>
                       <OptionsButton onClick={e => handleEditPost(e, postId)}>편집</OptionsButton>
@@ -416,7 +423,6 @@ export const MenuButton = styled.button`
     height: 0.5rem;
     border-radius: 50%;
     background-color: #fff;
-    // background-color: #187fd9;
     margin-bottom: 5px;
     display: block;
     @media (max-width: 576px) {

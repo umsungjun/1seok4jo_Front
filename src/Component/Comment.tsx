@@ -22,12 +22,8 @@ const Comment: React.FC<CommentProps> = () => {
     console.log('inputValue', newCommentText)
     const newComment: CommentBubbleProps = {
       content: newCommentText,
-      createdTime: String(new Date()),
-      commentId: 1,
       userId: 2,
-      nickname: '테스트다',
-      imageUrl: [],
-      updatedTime: '테스트다',
+      postId: Number(postId),
     }
     setComments([...comments, newComment])
     setNewCommentText('')
@@ -37,8 +33,8 @@ const Comment: React.FC<CommentProps> = () => {
           'Content-Type': 'application/json',
           // Authorization: token,
         },
-        // body: JSON.stringify(newComment),
-        body: newComment,
+        body: JSON.stringify(newComment),
+        // body: newComment,
       })
       console.log('정보', newComment)
       if (response.data.code === 200) {
@@ -71,14 +67,14 @@ const Comment: React.FC<CommentProps> = () => {
           <NewComment key={index}>
             <div className='info'>
               <img src={sangchu} alt='유저프로필' />
-              <h1>{comment.nickname}</h1>
-              <div className='date'>
+              {/* <h1>{comment.nickname}</h1> */}
+              {/* <div className='date'>
                 {new Date(comment.createdTime).toLocaleString('ko-KR', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',
                 })}
-              </div>
+              </div> */}
             </div>
 
             <div className='content'>{comment.content}</div>
