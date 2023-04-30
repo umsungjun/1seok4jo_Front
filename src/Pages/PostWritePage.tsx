@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
+import {useParams} from 'react-router-dom'
 import axios from 'axios'
 import {useCookies} from 'react-cookie'
 import PageTitle from '../Common/PageTitle'
@@ -18,22 +19,21 @@ export default function PostWritePage() {
   scrollToTop()
   const navigate = useNavigate()
   const remote = axios.create()
-
+  const {id} = useParams()
   const [address, setAddress] = useState('')
   const [isOpenPost, setIsOpenPost] = useState(false)
   const [startDate, setStartDate] = useState(new Date())
   const [finishDate, setFinishDate] = useState(new Date())
-  const [imageNames, setImageNames] = useState<string[]>([
-    '# 이미지첨부 버튼을 누르시고 이미지를 첨부해주세요.(최대 5장)',
-  ])
+  const [imageNames, setImageNames] = useState(['# 이미지첨부 버튼을 누르시고 이미지를 첨부해주세요.(최대 5장)'])
   const [hashtag, setHashtag] = useState<string[]>([])
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [createdAt, setCreatedAt] = useState(new Date())
   const [categoryId, setCategoryId] = useState(1)
+
   const [cookies] = useCookies(['token'])
   const token = cookies.token
-
+  const [fileList, setFileList] = useState<File[]>([])
   const onChangeOpenPost = () => {
     setIsOpenPost(!isOpenPost)
   }
@@ -49,38 +49,25 @@ export default function PostWritePage() {
     e.preventDefault()
 
     const formData = new FormData()
-    // formData.append('title', title)
-    // formData.append('detail', content)
-    // formData.append('startDate', String(startDate))
-    // formData.append('endDate', String(finishDate))
-    // formData.append('location', address)
-    // formData.append('hashtag', hashtag.toString())
-    // formData.append('themeId', `${categoryId}`)
-
-    for (let i = 0; i < imageNames.length; i++) {
-      formData.append('images', imageNames[i])
-      typeof imageNames[i] === 'string' && console.log('imageNames[i]', imageNames[i])
-    }
 
     const data = {
       title,
       detail: content,
-      startDate: String(startDate),
-      endDate: String(finishDate),
+      startDate: String(startDate.toLocaleDateString('ko-KR', {year: 'numeric', month: 'short', day: 'numeric'})),
+      endDate: String(finishDate.toLocaleDateString('ko-KR', {year: 'numeric', month: 'short', day: 'numeric'})),
       location: address,
       hashtag: hashtag.toString(),
       themeId: `${categoryId}`,
     }
-    formData.append('data', JSON.stringify(data))
-    typeof data === 'object' && console.log('data', data)
-    // formData.set('data', JSON.stringify(data))
-    // formData.set('data', new Blob([JSON.stringify(data)], {type: 'application/json'}))
 
-    // formData.append('data', JSON.stringify(data), {contentType: 'application/json'})
+    for (let list of fileList) {
+      formData.append('images', list)
+    }
+    const dataBlob = new Blob([JSON.stringify(data)], {type: 'application/json'})
+    formData.append('data', dataBlob)
     const headers = {
       'Content-Type': 'multipart/form-data',
-      // 'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${token}`,
+      Authorization: token,
     }
     try {
       const response = await remote.post('http://localhost:8080/post', formData, {headers})
@@ -98,19 +85,20 @@ export default function PostWritePage() {
     }
   }
 
-  const handleLoadImg = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const fileList = e.target.files
-    if (!fileList || fileList.length > 5) {
+  const handleLoadImg = ({target}: React.ChangeEvent<HTMLInputElement>) => {
+    const file = target.files
+    if (!file || file.length > 5) {
       alert('이미지 첨부 갯수를 조정해주세요!')
       return
     }
-    const imageNames: string[] = []
-    for (let i = 0; i < fileList.length; i++) {
-      const file = fileList[i]
-      const blob = new Blob([file], {type: file.type})
-      imageNames.push(URL.createObjectURL(blob))
-    }
-    setImageNames(imageNames)
+    //     const imageNames = []
+    //     for (let i = 0; i < fileList.length; i++) {
+    //       const file = fileList[i]
+    //
+    //       imageNames.push(file)
+    //     }
+    setImageNames(Array.from(file).map(file => file.name))
+    setFileList(prev => prev.concat(Array.from(file)))
   }
 
   const handleEnterHash = (e: React.KeyboardEvent<HTMLInputElement>) => {
