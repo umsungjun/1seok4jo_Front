@@ -86,6 +86,10 @@ export default function ProfileEditPage() {
       userProfileImgUrl: profileImgInput.files?.item(0),
       userBannerImgUrl: bannerImgInput.files?.item(0),
     })
+
+    const blob = new Blob([editData], {
+      type: 'application/json',
+    })
   }
 
   return (
