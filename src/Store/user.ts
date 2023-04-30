@@ -39,10 +39,23 @@ export const userSlice = createSlice({
 
       localStorage.setItem('USER', JSON.stringify(state))
     },
+    editUser: (state, action: PayloadAction<UserState>) => {
+      const {bannerUrl, introduction, profileUrl} = action.payload
+      const user = JSON.parse(localStorage.getItem('USER') || '{}')
+
+      const updatedUser = {
+        ...user,
+        bannerUrl: bannerUrl || user.bannerUrl,
+        introduction: introduction || user.introduction,
+        profileUrl: profileUrl || user.profileUrl,
+      }
+
+      localStorage.setItem('USER', JSON.stringify(updatedUser))
+    },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const {setUser} = userSlice.actions
+export const {setUser, editUser} = userSlice.actions
 
 export const userReducer = userSlice.reducer

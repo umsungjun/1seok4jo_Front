@@ -7,15 +7,19 @@ import ChangePassword from '../Popups/ChangePassword'
 import {scrollToTop} from '../util/scrollToTop'
 import {useCookies} from 'react-cookie'
 import NoToken from '../Common/NoToken'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from '../Store'
 import {basicUser} from '../Mock/users'
 import Secession from '../Popups/Secession'
 import {darkTheme, lightTheme} from '../Theme/theme'
 import {fetchProfileEditApi} from '../Service/userService'
+import {useNavigate} from 'react-router-dom'
+import {editUser} from '../Store/user'
 
 export default function ProfileEditPage() {
   scrollToTop()
+  const navigate = useNavigate()
+  const userDispatch = useDispatch()
   const user = useSelector((state: RootState) => state.user)
   const theme = useSelector((state: RootState) => state.themeType.theme)
 
@@ -65,7 +69,7 @@ export default function ProfileEditPage() {
 
   const handleEditForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log(e)
+    // console.log(e)
 
     const form = e.target as HTMLFormElement
     const emailInput = form.elements[0] as HTMLInputElement
@@ -84,7 +88,6 @@ export default function ProfileEditPage() {
 
     const stringEditData = JSON.stringify({
       password: passwordInput.value as string,
-      nickname: nickNameInput.value as string,
       introduction: introductionInput.value as string,
     })
 
@@ -92,12 +95,21 @@ export default function ProfileEditPage() {
       type: 'application/json',
     })
 
-    await fetchProfileEditApi(
-      stringBlob,
-      profileImgInput.files?.item(0) as File,
-      bannerImgInput.files?.item(0) as File,
-      token,
-    )
+    try {
+      const response = await fetchProfileEditApi(
+        stringBlob,
+        profileImgInput.files?.item(0) as File,
+        bannerImgInput.files?.item(0) as File,
+        token,
+      )
+      // console.log(response)
+
+      userDispatch(editUser(response.result))
+      alert('회원 정보 수정이 완료되었습니다.')
+      // navigate('/')
+    } catch {
+      alert('비밀번호가 일치하지 않습니다.')
+    }
   }
 
   return (

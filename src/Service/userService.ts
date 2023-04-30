@@ -43,13 +43,13 @@ export const fetchProfileEditApi = async (
   userBannerImg: File,
   token: string,
 ) => {
-  console.log(stringBlob, userProfileImg, userBannerImg)
+  // console.log(stringBlob, userProfileImg, userBannerImg)
   const postEditURL = `http://localhost:8080/api/member/update`
 
   const editData = new FormData()
   editData.append('data', stringBlob)
-  editData.append('userProfileImgUrl', userProfileImg)
-  editData.append('userBannerImgUrl', userBannerImg)
+  editData.append('profileImg', userProfileImg)
+  editData.append('bannerImg', userBannerImg)
 
   const params = {
     method: 'PUT',
@@ -58,7 +58,6 @@ export const fetchProfileEditApi = async (
     headers: {Authorization: token},
   }
   const response = await remote(params)
-  console.log(response)
 
   return response.data
 }
