@@ -12,13 +12,15 @@ import {RootState} from '../Store'
 import {basicUser} from '../Mock/users'
 import Secession from '../Popups/Secession'
 import {darkTheme, lightTheme} from '../Theme/theme'
+import {fetchProfileEditApi} from '../Service/userService'
 
 export default function ProfileEditPage() {
   scrollToTop()
   const user = useSelector((state: RootState) => state.user)
   const theme = useSelector((state: RootState) => state.themeType.theme)
 
-  const [token, setToken] = useCookies(['token'])
+  const [cookie, setCookie] = useCookies(['token'])
+  const token = cookie.token
   const [changePassword, setChangePassword] = useState<boolean>(false)
   const [secession, setSecession] = useState<boolean>(false)
   const [profilePreview, setProfilePreview] = useState<string>(
@@ -61,7 +63,7 @@ export default function ProfileEditPage() {
     }
   }
 
-  const handleEditForm = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleEditForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log(e)
 
@@ -73,28 +75,34 @@ export default function ProfileEditPage() {
     const profileImgInput = form.elements[5] as HTMLInputElement
     const bannerImgInput = form.elements[6] as HTMLInputElement
 
-    console.log(emailInput.value)
-    console.log(passwordInput.value)
-    console.log(nickNameInput.value)
-    console.log(introductionInput.value)
-    console.log(profileImgInput.files?.item(0))
-    console.log(bannerImgInput.files?.item(0))
+    // console.log(emailInput.value)
+    // console.log(passwordInput.value)
+    // console.log(nickNameInput.value)
+    // console.log(introductionInput.value)
+    // console.log(profileImgInput.files?.item(0))
+    // console.log(bannerImgInput.files?.item(0))
 
-    const editData = JSON.stringify({
-      password: passwordInput.value,
-      introduction: introductionInput.value,
-      userProfileImgUrl: profileImgInput.files?.item(0),
-      userBannerImgUrl: bannerImgInput.files?.item(0),
+    const stringEditData = JSON.stringify({
+      password: passwordInput.value as string,
+      nickname: nickNameInput.value as string,
+      introduction: introductionInput.value as string,
     })
 
-    const blob = new Blob([editData], {
+    const stringBlob = new Blob([stringEditData], {
       type: 'application/json',
     })
+
+    await fetchProfileEditApi(
+      stringBlob,
+      profileImgInput.files?.item(0) as File,
+      bannerImgInput.files?.item(0) as File,
+      token,
+    )
   }
 
   return (
     <ProfileEditPageSection theme={theme}>
-      {Object.keys(token).length === 0 ? (
+      {Object.keys(cookie).length === 0 ? (
         <NoToken />
       ) : (
         <>

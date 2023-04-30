@@ -37,19 +37,28 @@ export const fetchLoginApi = async (email: string, password: string) => {
 }
 
 // 회원정보 수정
-export const fetchProfileEditApi = async () => {
+export const fetchProfileEditApi = async (
+  stringBlob: Blob,
+  userProfileImg: File,
+  userBannerImg: File,
+  token: string,
+) => {
+  console.log(stringBlob, userProfileImg, userBannerImg)
   const postEditURL = `http://localhost:8080/api/member/update`
+
+  const editData = new FormData()
+  editData.append('data', stringBlob)
+  editData.append('userProfileImgUrl', userProfileImg)
+  editData.append('userBannerImgUrl', userBannerImg)
+
   const params = {
     method: 'PUT',
     url: `${postEditURL}`,
-    data: {
-      // // password: `${password}`,
-      // // introduction: `${introduction}`,
-      // userProfileImgUrl:`${userProfileImgUrl}`,
-      // userBannerImgUrl:`${}`
-    },
+    data: editData,
+    headers: {Authorization: token},
   }
   const response = await remote(params)
+  console.log(response)
 
   return response.data
 }
@@ -69,7 +78,7 @@ export const fetchEditPassWordApi = async (password: string, newPassword: string
     headers: {Authorization: token},
   }
   const response = await remote(params)
-  // console.log(response)
+  console.log(response)
 
   return response.data
 }
