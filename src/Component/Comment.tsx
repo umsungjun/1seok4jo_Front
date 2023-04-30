@@ -1,4 +1,6 @@
 import React, {useState, useRef} from 'react'
+import {useParams} from 'react-router-dom'
+import {useCookies} from 'react-cookie'
 import styled from 'styled-components'
 import sangchu from '../Assets/sangchu.png'
 import type {CommentBubbleProps} from '../Interface/interface'
@@ -6,42 +8,53 @@ import type {CommentProps} from '../Interface/interface'
 import axios from 'axios'
 
 const Comment: React.FC<CommentProps> = () => {
+  const remote = axios.create()
+  const {id} = useParams()
+
   const [newCommentText, setNewCommentText] = useState<string>('')
   const [comments, setComments] = useState<CommentBubbleProps[]>([])
+  const [postId, setPostId] = useState(id)
+  const [cookies] = useCookies(['token'])
+  const token = cookies.token
 
   const handleNewCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log('inputValue', newCommentText)
     const newComment: CommentBubbleProps = {
       content: newCommentText,
-      createdAt: new Date().toISOString(),
-      commentId: 0,
-      userId: 0,
-      nickname: '',
+      createdTime: String(new Date()),
+      commentId: 1,
+      userId: 2,
+      nickname: '테스트다',
       imageUrl: [],
-      updatedAt: '',
+      updatedTime: '테스트다',
     }
     setComments([...comments, newComment])
     setNewCommentText('')
-    //     try {
-    //       const response = await fetch('/comments', {
-    //         method: 'POST',
-    //         headers: {
-    //           'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify(newComment),
-    //       })
-    //
-    //       if (response.ok) {
-    //         // The comment was successfully added to the server.
-    //         setComments([...comments, newComment])
-    //         setNewCommentText('')
-    //       } else {
-    //         console.error('Failed to add comment to server.')
-    //       }
-    //     } catch (error) {
-    //       console.error('Failed to fetch comments from server.', error)
-    //     }
+    try {
+      const response = await remote.post(`http://localhost:8080/${postId}/comment`, {
+        headers: {
+          'Content-Type': 'application/json',
+          // Authorization: token,
+        },
+        // body: JSON.stringify(newComment),
+        body: newComment,
+      })
+      console.log('정보', newComment)
+      if (response.data.code === 200) {
+        console.log('성공')
+        setComments([...comments, newComment])
+        setNewCommentText('')
+
+        // const getResponse = await remote.get(`http://localhost:8080/post/${postId}/comment`)
+        // const commentsData = getResponse.data.comments
+        // setComments(commentsData)
+      } else {
+        console.error('Failed to add comment to server.')
+      }
+    } catch (error) {
+      console.error('Failed to fetch comments from server.', error)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,7 +73,7 @@ const Comment: React.FC<CommentProps> = () => {
               <img src={sangchu} alt='유저프로필' />
               <h1>{comment.nickname}</h1>
               <div className='date'>
-                {new Date(comment.createdAt).toLocaleString('ko-KR', {
+                {new Date(comment.createdTime).toLocaleString('ko-KR', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',

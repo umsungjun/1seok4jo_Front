@@ -24,8 +24,8 @@ export interface CommentBubbleProps {
   nickname: string
   imageUrl: string[]
   content: string
-  createdAt: string
-  updatedAt: string
+  createdTime: string
+  updatedTime: string
 }
 
 // ChatBubble
