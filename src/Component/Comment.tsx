@@ -114,17 +114,17 @@ const Comment: React.FC<CommentProps> = () => {
       )
       if (response.data.code === 200) {
         console.log('수정 완료!')
-        // const updatedComments = comments.map(comment => {
-        //   if (comment.commentId === commentId) {
-        //     return {
-        //       ...comment,
-        //       content: newCommentText,
-        //     }
-        //   } else {
-        //     return comment
-        //   }
-        // })
-        setComments(comments)
+        const updatedComments = comments.map(comment => {
+          if (comment.commentId === commentId) {
+            return {
+              ...comment,
+              content: newCommentText,
+            }
+          } else {
+            return comment
+          }
+        })
+        setComments(updatedComments)
         setNewCommentText('')
         alert('수정 완료')
       } else {
