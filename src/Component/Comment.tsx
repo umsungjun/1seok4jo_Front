@@ -198,21 +198,23 @@ const Comment: React.FC<CommentProps> = () => {
               </div>
             </div>
             <div className='content'>{comment.content}</div>
-            <div className='buttons'>
-              <button className='delete' onClick={e => handleDelete(e, comment.commentId)}>
-                삭제
-              </button>
-              <button className='edit' onClick={e => handleEdit(e, comment.commentId)}>
-                수정
-              </button>
-            </div>
-            {editingCommentId === comment.commentId ? (
-              <CommentForm onSubmit={e => handleEditSubmit(e, comment.commentId)}>
-                <input type='text' value={newCommentText} onChange={handleChange} />
-                <button type='submit' disabled={isInputEmpty}>
-                  수정 완료
-                </button>
-              </CommentForm>
+            {userId === comment.userId ? (
+              <>
+                <div className='buttons'>
+                  <button className='delete' onClick={e => handleDelete(e, comment.commentId)}>
+                    삭제
+                  </button>
+                  <button className='edit' onClick={e => handleEdit(e, comment.commentId)}>
+                    수정
+                  </button>
+                </div>
+                <CommentForm onSubmit={e => handleEditSubmit(e, comment.commentId)}>
+                  <input type='text' value={newCommentText} onChange={handleChange} />
+                  <button type='submit' disabled={isInputEmpty}>
+                    수정 완료
+                  </button>
+                </CommentForm>
+              </>
             ) : null}
           </NewComment>
         ))}
