@@ -7,7 +7,6 @@ import {SearchType, fetchSearchApi} from '../Service/searchService'
 import {IoLocationSharp} from 'react-icons/io5'
 
 let FetchCount = 0
-
 export default function SearchDetailPage() {
   const moreButtonRef = useRef<HTMLButtonElement>(null)
   const [postList, setPostList] = useState<SearchType>({
@@ -26,11 +25,9 @@ export default function SearchDetailPage() {
   }
 
   useEffect(() => {
+    FetchCount = 0
     ;(async () => {
-      FetchCount = 0
       const response = await fetchSearchApi(engCategory, searchText as string, FetchCount)
-      console.log(response)
-      console.log(FetchCount, response.count)
 
       if (response.count <= 10 && FetchCount === 0) {
         if (moreButtonRef.current) {
@@ -45,10 +42,10 @@ export default function SearchDetailPage() {
   const handleMore = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     FetchCount++
-    let nextFetchCount = FetchCount + 1
+
     const response = await fetchSearchApi(engCategory, searchText as string, FetchCount)
-    console.log(response)
-    if (response.count < nextFetchCount * 10) {
+
+    if (response.count > FetchCount + 1 * 10) {
       if (moreButtonRef.current) {
         moreButtonRef.current.style.display = 'none'
       }
