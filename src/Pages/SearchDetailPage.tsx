@@ -6,6 +6,8 @@ import {SearchType, fetchSearchApi} from '../Service/searchService'
 
 import {IoLocationSharp} from 'react-icons/io5'
 
+let FetchCount = 0
+
 export default function SearchDetailPage() {
   const [postList, setPostList] = useState<SearchType>({
     count: 0,
@@ -24,7 +26,7 @@ export default function SearchDetailPage() {
 
   useEffect(() => {
     ;(async () => {
-      const response = await fetchSearchApi(engCategory, searchText as string, 0)
+      const response = await fetchSearchApi(engCategory, searchText as string, FetchCount)
       // console.log(response)
       setPostList(response)
     })()
@@ -32,10 +34,21 @@ export default function SearchDetailPage() {
 
   // console.log(postList)
 
-  const handleMore = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleMore = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     console.log('더 불러오기 ')
-    // setPostList({...postList.searchPostList, ...})
+    FetchCount++
+    if (FetchCount * 10 >= postList.count) {
+      alert('더 이상 불러올 게시글이 없습니다.') //TODO 버튼이 사라지는 식으로
+      return
+    }
+    const response = await fetchSearchApi(engCategory, searchText as string, FetchCount)
+    console.log(response)
+
+    setPostList({
+      ...postList,
+      searchPostList: [...postList.searchPostList, ...response.searchPostList],
+    })
   }
 
   return (
