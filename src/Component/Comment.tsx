@@ -1,80 +1,228 @@
-import React, {useState, useRef} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
+import {useParams} from 'react-router-dom'
+import {useCookies} from 'react-cookie'
 import styled from 'styled-components'
 import sangchu from '../Assets/sangchu.png'
 import type {CommentBubbleProps} from '../Interface/interface'
 import type {CommentProps} from '../Interface/interface'
 import axios from 'axios'
+import {useSelector} from 'react-redux'
+import {RootState} from '../Store'
 
 const Comment: React.FC<CommentProps> = () => {
+  const remote = axios.create()
+  const {id} = useParams()
+  const user = useSelector((state: RootState) => state.user)
+  const userId = user.userId
   const [newCommentText, setNewCommentText] = useState<string>('')
+  const [editedCommentText, setEditedCommentText] = useState<string>('')
+  const [prevCommentText, setPrevCommentText] = useState<string>('')
   const [comments, setComments] = useState<CommentBubbleProps[]>([])
+  const [isEditing, setIsEditing] = useState<boolean>(false)
+  const [editingCommentId, setEditingCommentId] = useState<number | null>(null)
+  const [postId, setPostId] = useState(id)
+  const [cookies] = useCookies(['token'])
+  const token = cookies.token
+
+  useEffect(() => {
+    console.log('정보', userId, postId)
+  }, [userId, postId])
+
+  useEffect(() => {
+    ;(async () => {
+      try {
+        const response = await remote.get(`http://localhost:8080/post/${postId}/comment`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        })
+        if (response.data.code === 200) {
+          console.log('성공')
+          // setComments(response.data.result)
+          const commentsWithIds = response.data.result.map((comment: any, index: number) => ({
+            ...comment,
+            commentId: index + 1, // assuming the commentIds start from 1
+          }))
+          setComments(commentsWithIds)
+        } else {
+          console.error('에러')
+        }
+      } catch (error) {
+        console.error('에러', error)
+      }
+    })()
+  }, [postId])
 
   const handleNewCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log('inputValue', newCommentText)
     const newComment: CommentBubbleProps = {
+      userId: userId,
+      postId: Number(postId),
       content: newCommentText,
-      createdAt: new Date().toISOString(),
-      commentId: 0,
-      userId: 0,
-      nickname: '',
-      imageUrl: [],
-      updatedAt: '',
+      createdTime: new Date(),
+      nickName: '',
+      commentId: 1,
     }
     setComments([...comments, newComment])
     setNewCommentText('')
-    //     try {
-    //       const response = await fetch('/comments', {
-    //         method: 'POST',
-    //         headers: {
-    //           'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify(newComment),
-    //       })
-    //
-    //       if (response.ok) {
-    //         // The comment was successfully added to the server.
-    //         setComments([...comments, newComment])
-    //         setNewCommentText('')
-    //       } else {
-    //         console.error('Failed to add comment to server.')
-    //       }
-    //     } catch (error) {
-    //       console.error('Failed to fetch comments from server.', error)
-    //     }
+    console.log('댓글정보', newComment)
+    try {
+      const response = await remote.post(
+        `http://localhost:8080/${postId}/comment`,
+        {
+          userId: userId,
+          postId: Number(postId),
+          content: newCommentText,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        },
+      )
+      if (response.data.code === 200) {
+        console.log('성공')
+        setComments([...comments, newComment])
+        setNewCommentText('')
+      } else {
+        console.error('에러')
+      }
+    } catch (error) {
+      console.error('에러', error)
+    }
+  }
+
+  const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>, commentId: number) => {
+    e.preventDefault()
+    console.log('수정')
+
+    try {
+      const response = await remote.put(
+        `http://localhost:8080/${postId}/comment/${commentId}`,
+        {
+          content: newCommentText,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        },
+      )
+      if (response.data.code === 200) {
+        console.log('수정 완료!')
+        const updatedComments = comments.map(comment => {
+          if (comment.commentId === commentId) {
+            return {
+              ...comment,
+              content: newCommentText,
+            }
+          } else {
+            return comment
+          }
+        })
+        setComments(updatedComments)
+        setNewCommentText('')
+        alert('수정 완료')
+      } else {
+        console.error('수정 에러')
+      }
+    } catch (error) {
+      console.error('수정 에러', error)
+    }
+    setIsEditing(false)
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewCommentText(e.target.value)
+    console.log(newCommentText)
   }
 
+  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditedCommentText(e.target.value)
+    console.log(editedCommentText)
+  }
+
+  const handleEdit = (e: React.MouseEvent<HTMLButtonElement>, commentId: number) => {
+    e.preventDefault()
+    console.log('수정')
+    setIsEditing(true)
+    setEditingCommentId(commentId)
+    const comment = comments.find(comment => comment.commentId === commentId)
+    if (comment) {
+      setPrevCommentText(comment.content)
+      setEditedCommentText(comment.content)
+    }
+    console.log('수정할 댓글 아이디', commentId)
+  }
+
+  const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>, commentId: number) => {
+    e.preventDefault()
+    console.log('삭제')
+    // confirm('정말 삭제하시겠습니까?')
+    const headers = {
+      Authorization: token,
+    }
+    try {
+      const response = await remote.delete(`http://localhost:8080/comment/${commentId}`, {headers})
+      console.log(response.data)
+      if (response.data.code === 200) {
+        setComments(comments.filter(comment => comment.commentId !== commentId))
+        alert('삭제 완료!')
+      } else {
+        alert(response.data.message)
+        console.log(response.data.message)
+      }
+    } catch (error) {
+      console.error(error)
+      throw error
+    }
+  }
   // 인풋빈값일때 전송버튼 disabled
   const isInputEmpty = newCommentText.trim() === ''
 
   return (
     <CommentContainer>
       <CommentBox>
-        {comments.map((comment, index) => (
-          <NewComment key={index}>
+        {comments.map(comment => (
+          <NewComment key={comment.commentId}>
             <div className='info'>
               <img src={sangchu} alt='유저프로필' />
-              <h1>{comment.nickname}</h1>
+              <h1>{comment.nickName}</h1>
               <div className='date'>
-                {new Date(comment.createdAt).toLocaleString('ko-KR', {
+                {new Date(comment.createdTime).toLocaleString('ko-KR', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',
                 })}
               </div>
             </div>
+            {isEditing && comment.commentId === editingCommentId ? (
+              <form onSubmit={e => handleEditSubmit(e, comment.commentId)}>
+                <input type='text' value={editedCommentText} onChange={e => handleEditChange(e)} />
+                <button type='submit'>수정 완료</button>
+              </form>
+            ) : (
+              <>
+                <div className='content'>{comment.content}</div>
 
-            <div className='content'>{comment.content}</div>
-            <div className='buttons'>
-              <button className='delete'>삭제</button>
-              <button className='edit'>수정</button>
-            </div>
-
-            {/* <p>Comment room id: {id}</p>s */}
+                {userId === comment.userId ? (
+                  <>
+                    <div className='buttons'>
+                      <button className='delete' onClick={e => handleDelete(e, comment.commentId)}>
+                        삭제
+                      </button>
+                      <button className='edit' onClick={e => handleEdit(e, comment.commentId)}>
+                        수정
+                      </button>
+                    </div>
+                  </>
+                ) : null}
+              </>
+            )}
           </NewComment>
         ))}
       </CommentBox>
