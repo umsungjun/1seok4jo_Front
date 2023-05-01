@@ -13,7 +13,6 @@ import {scrollToTop} from '../util/scrollToTop'
 import {FaMapMarkerAlt} from 'react-icons/fa'
 import {RiCloseFill} from 'react-icons/ri'
 import {AiOutlinePaperClip} from 'react-icons/ai'
-import {fetchPostWriteApi} from '../Service/postWriteService'
 
 export default function PostWritePage() {
   scrollToTop()

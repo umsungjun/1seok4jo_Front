@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import {useParams} from 'react-router-dom'
 import {useCookies} from 'react-cookie'
 import styled from 'styled-components'
@@ -6,45 +6,75 @@ import sangchu from '../Assets/sangchu.png'
 import type {CommentBubbleProps} from '../Interface/interface'
 import type {CommentProps} from '../Interface/interface'
 import axios from 'axios'
-
+import {useSelector} from 'react-redux'
+import {RootState} from '../Store'
+// user.nickName
 const Comment: React.FC<CommentProps> = () => {
   const remote = axios.create()
   const {id} = useParams()
-
+  const user = useSelector((state: RootState) => state.user)
+  const userId = user.userId
   const [newCommentText, setNewCommentText] = useState<string>('')
   const [comments, setComments] = useState<CommentBubbleProps[]>([])
   const [postId, setPostId] = useState(id)
   const [cookies] = useCookies(['token'])
   const token = cookies.token
 
+  useEffect(() => {
+    console.log('정보', userId, postId)
+  }, [userId, postId])
+
+  useEffect(() => {
+    ;(async () => {
+      try {
+        const response = await remote.get(`http://localhost:8080/${postId}/comment`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        })
+        if (response.data.code === 200) {
+          console.log('성공')
+          setComments(response.data.result)
+        } else {
+          console.error('Failed to fetch comments from server.')
+        }
+      } catch (error) {
+        console.error('Failed to fetch comments from server.', error)
+      }
+    })()
+  }, [postId])
+
   const handleNewCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log('inputValue', newCommentText)
     const newComment: CommentBubbleProps = {
-      content: newCommentText,
-      userId: 2,
+      userId: userId,
       postId: Number(postId),
+      content: newCommentText,
     }
     setComments([...comments, newComment])
     setNewCommentText('')
+    console.log('댓글정보', newComment)
     try {
-      const response = await remote.post(`http://localhost:8080/${postId}/comment`, {
-        headers: {
-          'Content-Type': 'application/json',
-          // Authorization: token,
+      const response = await remote.post(
+        `http://localhost:8080/${postId}/comment`,
+        {
+          userId: userId,
+          postId: Number(postId),
+          content: newCommentText,
         },
-        body: JSON.stringify(newComment),
-        // body: newComment,
-      })
-      console.log('정보', newComment)
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        },
+      )
       if (response.data.code === 200) {
         console.log('성공')
         setComments([...comments, newComment])
         setNewCommentText('')
-
-        // const getResponse = await remote.get(`http://localhost:8080/post/${postId}/comment`)
-        // const commentsData = getResponse.data.comments
-        // setComments(commentsData)
       } else {
         console.error('Failed to add comment to server.')
       }
