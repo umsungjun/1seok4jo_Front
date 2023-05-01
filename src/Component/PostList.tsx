@@ -65,12 +65,8 @@ const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostLis
   const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>, postId: number) => {
     e.stopPropagation()
     if (openMenuPostId === postId) {
-      // Close the menu only for the selected post
       setOpenMenuPostId(null)
     }
-    // if (isMenuOpen) {
-    //   setIsMenuOpen(false)
-    // }
   }
 
   const handleDeletePost = async (e: React.MouseEvent<HTMLButtonElement>, postId: number) => {

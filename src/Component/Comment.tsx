@@ -8,7 +8,7 @@ import type {CommentProps} from '../Interface/interface'
 import axios from 'axios'
 import {useSelector} from 'react-redux'
 import {RootState} from '../Store'
-// user.nickName
+
 const Comment: React.FC<CommentProps> = () => {
   const remote = axios.create()
   const {id} = useParams()
@@ -16,6 +16,7 @@ const Comment: React.FC<CommentProps> = () => {
   const userId = user.userId
   const [newCommentText, setNewCommentText] = useState<string>('')
   const [comments, setComments] = useState<CommentBubbleProps[]>([])
+  const [isEditing, setIsEditing] = useState<boolean>(false)
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null)
   const [postId, setPostId] = useState(id)
   const [cookies] = useCookies(['token'])
@@ -36,7 +37,12 @@ const Comment: React.FC<CommentProps> = () => {
         })
         if (response.data.code === 200) {
           console.log('성공')
-          setComments(response.data.result)
+          // setComments(response.data.result)
+          const commentsWithIds = response.data.result.map((comment: any, index: number) => ({
+            ...comment,
+            commentId: index + 1, // assuming the commentIds start from 1
+          }))
+          setComments(commentsWithIds)
         } else {
           console.error('에러')
         }
@@ -54,7 +60,7 @@ const Comment: React.FC<CommentProps> = () => {
       postId: Number(postId),
       content: newCommentText,
       createdTime: new Date(),
-      nickname: '',
+      nickName: '',
       commentId: 1,
     }
     setComments([...comments, newComment])
@@ -91,11 +97,6 @@ const Comment: React.FC<CommentProps> = () => {
     e.preventDefault()
     console.log('수정')
 
-    if (commentId == null) {
-      console.error('Editing comment ID is null')
-      return
-    }
-
     try {
       const response = await remote.put(
         `http://localhost:8080/${postId}/comment/${commentId}`,
@@ -111,17 +112,17 @@ const Comment: React.FC<CommentProps> = () => {
       )
       if (response.data.code === 200) {
         console.log('수정 완료!')
-        const updatedComments = comments.map(comment => {
-          if (comment.commentId === commentId) {
-            return {
-              ...comment,
-              content: newCommentText,
-            }
-          } else {
-            return comment
-          }
-        })
-        setComments(updatedComments)
+        // const updatedComments = comments.map(comment => {
+        //   if (comment.commentId === commentId) {
+        //     return {
+        //       ...comment,
+        //       content: newCommentText,
+        //     }
+        //   } else {
+        //     return comment
+        //   }
+        // })
+        setComments(comments)
         setNewCommentText('')
         alert('수정 완료')
       } else {
@@ -130,30 +131,20 @@ const Comment: React.FC<CommentProps> = () => {
     } catch (error) {
       console.error('수정 에러', error)
     }
+    setIsEditing(false)
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewCommentText(e.target.value)
+    console.log(newCommentText)
   }
 
-  //   const handleEdit = (e: React.MouseEvent<HTMLButtonElement>, commentId: number) => {
-  //     e.preventDefault()
-  //     console.log('수정')
-  //
-  //     const updatedComments = comments.map(comment => {
-  //       if (comment.commentId === commentId) {
-  //         return {
-  //           ...comment,
-  //           content: newCommentText,
-  //         }
-  //       } else {
-  //         return comment
-  //       }
-  //     })
-  //     setComments(updatedComments)
-  //   }
-  const handleEdit = async (e: React.MouseEvent<HTMLButtonElement>, commentId: number) => {
+  const handleEdit = (e: React.MouseEvent<HTMLButtonElement>, commentId: number) => {
+    e.preventDefault()
+    console.log('수정')
+    setIsEditing(true)
     setEditingCommentId(commentId)
+    console.log('수정할 댓글 아이디', commentId)
   }
 
   const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>, commentId: number) => {
@@ -188,7 +179,7 @@ const Comment: React.FC<CommentProps> = () => {
           <NewComment key={comment.commentId}>
             <div className='info'>
               <img src={sangchu} alt='유저프로필' />
-              <h1>{comment.nickname}</h1>
+              <h1>{comment.nickName}</h1>
               <div className='date'>
                 {new Date(comment.createdTime).toLocaleString('ko-KR', {
                   year: 'numeric',
@@ -197,32 +188,45 @@ const Comment: React.FC<CommentProps> = () => {
                 })}
               </div>
             </div>
-            <div className='content'>{comment.content}</div>
-            {userId === comment.userId ? (
+            {isEditing && comment.commentId === editingCommentId ? (
+              <form onSubmit={e => handleEditSubmit(e, comment.commentId)}>
+                <input type='text' value={newCommentText} onChange={e => handleChange(e)} />
+                <button type='submit'>수정 완료</button>
+              </form>
+            ) : (
               <>
-                <div className='buttons'>
-                  <button className='delete' onClick={e => handleDelete(e, comment.commentId)}>
-                    삭제
-                  </button>
-                  <button className='edit' onClick={e => handleEdit(e, comment.commentId)}>
-                    수정
-                  </button>
-                </div>
-                <CommentForm onSubmit={e => handleEditSubmit(e, comment.commentId)}>
+                <div className='content'>{comment.content}</div>
+
+                {userId === comment.userId ? (
+                  <>
+                    <div className='buttons'>
+                      <button className='delete' onClick={e => handleDelete(e, comment.commentId)}>
+                        삭제
+                      </button>
+                      <button className='edit' onClick={e => handleEdit(e, comment.commentId)}>
+                        수정
+                      </button>
+                    </div>
+                    {/* <CommentForm onSubmit={e => handleEditSubmit(e, comment.commentId)}>
                   <input type='text' value={newCommentText} onChange={handleChange} />
                   <button type='submit' disabled={isInputEmpty}>
                     수정 완료
                   </button>
-                </CommentForm>
+                </CommentForm> */}
+                  </>
+                ) : null}
               </>
-            ) : null}
+            )}
           </NewComment>
         ))}
       </CommentBox>
 
       <CommentForm onSubmit={handleNewCommentSubmit}>
         <input type='text' value={newCommentText} onChange={handleChange} />
-        <button type='submit' disabled={isInputEmpty}>
+        <button
+          type='submit'
+          // disabled={isInputEmpty}
+        >
           댓글추가
         </button>
       </CommentForm>

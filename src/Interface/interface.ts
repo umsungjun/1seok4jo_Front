@@ -16,12 +16,14 @@ export interface CommentProps {
   content: string
   createdAt: string
   updatedAt: string
+  onEditComment: (commentId: number, content: string) => void
+  onDeleteComment: (commentId: number) => void
 }
 
 export interface CommentBubbleProps {
   commentId: number
   createdTime: Date
-  nickname: string
+  nickName: string
   postId: number
   userId: number
   content: string
