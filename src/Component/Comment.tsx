@@ -27,7 +27,7 @@ const Comment: React.FC<CommentProps> = () => {
   useEffect(() => {
     ;(async () => {
       try {
-        const response = await remote.get(`http://localhost:8080/${postId}/comment`, {
+        const response = await remote.get(`http://localhost:8080/post/${postId}/comment`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: token,
@@ -52,6 +52,8 @@ const Comment: React.FC<CommentProps> = () => {
       userId: userId,
       postId: Number(postId),
       content: newCommentText,
+      createdTime: '',
+      nickname: '',
     }
     setComments([...comments, newComment])
     setNewCommentText('')
@@ -97,14 +99,14 @@ const Comment: React.FC<CommentProps> = () => {
           <NewComment key={index}>
             <div className='info'>
               <img src={sangchu} alt='유저프로필' />
-              {/* <h1>{comment.nickname}</h1> */}
-              {/* <div className='date'>
+              <h1>{comment.nickname}</h1>
+              <div className='date'>
                 {new Date(comment.createdTime).toLocaleString('ko-KR', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',
                 })}
-              </div> */}
+              </div>
             </div>
 
             <div className='content'>{comment.content}</div>
