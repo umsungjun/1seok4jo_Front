@@ -15,6 +15,8 @@ const Comment: React.FC<CommentProps> = () => {
   const user = useSelector((state: RootState) => state.user)
   const userId = user.userId
   const [newCommentText, setNewCommentText] = useState<string>('')
+  const [editedCommentText, setEditedCommentText] = useState<string>('')
+  const [prevCommentText, setPrevCommentText] = useState<string>('')
   const [comments, setComments] = useState<CommentBubbleProps[]>([])
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null)
@@ -139,11 +141,21 @@ const Comment: React.FC<CommentProps> = () => {
     console.log(newCommentText)
   }
 
+  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditedCommentText(e.target.value)
+    console.log(editedCommentText)
+  }
+
   const handleEdit = (e: React.MouseEvent<HTMLButtonElement>, commentId: number) => {
     e.preventDefault()
     console.log('수정')
     setIsEditing(true)
     setEditingCommentId(commentId)
+    const comment = comments.find(comment => comment.commentId === commentId)
+    if (comment) {
+      setPrevCommentText(comment.content)
+      setEditedCommentText(comment.content)
+    }
     console.log('수정할 댓글 아이디', commentId)
   }
 
@@ -190,7 +202,7 @@ const Comment: React.FC<CommentProps> = () => {
             </div>
             {isEditing && comment.commentId === editingCommentId ? (
               <form onSubmit={e => handleEditSubmit(e, comment.commentId)}>
-                <input type='text' value={newCommentText} onChange={e => handleChange(e)} />
+                <input type='text' value={editedCommentText} onChange={e => handleEditChange(e)} />
                 <button type='submit'>수정 완료</button>
               </form>
             ) : (
@@ -207,12 +219,6 @@ const Comment: React.FC<CommentProps> = () => {
                         수정
                       </button>
                     </div>
-                    {/* <CommentForm onSubmit={e => handleEditSubmit(e, comment.commentId)}>
-                  <input type='text' value={newCommentText} onChange={handleChange} />
-                  <button type='submit' disabled={isInputEmpty}>
-                    수정 완료
-                  </button>
-                </CommentForm> */}
                   </>
                 ) : null}
               </>
@@ -223,10 +229,7 @@ const Comment: React.FC<CommentProps> = () => {
 
       <CommentForm onSubmit={handleNewCommentSubmit}>
         <input type='text' value={newCommentText} onChange={handleChange} />
-        <button
-          type='submit'
-          // disabled={isInputEmpty}
-        >
+        <button type='submit' disabled={isInputEmpty}>
           댓글추가
         </button>
       </CommentForm>
