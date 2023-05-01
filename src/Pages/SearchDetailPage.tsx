@@ -5,7 +5,6 @@ import styled from 'styled-components'
 import {SearchType, fetchSearchApi} from '../Service/searchService'
 
 import {IoLocationSharp} from 'react-icons/io5'
-import {HiOutlinePlus} from 'react-icons/hi'
 
 export default function SearchDetailPage() {
   const [postList, setPostList] = useState<SearchType>({
@@ -25,13 +24,19 @@ export default function SearchDetailPage() {
 
   useEffect(() => {
     ;(async () => {
-      const response = await fetchSearchApi(engCategory, searchText as string)
+      const response = await fetchSearchApi(engCategory, searchText as string, 0)
       // console.log(response)
       setPostList(response)
     })()
   }, [category, searchText])
 
-  console.log(postList)
+  // console.log(postList)
+
+  const handleMore = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    console.log('더 불러오기 ')
+    // setPostList({...postList.searchPostList, ...})
+  }
 
   return (
     <Section>
@@ -43,16 +48,15 @@ export default function SearchDetailPage() {
               <PostTitle to={`/PostDetail/${id}`}>[제목] {title}</PostTitle>
               <Location>
                 <IoLocationSharp />
-                경상북도 김천시 삼락동
-              </Location>{' '}
-              {/* {location} */}
+                {location}
+              </Location>
               <Detail>{detail}</Detail>
               <Hashtag>{hashtag}</Hashtag>
             </Post>
           )
         })}
       </PostList>
-      <MoreButton>+ 더보기</MoreButton>
+      <MoreButton onClick={e => handleMore(e)}>+ 더보기</MoreButton>
     </Section>
   )
 }

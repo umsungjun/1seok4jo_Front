@@ -14,12 +14,15 @@ export interface SearchType {
   }[]
 }
 
-export const fetchSearchApi = async (category: string, searchText: string) => {
+export const fetchSearchApi = async (category: string, searchText: string, count: number) => {
   const searchURL = `http://localhost:8080/api/search/getList/${category}/${searchText}`
 
   const params = {
     method: 'GET',
     url: `${searchURL}`,
+    data: {
+      pageNum: count,
+    },
   }
   const response = await remote(params)
 

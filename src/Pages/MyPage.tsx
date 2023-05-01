@@ -1,19 +1,28 @@
-import React from 'react'
+import React, {useState} from 'react'
 import MyPageBanner from '../Common/MyPageBanner'
 import styled from 'styled-components'
 import PostList from '../Component/PostList'
 import {scrollToTop} from '../util/scrollToTop'
+import {useSelector} from 'react-redux'
+import {RootState} from '../Store'
+import MyPostList from '../Component/MyPostList'
+import MyLikeList from '../Component/MyLikeList'
 
 export default function MyPage() {
   scrollToTop()
+  const [chooseMyPost, setChooseMyPost] = useState(true)
+  const user = useSelector((state: RootState) => state.user)
+
+  const handleMyPost = (e: React.MouseEvent<HTMLButtonElement>) => {}
+
   return (
     <MyPageSection>
       <MyPageBanner />
       <TypeSelectBox>
-        <TypeSelect>작성 글</TypeSelect>
+        <TypeSelect onClick={e => handleMyPost(e)}>작성 글</TypeSelect>
         <TypeSelect>좋아요</TypeSelect>
       </TypeSelectBox>
-      {/* <PostList /> */}
+      {chooseMyPost ? <MyPostList /> : <MyLikeList />}
     </MyPageSection>
   )
 }
@@ -34,7 +43,7 @@ const TypeSelectBox = styled.div`
   color: #fff;
 `
 
-const TypeSelect = styled.div`
+const TypeSelect = styled.button`
   width: 47%;
   display: flex;
   justify-content: center;
