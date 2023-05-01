@@ -36,21 +36,31 @@ export const fetchLoginApi = async (email: string, password: string) => {
   return response.data
 }
 
-// TODO 회원정보 수정
-// export const fetchProfileEditApi = async () => {
-//   const postEditURL = `http://localhost:8080/api/member/update`
-//   const params = {
-//     method: 'PUT',
-//     url: `${postEditURL}`,
-//     data: {
-//       email: `${email}`,
-//       password: `${password}`,
-//     },
-//   }
-//   const response = await remote(params)
+// 회원정보 수정
+export const fetchProfileEditApi = async (
+  stringBlob: Blob,
+  userProfileImg: File,
+  userBannerImg: File,
+  token: string,
+) => {
+  // console.log(stringBlob, userProfileImg, userBannerImg)
+  const postEditURL = `http://localhost:8080/api/member/update`
 
-//   return response.data
-// }
+  const editData = new FormData()
+  editData.append('data', stringBlob)
+  editData.append('profileImg', userProfileImg)
+  editData.append('bannerImg', userBannerImg)
+
+  const params = {
+    method: 'PUT',
+    url: `${postEditURL}`,
+    data: editData,
+    headers: {Authorization: token},
+  }
+  const response = await remote(params)
+
+  return response.data
+}
 
 // 비밀번호 수정
 export const fetchEditPassWordApi = async (password: string, newPassword: string, token: string) => {
@@ -67,7 +77,7 @@ export const fetchEditPassWordApi = async (password: string, newPassword: string
     headers: {Authorization: token},
   }
   const response = await remote(params)
-  // console.log(response)
+  console.log(response)
 
   return response.data
 }

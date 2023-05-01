@@ -54,7 +54,7 @@ export default function HeaderSearchBox() {
           {searchCondition.map(searchStr => {
             if (searchSelect !== searchStr) {
               return (
-                <SearchLi onClick={handleSearchValue} value={searchStr}>
+                <SearchLi onClick={handleSearchValue} value={searchStr} key={searchStr}>
                   {searchStr}
                 </SearchLi>
               )
