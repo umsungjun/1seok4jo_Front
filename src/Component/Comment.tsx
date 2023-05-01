@@ -37,10 +37,10 @@ const Comment: React.FC<CommentProps> = () => {
           console.log('성공')
           setComments(response.data.result)
         } else {
-          console.error('Failed to fetch comments from server.')
+          console.error('에러')
         }
       } catch (error) {
-        console.error('Failed to fetch comments from server.', error)
+        console.error('에러', error)
       }
     })()
   }, [postId])
@@ -52,7 +52,7 @@ const Comment: React.FC<CommentProps> = () => {
       userId: userId,
       postId: Number(postId),
       content: newCommentText,
-      createdTime: '',
+      createdTime: new Date(),
       nickname: '',
     }
     setComments([...comments, newComment])
@@ -78,10 +78,10 @@ const Comment: React.FC<CommentProps> = () => {
         setComments([...comments, newComment])
         setNewCommentText('')
       } else {
-        console.error('Failed to add comment to server.')
+        console.error('에러')
       }
     } catch (error) {
-      console.error('Failed to fetch comments from server.', error)
+      console.error('에러', error)
     }
   }
 
