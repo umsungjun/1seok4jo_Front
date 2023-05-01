@@ -19,6 +19,7 @@ export interface CommentProps {
 }
 
 export interface CommentBubbleProps {
+  commentId: number
   createdTime: Date
   nickname: string
   postId: number

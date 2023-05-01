@@ -54,6 +54,7 @@ const Comment: React.FC<CommentProps> = () => {
       content: newCommentText,
       createdTime: new Date(),
       nickname: '',
+      commentId: 0,
     }
     setComments([...comments, newComment])
     setNewCommentText('')
@@ -89,14 +90,75 @@ const Comment: React.FC<CommentProps> = () => {
     setNewCommentText(e.target.value)
   }
 
+  const handleEdit = async (e: React.MouseEvent<HTMLButtonElement>, commentId: number) => {
+    e.preventDefault()
+    console.log('수정')
+
+    try {
+      const response = await remote.put(
+        `http://localhost:8080/comment/${commentId}`,
+        {
+          content: newCommentText,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        },
+      )
+      if (response.data.code === 200) {
+        console.log('수정 완료!')
+        const updatedComments = comments.map(comment => {
+          if (comment.commentId === commentId) {
+            return {
+              ...comment,
+              content: newCommentText,
+            }
+          } else {
+            return comment
+          }
+        })
+        setComments(updatedComments)
+        setNewCommentText('')
+        alert('수정 완료')
+      } else {
+        console.error('에러')
+      }
+    } catch (error) {
+      console.error('에러', error)
+    }
+  }
+
+  const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>, commentId: number) => {
+    e.preventDefault()
+    console.log('삭제')
+    const headers = {
+      Authorization: token,
+    }
+    try {
+      const response = await remote.delete(`http://localhost:8080/comment/${commentId}`, {headers})
+      console.log(response.data)
+      if (response.data.code === 200) {
+        setComments(comments.filter(comment => comment.commentId !== commentId))
+        alert('삭제 완료!')
+      } else {
+        alert(response.data.message)
+        console.log(response.data.message)
+      }
+    } catch (error) {
+      console.error(error)
+      throw error
+    }
+  }
   // 인풋빈값일때 전송버튼 disabled
   const isInputEmpty = newCommentText.trim() === ''
 
   return (
     <CommentContainer>
       <CommentBox>
-        {comments.map((comment, index) => (
-          <NewComment key={index}>
+        {comments.map(comment => (
+          <NewComment key={comment.commentId}>
             <div className='info'>
               <img src={sangchu} alt='유저프로필' />
               <h1>{comment.nickname}</h1>
@@ -108,14 +170,15 @@ const Comment: React.FC<CommentProps> = () => {
                 })}
               </div>
             </div>
-
             <div className='content'>{comment.content}</div>
             <div className='buttons'>
-              <button className='delete'>삭제</button>
-              <button className='edit'>수정</button>
+              <button className='delete' onClick={e => handleDelete(e, comment.commentId)}>
+                삭제
+              </button>
+              <button className='edit' onClick={e => handleEdit(e, comment.commentId)}>
+                수정
+              </button>
             </div>
-
-            {/* <p>Comment room id: {id}</p>s */}
           </NewComment>
         ))}
       </CommentBox>
