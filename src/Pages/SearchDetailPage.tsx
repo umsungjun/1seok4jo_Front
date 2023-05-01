@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useRef} from 'react'
 import PageTitle from '../Common/PageTitle'
 import {Link, useParams} from 'react-router-dom'
 import styled from 'styled-components'
@@ -9,6 +9,7 @@ import {IoLocationSharp} from 'react-icons/io5'
 let FetchCount = 0
 
 export default function SearchDetailPage() {
+  const moreButtonRef = useRef<HTMLButtonElement>(null)
   const [postList, setPostList] = useState<SearchType>({
     count: 0,
     keyword: '',
@@ -26,25 +27,32 @@ export default function SearchDetailPage() {
 
   useEffect(() => {
     ;(async () => {
+      FetchCount = 0
       const response = await fetchSearchApi(engCategory, searchText as string, FetchCount)
-      // console.log(response)
+      console.log(response)
+      console.log(FetchCount, response.count)
+
+      if (response.count <= 10 && FetchCount === 0) {
+        if (moreButtonRef.current) {
+          moreButtonRef.current.style.display = 'none'
+        }
+      }
+
       setPostList(response)
     })()
   }, [category, searchText])
 
-  // console.log(postList)
-
   const handleMore = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    console.log('더 불러오기 ')
     FetchCount++
-    if (FetchCount * 10 >= postList.count) {
-      alert('더 이상 불러올 게시글이 없습니다.') //TODO 버튼이 사라지는 식으로
-      return
-    }
+    let nextFetchCount = FetchCount + 1
     const response = await fetchSearchApi(engCategory, searchText as string, FetchCount)
     console.log(response)
-
+    if (response.count < nextFetchCount * 10) {
+      if (moreButtonRef.current) {
+        moreButtonRef.current.style.display = 'none'
+      }
+    }
     setPostList({
       ...postList,
       searchPostList: [...postList.searchPostList, ...response.searchPostList],
@@ -69,7 +77,9 @@ export default function SearchDetailPage() {
           )
         })}
       </PostList>
-      <MoreButton onClick={e => handleMore(e)}>+ 더보기</MoreButton>
+      <MoreButton onClick={e => handleMore(e)} ref={moreButtonRef}>
+        + 더보기
+      </MoreButton>
     </Section>
   )
 }
@@ -78,6 +88,7 @@ const Section = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 3rem;
 `
 
 const PostList = styled.div`

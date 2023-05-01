@@ -16,7 +16,6 @@ export interface SearchType {
 
 export const fetchSearchApi = async (category: string, searchText: string, count: number) => {
   const searchURL = `http://localhost:8080/api/search/getList/${category}/${searchText}/${count}`
-  console.log(count)
 
   const params = {
     method: 'GET',
