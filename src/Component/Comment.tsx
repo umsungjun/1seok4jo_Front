@@ -16,6 +16,7 @@ const Comment: React.FC<CommentProps> = () => {
   const userId = user.userId
   const [newCommentText, setNewCommentText] = useState<string>('')
   const [comments, setComments] = useState<CommentBubbleProps[]>([])
+  const [editingCommentId, setEditingCommentId] = useState<number | null>(null)
   const [postId, setPostId] = useState(id)
   const [cookies] = useCookies(['token'])
   const token = cookies.token
@@ -54,7 +55,7 @@ const Comment: React.FC<CommentProps> = () => {
       content: newCommentText,
       createdTime: new Date(),
       nickname: '',
-      commentId: 0,
+      commentId: 1,
     }
     setComments([...comments, newComment])
     setNewCommentText('')
@@ -86,17 +87,18 @@ const Comment: React.FC<CommentProps> = () => {
     }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewCommentText(e.target.value)
-  }
-
-  const handleEdit = async (e: React.MouseEvent<HTMLButtonElement>, commentId: number) => {
+  const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>, commentId: number) => {
     e.preventDefault()
     console.log('수정')
 
+    if (commentId == null) {
+      console.error('Editing comment ID is null')
+      return
+    }
+
     try {
       const response = await remote.put(
-        `http://localhost:8080/comment/${commentId}`,
+        `http://localhost:8080/${postId}/comment/${commentId}`,
         {
           content: newCommentText,
         },
@@ -123,16 +125,41 @@ const Comment: React.FC<CommentProps> = () => {
         setNewCommentText('')
         alert('수정 완료')
       } else {
-        console.error('에러')
+        console.error('수정 에러')
       }
     } catch (error) {
-      console.error('에러', error)
+      console.error('수정 에러', error)
     }
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewCommentText(e.target.value)
+  }
+
+  //   const handleEdit = (e: React.MouseEvent<HTMLButtonElement>, commentId: number) => {
+  //     e.preventDefault()
+  //     console.log('수정')
+  //
+  //     const updatedComments = comments.map(comment => {
+  //       if (comment.commentId === commentId) {
+  //         return {
+  //           ...comment,
+  //           content: newCommentText,
+  //         }
+  //       } else {
+  //         return comment
+  //       }
+  //     })
+  //     setComments(updatedComments)
+  //   }
+  const handleEdit = async (e: React.MouseEvent<HTMLButtonElement>, commentId: number) => {
+    setEditingCommentId(commentId)
   }
 
   const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>, commentId: number) => {
     e.preventDefault()
     console.log('삭제')
+    // confirm('정말 삭제하시겠습니까?')
     const headers = {
       Authorization: token,
     }
@@ -179,6 +206,14 @@ const Comment: React.FC<CommentProps> = () => {
                 수정
               </button>
             </div>
+            {editingCommentId === comment.commentId ? (
+              <CommentForm onSubmit={e => handleEditSubmit(e, comment.commentId)}>
+                <input type='text' value={newCommentText} onChange={handleChange} />
+                <button type='submit' disabled={isInputEmpty}>
+                  수정 완료
+                </button>
+              </CommentForm>
+            ) : null}
           </NewComment>
         ))}
       </CommentBox>
