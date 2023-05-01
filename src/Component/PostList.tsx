@@ -34,13 +34,7 @@ const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostLis
   const [showHandleSlideImg, setShowHandleSlideImg] = useState<boolean>(false)
   const [slideImgs, setSlideImgs] = useState<string[]>([])
   const [slideId, setSlideId] = useState<number>(0)
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
-  const [openMenuPostId, setOpenMenuPostId] = useState<number | null>(null) // Add new state variable
 
-  const [cookies] = useCookies(['token'])
-  const token = cookies.token
-  const navigate = useNavigate()
-  const remote = axios.create()
   // const menuOptions = ['삭제', '편집']
 
   const setSlideImgAndShow = (images: string[], id: number) => {
@@ -55,51 +49,6 @@ const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostLis
     setIsLiked(!isLiked)
   }
 
-  const handleOptionClick = (e: React.MouseEvent<HTMLButtonElement>, postId: number) => {
-    e.stopPropagation()
-    console.log('옵션 클릭')
-    // setIsMenuOpen(!isMenuOpen)
-    setOpenMenuPostId(postId === openMenuPostId ? null : postId) // Set the postId to open the menu only for the selected post
-  }
-
-  const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>, postId: number) => {
-    e.stopPropagation()
-    if (openMenuPostId === postId) {
-      setOpenMenuPostId(null)
-    }
-  }
-
-  const handleDeletePost = async (e: React.MouseEvent<HTMLButtonElement>, postId: number) => {
-    e.stopPropagation()
-    console.log('삭제 클릭')
-    confirm('정말 삭제하시겠습니까?') // TODO 팝업
-    const headers = {
-      'Content-Type': 'multipart/form-data',
-      Authorization: token,
-    }
-    try {
-      const response = await remote.delete(`http://localhost:8080/post/${postId}`, {headers})
-      console.log(response.data)
-      if (response.data.code === 200) {
-        alert('게시글이 삭제되었습니다.')
-        navigate('/MyPage')
-      } else {
-        alert(response.data.message)
-        console.log(response.data.message)
-      }
-    } catch (error) {
-      console.error(error)
-      throw error
-    }
-    setIsMenuOpen(!isMenuOpen)
-  }
-
-  const handleEditPost = (e: React.MouseEvent<HTMLButtonElement>, postId: number) => {
-    e.stopPropagation()
-    console.log('편집 클릭')
-    navigate(`/PostEdit/${postId}`)
-  }
-
   return (
     <>
       <PostListStyled>
@@ -109,19 +58,6 @@ const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostLis
             <FeedStyled key={post.postId}>
               <ImgBox onClick={() => setSlideImgAndShow(storeFileUrl, postId)}>
                 <img src={`${baseUrl}${storeFileUrl[0]}`} />
-                <div onClick={e => handleClickOutside(e, postId)}>
-                  <MenuButton className='circle-button' onClick={e => handleOptionClick(e, postId)}>
-                    <div className='circle'></div>
-                    <div className='circle'></div>
-                    <div className='circle'></div>
-                  </MenuButton>
-                  {openMenuPostId === postId && ( // Render the menu only for the selected post
-                    <OptionList>
-                      <OptionsButton onClick={e => handleDeletePost(e, postId)}>삭제</OptionsButton>
-                      <OptionsButton onClick={e => handleEditPost(e, postId)}>편집</OptionsButton>
-                    </OptionList>
-                  )}
-                </div>
               </ImgBox>
               <div className='text'>
                 <FeedInfoStyled>

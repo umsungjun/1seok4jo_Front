@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {useSelector} from 'react-redux'
 import {RootState} from '../Store'
 import {MyPostListType} from '../Service/myPageService'
@@ -6,7 +6,9 @@ import styled from 'styled-components'
 
 import {BsFillSuitHeartFill, BsSuitHeart} from 'react-icons/bs'
 import {IoLocationSharp} from 'react-icons/io5'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
+import {useCookies} from 'react-cookie'
+import axios from 'axios'
 interface MyPagePostListType {
   myPostList: {
     id: number
@@ -23,17 +25,79 @@ interface MyPagePostListType {
 }
 
 export default function MyPageList({myPostList}: MyPagePostListType) {
-  console.log(myPostList)
-
+  const navigate = useNavigate()
+  const [cookies] = useCookies(['token'])
+  const token = cookies.token
+  const remote = axios.create()
   const user = useSelector((state: RootState) => state.user)
+  const [openMenuPostId, setOpenMenuPostId] = useState<number | null>(null) // Add new state variable
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
+
+  const handleDeletePost = async (e: React.MouseEvent<HTMLButtonElement>, postId: number) => {
+    e.stopPropagation()
+    // console.log('삭제 클릭')
+    confirm('정말 삭제하시겠습니까?') // TODO 팝업
+    const headers = {
+      'Content-Type': 'multipart/form-data',
+      Authorization: token,
+    }
+    try {
+      const response = await remote.delete(`http://localhost:8080/post/${postId}`, {headers})
+      // console.log(response.data)
+      if (response.data.code === 200) {
+        alert('게시글이 삭제되었습니다.')
+        navigate('/MyPage')
+      } else {
+        alert(response.data.message)
+        // console.log(response.data.message)
+      }
+    } catch (error) {
+      // console.error(error)
+      throw error
+    }
+    setIsMenuOpen(!isMenuOpen)
+  }
+
+  const handleEditPost = (e: React.MouseEvent<HTMLButtonElement>, postId: number) => {
+    e.stopPropagation()
+    // console.log('편집 클릭')
+    navigate(`/PostEdit/${postId}`)
+  }
+  const handleOptionClick = (e: React.MouseEvent<HTMLButtonElement>, postId: number) => {
+    e.preventDefault()
+    e.stopPropagation()
+    // console.log('옵션 클릭')
+    // setIsMenuOpen(!isMenuOpen)
+    setOpenMenuPostId(postId === openMenuPostId ? null : postId) // Set the postId to open the menu only for the selected post
+  }
+
+  const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>, postId: number) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (openMenuPostId === postId) {
+      setOpenMenuPostId(null)
+    }
+  }
   return (
     <PostListStyled>
       {myPostList.map(post => {
         const {id, title, detail, location, hashtag, likeCount, startDate, endDate, baseUrl, storeFileUrl} = post
         return (
-          <FeedStyled to={`/PostDetail/${id}`} key={id}>
+          <FeedStyled key={id} to={`/PostDetail/${id}`}>
             <ImgBox>
               <img src={`${baseUrl}${storeFileUrl[0]}`} />
+              <div onClick={e => handleClickOutside(e, id)} />
+              <MenuButton className='circle-button' onClick={e => handleOptionClick(e, id)}>
+                <div className='circle' />
+                <div className='circle' />
+                <div className='circle' />
+              </MenuButton>
+              {openMenuPostId === id && ( // Render the menu only for the selected post
+                <OptionList>
+                  <OptionsButton onClick={e => handleDeletePost(e, id)}>삭제</OptionsButton>
+                  <OptionsButton onClick={e => handleEditPost(e, id)}>편집</OptionsButton>
+                </OptionList>
+              )}
             </ImgBox>
             <div className='text'>
               <FeedInfoStyled>
