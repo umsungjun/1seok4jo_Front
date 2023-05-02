@@ -209,15 +209,7 @@ const PostDetailPage = () => {
       </Body>
       <Bottom>
         <CommentBox>
-          <Comment
-            commentId={0}
-            userId={0}
-            nickname={''}
-            imageUrl={[]}
-            content={''}
-            createdAt={''}
-            updatedAt={''}
-          />
+          <Comment commentId={0} userId={0} nickname={''} imageUrl={[]} content={''} createdAt={''} updatedAt={''} />
         </CommentBox>
         <MapContainer />
       </Bottom>

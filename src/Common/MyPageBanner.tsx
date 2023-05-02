@@ -64,6 +64,7 @@ interface ProfileWrapperProps {
 }
 
 const ProfileWrapper = styled.div<ProfileWrapperProps>`
+  color: #fff;
   position: relative;
   display: flex;
   flex-direction: column;
