@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import MapContainer from '../Component/MapContainer'
 import {PostListStyled} from '../Component/PostDetailFeed'
 import PostDetailFeed from '../Component/PostDetailFeed'
-import sangchu from '../Assets/sangchu.png'
 import {RWebShare} from 'react-web-share'
 import {FiShare} from 'react-icons/fi'
 import {BsSuitHeart} from 'react-icons/bs'
@@ -47,6 +46,7 @@ const PostDetailPage = () => {
     storeFileUrl: [],
     themeId: 0,
     title: '',
+    userProfileImage: '',
   })
   const [commentList, setCommentList] = useState<PostCommentInterface[]>([])
   const user = useSelector((state: RootState) => state.user)
@@ -193,7 +193,7 @@ const PostDetailPage = () => {
           <PostArea>
             <ProfileInfo>
               <ProfileImage>
-                <img src={userImage} alt={'userImage'} />
+                <img src={postDetail.userProfileImage} alt='작성자 프로필' />
               </ProfileImage>
               <NickName>{postDetail.nickname}</NickName>
             </ProfileInfo>
@@ -207,15 +207,7 @@ const PostDetailPage = () => {
       </Body>
       <Bottom>
         <CommentBox>
-          <Comment
-            commentId={0}
-            userId={0}
-            nickname={''}
-            imageUrl={[]}
-            content={''}
-            createdAt={''}
-            updatedAt={''}
-          />
+          <Comment commentId={0} userId={0} nickname={''} imageUrl={[]} content={''} createdAt={''} updatedAt={''} />
         </CommentBox>
         <MapContainer />
       </Bottom>
