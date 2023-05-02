@@ -388,6 +388,7 @@ const NewComment = styled.div`
     justify-content: start;
     align-items: left;
     color: #000;
+    padding-top: 0.5rem;
     overflow-wrap: anywhere;
   }
   .buttons button {
