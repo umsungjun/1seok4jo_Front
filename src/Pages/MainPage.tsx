@@ -18,7 +18,7 @@ export default function MainPage() {
   const theme = useSelector((state: RootState) => state.themeType.theme)
   const [themePostList, setThemePostList] = useState<ThemePostListProps['themePostList']>([])
   const [categoryId, setCategoryId] = useState(1)
-  const [lastId, setLastId] = useState<number | null>(null)
+  const [lastId, setLastId] = useState<number | null>(1)
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function MainPage() {
     if (themePostList.length === 0) {
       return
     }
-    if (lastId === null || 1) {
+    if (lastId === null) {
       return
     }
     setIsLoading(true)
