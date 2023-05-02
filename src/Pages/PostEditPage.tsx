@@ -33,20 +33,31 @@ export default function PostEditPage() {
   const [postId, setPostId] = useState(id)
 
   useEffect(() => {
-    ;(async () => {
-      const response = await remote.get(`http://localhost:8080/post/${postId}`)
-      console.log(response.data)
-      setFormData(response.data.result)
-      // setTitle(response.data.result.title)
-      // setContent(response.data.result.detail)
-      // setAddress(response.data.result.location)
-      // setStartDate(new Date(response.data.result.startDate))
-      // setFinishDate(new Date(response.data.result.endDate))
-      // setHashtag(response.data.result.hashtag.split(','))
-      // setCategoryId(response.data.result.themeId)
-      // setImageNames(response.data.result.storeFileUrl)
-    })()
+    const fetchPostData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/post/${postId}`)
+        const postData = response.data.result
+        setTitle(postData.title)
+        setContent(postData.detail)
+        setAddress(postData.location)
+        setStartDate(new Date(postData.startDate))
+        setFinishDate(new Date(postData.endDate))
+        setHashtag(postData.hashtag.split(','))
+        setCategoryId(postData.themeId)
+        setImageNames(postData.storeFileUrl)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    fetchPostData()
   }, [postId])
+
+  // useEffect(() => {
+  //   if (postData) {
+  //     setHashtag(postData.hashtag.split(','))
+  //   }
+  // }, [postData])
 
   const onChangeOpenPost = () => {
     setIsOpenPost(!isOpenPost)
@@ -130,7 +141,7 @@ export default function PostEditPage() {
     <PostForm onSubmit={handlePostInfo} onKeyUp={e => e.key === 'Enter' && e.preventDefault()}>
       <PageTitle title='Edit Post' sub='나의 여행 정보를 수정할 수 있습니다.' />
       <Section>
-        <Title type='text' value={formData.themeId} onChange={e => setFormData({...formData, name: e.target.value})}>
+        <Title type='text' defaultValue={categoryId} onChange={e => setFormData({...formData, name: e.target.value})}>
           # 테마
         </Title>
         <ThemeSlide setCategoryId={setCategoryId} />
@@ -139,14 +150,18 @@ export default function PostEditPage() {
           <DateBox>
             <DateText>시작 :</DateText>
             <DatePickerBox>
-              <DatePicker dateFormat='yyyy.MM.dd' selected={startDate} onChange={date => date && setStartDate(date)} />
+              <DatePicker
+                dateFormat='yyyy.MM.dd'
+                selected={startDate || new Date()}
+                onChange={date => date && setStartDate(date)}
+              />
             </DatePickerBox>
             <Wave>~</Wave>
             <DateText>종료 :</DateText>
             <DatePickerBox>
               <DatePicker
                 dateFormat='yyyy.MM.dd'
-                selected={finishDate}
+                selected={finishDate || new Date()}
                 onChange={date => date && setFinishDate(date)}
               />
             </DatePickerBox>
@@ -155,7 +170,7 @@ export default function PostEditPage() {
         <ContentBox>
           <Title># 주소</Title>
           <AddressBox>
-            <AddressInput type='text' value={address} placeholder='# 주소' required readOnly />
+            <AddressInput type='text' defaultValue={address} placeholder='# 주소' required readOnly />
             <FaMapMarkerAlt onClick={onChangeOpenPost} />
             {isOpenPost ? (
               <div>
@@ -185,6 +200,7 @@ export default function PostEditPage() {
             maxLength={20}
             placeholder='# 제목을 입력하세요 (최대 20자)'
             required
+            value={title}
             onChange={e => {
               setTitle(e.target.value)
             }}
@@ -196,6 +212,7 @@ export default function PostEditPage() {
             maxLength={500}
             placeholder='# 내용을 입력하세요 (최대 500자)'
             required
+            value={content}
             onChange={e => {
               setContent(e.target.value)
             }}
@@ -211,7 +228,6 @@ export default function PostEditPage() {
               {imageNames.map((name, index) => {
                 return <ImgName key={index}>{name}</ImgName>
               })}
-              {/* <ImgName>{imageNames}</ImgName> */}
             </SelectImgs>
           </ImageBox>
         </ContentBox>
