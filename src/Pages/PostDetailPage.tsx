@@ -24,6 +24,9 @@ import {fetchThemePostListApi} from '../Service/postThemeService'
 import Comment from '../Component/Comment'
 import {ThemePostListProps} from '../Component/PostList'
 import {fetchPostCommentApi, fetchGetCommentApi} from '../Service/postCommentService'
+import {useSelector} from 'react-redux'
+import {RootState} from '../Store'
+import {basicUser} from '../Mock/users'
 
 const PostDetailPage = () => {
   scrollToTop()
@@ -46,6 +49,11 @@ const PostDetailPage = () => {
     title: '',
   })
   const [commentList, setCommentList] = useState<PostCommentInterface[]>([])
+  const user = useSelector((state: RootState) => state.user)
+  const userImage =
+    user.profileUrl === 'https://s3.ap-northeast-2.amazonaws.com/compass-s3-bucket/null'
+      ? basicUser.profile
+      : user.profileUrl
 
   useEffect(() => {
     ;(async () => {
@@ -185,7 +193,7 @@ const PostDetailPage = () => {
           <PostArea>
             <ProfileInfo>
               <ProfileImage>
-                <img src={sangchu} alt='하상츄' />
+                <img src={userImage} alt={'userImage'} />
               </ProfileImage>
               <NickName>{postDetail.nickname}</NickName>
             </ProfileInfo>
@@ -199,7 +207,15 @@ const PostDetailPage = () => {
       </Body>
       <Bottom>
         <CommentBox>
-          <Comment commentId={0} userId={0} nickname={''} imageUrl={[]} content={''} createdAt={''} updatedAt={''} />
+          <Comment
+            commentId={0}
+            userId={0}
+            nickname={''}
+            imageUrl={[]}
+            content={''}
+            createdAt={''}
+            updatedAt={''}
+          />
         </CommentBox>
         <MapContainer />
       </Bottom>
