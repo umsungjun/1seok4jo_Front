@@ -26,6 +26,7 @@ const Comment: React.FC<CommentProps> = () => {
   const [comments, setComments] = useState<CommentBubbleProps[]>([])
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null)
+  const [imageUrl, setImageUrl] = useState<string>('')
   const [postId, setPostId] = useState(id)
   const [cookies] = useCookies(['token'])
   const token = cookies.token
@@ -47,6 +48,7 @@ const Comment: React.FC<CommentProps> = () => {
           console.log('성공')
           setComments(response.data.result)
           setEditingCommentId(response.data.result[0].commentId)
+          setImageUrl(response.data.result[0].imageUrl)
         } else {
           console.error('에러')
         }
@@ -196,8 +198,19 @@ const Comment: React.FC<CommentProps> = () => {
         {comments.map(comment => (
           <NewComment key={comment.commentId}>
             <div className='info'>
-              <img src={userImage} alt='유저프로필' />
-              <h1>{userNickName}</h1>
+              <img src={imageUrl} alt='유저프로필' />
+              {/* <h1>{comment.nickName}</h1> */}
+
+              {userId === comment.userId ? (
+                <>
+                  <h1>{userNickName}</h1>
+                </>
+              ) : (
+                <>
+                  <h1>{comment.nickName}</h1>
+                </>
+              )}
+
               <div className='date'>
                 {new Date(comment.createdTime).toLocaleString('ko-KR', {
                   year: 'numeric',

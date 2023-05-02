@@ -16,6 +16,7 @@ export interface PostDetailInterface {
   storeFileUrl: string[]
   themeId: number
   title: string
+  userProfileImage: string
 }
 
 export const fetchThemePostDetailApi = async (postId: number) => {
