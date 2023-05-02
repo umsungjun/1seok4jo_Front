@@ -117,14 +117,14 @@ const Comment: React.FC<CommentProps> = () => {
           if (comment.commentId === editingCommentId) {
             return {
               ...comment,
-              content: newCommentText,
+              content: editedCommentText,
             }
           } else {
             return comment
           }
         })
         setComments(updatedComments)
-        setNewCommentText(editedCommentText)
+        setNewCommentText('')
         alert('수정 완료')
       } else {
         console.error('수정 에러')
