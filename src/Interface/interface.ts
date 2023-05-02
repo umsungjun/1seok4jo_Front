@@ -16,8 +16,6 @@ export interface CommentProps {
   content: string
   createdAt: string
   updatedAt: string
-  onEditComment: (commentId: number, content: string) => void
-  onDeleteComment: (commentId: number) => void
 }
 
 export interface CommentBubbleProps {
