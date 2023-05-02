@@ -323,17 +323,45 @@ const NewComment = styled.div`
   width: 90%;
   :not(:last-child) {
     margin-bottom: 3rem;
-  ]
+  }
   @media (max-width: 576px) {
     padding: 1.5rem;
   }
-  .info {
+  form {
     display: flex;
+    width: 100%;
+    input {
+      width: 80%;
+      height: 2.8rem;
+      border-radius: 1rem;
+      text-indent: 1.2rem;
+      font-size: 1.2rem;
+      border: 2px solid #f0f0f0;
+      margin-right: 1rem;
+      &:focus {
+        outline: none;
+        border: 2px solid #c0c0c0;
+      }
+    }
+    button {
+      width: 20%;
+      height: 3rem;
+      color: #fff;
+      font-size: 1.2rem;
+      background-color: #1877f2;
+      border: transparent;
+      border-radius: 1rem;
+      cursor: pointer;
+    }
+  }
+  .info {
+    display: block;
+    text-align: left;
     width: 30%;
-    border: 1px solid red;
     .date {
       margin-right: auto;
-      margin-left: 1rem;
+      margin-top: 0.5rem;
+      color: #a0a0a0;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
@@ -342,33 +370,46 @@ const NewComment = styled.div`
       }
     }
     img {
-      border-radius: 5rem;
+      border-radius: 50rem;
+      // border: 2px solid lightgray;
+      margin-bottom: 0.5rem;
+      width: 3.5rem;
+      height: 3.5rem;
     }
   }
   .content {
     position: relative;
     left: 0;
-    border: 1px solid red;
     width: 80%;
     height: auto;
-    padding: 1rem;
-    border-radius: 10px;
-    border: transparent;
-    font-size: 1.5rem;
-    line-height: 1.5;
+    font-size: 1.4rem;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: start;
+    align-items: left;
     color: #000;
     overflow-wrap: anywhere;
   }
-  .buttons {
+  .buttons button {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    font-size: 1.2rem;
+    width: 3.5rem;
+    height: 2rem;
+    background-color: #c0c0c0;
+    color: #fff;
+    border: transparent;
+    border-radius: 0.5rem;
+    cursor: pointer;
 
-    .delete {
-      padding: 0;
-      margin: 0;
+    :not(:last-child) {
+      margin-bottom: 0.5rem;
+    }
+    :hover {
+      background-color: #1877f2;
+      color: #fff;
     }
   }
- 
-
 `
