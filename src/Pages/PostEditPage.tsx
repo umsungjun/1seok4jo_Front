@@ -10,6 +10,7 @@ import ThemeSlide from '../Common/ThemeSlide'
 import {FaMapMarkerAlt} from 'react-icons/fa'
 import {RiCloseFill} from 'react-icons/ri'
 import {scrollToTop} from '../util/scrollToTop'
+import {text} from 'express'
 
 export default function PostEditPage() {
   scrollToTop()
@@ -17,11 +18,12 @@ export default function PostEditPage() {
   const remote = axios.create()
   const {id} = useParams()
 
-  const [formData, setFormData] = useState({})
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [address, setAddress] = useState('')
   const [isOpenPost, setIsOpenPost] = useState(false)
+  const [prevStartDate, setPrevStartDate] = useState(new Date())
+  const [prevFinishDate, setPrevFinishDate] = useState(new Date())
   const [startDate, setStartDate] = useState(new Date())
   const [finishDate, setFinishDate] = useState(new Date())
   const [imageNames, setImageNames] = useState(['# 이미지첨부 버튼을 누르시고 이미지를 첨부해주세요.(최대 5장)'])
@@ -40,24 +42,17 @@ export default function PostEditPage() {
         setTitle(postData.title)
         setContent(postData.detail)
         setAddress(postData.location)
-        setStartDate(new Date(postData.startDate))
-        setFinishDate(new Date(postData.endDate))
+        setPrevStartDate(postData.startDate.toISOString)
+        setPrevFinishDate(postData.endDate.toISOString)
         setHashtag(postData.hashtag.split(','))
         setCategoryId(postData.themeId)
-        setImageNames(postData.storeFileUrl)
+        // setImageNames(postData.storeFileUrl)
       } catch (error) {
         console.error(error)
       }
     }
-
     fetchPostData()
   }, [postId])
-
-  // useEffect(() => {
-  //   if (postData) {
-  //     setHashtag(postData.hashtag.split(','))
-  //   }
-  // }, [postData])
 
   const onChangeOpenPost = () => {
     setIsOpenPost(!isOpenPost)
@@ -141,18 +136,17 @@ export default function PostEditPage() {
     <PostForm onSubmit={handlePostInfo} onKeyUp={e => e.key === 'Enter' && e.preventDefault()}>
       <PageTitle title='Edit Post' sub='나의 여행 정보를 수정할 수 있습니다.' />
       <Section>
-        <Title type='text' defaultValue={categoryId} onChange={e => setFormData({...formData, name: e.target.value})}>
-          # 테마
-        </Title>
+        <Title># 테마</Title>
         <ThemeSlide setCategoryId={setCategoryId} />
         <ContentBox>
           <Title># 날짜</Title>
           <DateBox>
             <DateText>시작 :</DateText>
+            {/* <DateText>{prevStartDate.toLocaleDateString}</DateText> */}
             <DatePickerBox>
               <DatePicker
                 dateFormat='yyyy.MM.dd'
-                selected={startDate || new Date()}
+                selected={startDate ? new Date(startDate) : null}
                 onChange={date => date && setStartDate(date)}
               />
             </DatePickerBox>
@@ -161,7 +155,7 @@ export default function PostEditPage() {
             <DatePickerBox>
               <DatePicker
                 dateFormat='yyyy.MM.dd'
-                selected={finishDate || new Date()}
+                selected={finishDate ? new Date(finishDate) : null}
                 onChange={date => date && setFinishDate(date)}
               />
             </DatePickerBox>
@@ -222,7 +216,14 @@ export default function PostEditPage() {
           <ImageBox>
             <ImgLabel htmlFor='image'>
               <TitleImg># 이미지 첨부</TitleImg>
-              <ImageInput id='image' type='file' multiple accept='.jpg, .jpeg, .png' onChange={handleLoadImg} />
+              <ImageInput
+                id='image'
+                type='file'
+                multiple
+                accept='.jpg, .jpeg, .png'
+                // value={imageNames}
+                onChange={handleLoadImg}
+              />
             </ImgLabel>
             <SelectImgs>
               {imageNames.map((name, index) => {
@@ -247,7 +248,11 @@ export default function PostEditPage() {
               })}
             </TagBox>
             {hashtag.length >= 3 ? null : (
-              <HashTagsInput placeholder='# 해쉬태그를 입력하세요 (최대 3개)' onKeyUp={handleEnterHash} />
+              <HashTagsInput
+                placeholder='# 해쉬태그를 입력하세요 (최대 3개)'
+                value={hashtag}
+                onKeyUp={handleEnterHash}
+              />
             )}
           </HashtagBox>
         </ContentBox>
@@ -277,7 +282,7 @@ const ContentBox = styled.div`
   margin-top: 5rem;
 `
 
-const Title = styled.input`
+const Title = styled.h2`
   font-size: 1.5rem;
   margin-right: 2rem;
 `
