@@ -8,12 +8,18 @@ import type {CommentProps} from '../Interface/interface'
 import axios from 'axios'
 import {useSelector} from 'react-redux'
 import {RootState} from '../Store'
+import {basicUser} from '../Mock/users'
 
 const Comment: React.FC<CommentProps> = () => {
   const remote = axios.create()
   const {id} = useParams()
   const user = useSelector((state: RootState) => state.user)
   const userId = user.userId
+  const userNickName = user.nickName
+  const userImage =
+    user.profileUrl === 'https://s3.ap-northeast-2.amazonaws.com/compass-s3-bucket/null'
+      ? basicUser.profile
+      : user.profileUrl
   const [newCommentText, setNewCommentText] = useState<string>('')
   const [editedCommentText, setEditedCommentText] = useState<string>('')
   const [prevCommentText, setPrevCommentText] = useState<string>('')
@@ -167,10 +173,7 @@ const Comment: React.FC<CommentProps> = () => {
       Authorization: token,
     }
     try {
-      const response = await remote.delete(
-        `http://localhost:8080/comment/${commentId}`
-        , { headers }
-      )
+      const response = await remote.delete(`http://localhost:8080/comment/${commentId}`, {headers})
       console.log(response.data)
       if (response.data.code === 200) {
         setComments(comments.filter(comment => comment.commentId !== commentId))
@@ -193,8 +196,8 @@ const Comment: React.FC<CommentProps> = () => {
         {comments.map(comment => (
           <NewComment key={comment.commentId}>
             <div className='info'>
-              <img src={sangchu} alt='유저프로필' />
-              <h1>{comment.nickName}</h1>
+              <img src={userImage} alt='유저프로필' />
+              <h1>{userNickName}</h1>
               <div className='date'>
                 {new Date(comment.createdTime).toLocaleString('ko-KR', {
                   year: 'numeric',
