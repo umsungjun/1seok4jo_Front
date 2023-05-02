@@ -17,6 +17,7 @@ export default function PostEditPage() {
   const remote = axios.create()
   const {id} = useParams()
 
+  const [formData, setFormData] = useState({})
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [address, setAddress] = useState('')
@@ -30,6 +31,22 @@ export default function PostEditPage() {
   const token = cookies.token
   const [fileList, setFileList] = useState<File[]>([])
   const [postId, setPostId] = useState(id)
+
+  useEffect(() => {
+    ;(async () => {
+      const response = await remote.get(`http://localhost:8080/post/${postId}`)
+      console.log(response.data)
+      setFormData(response.data.result)
+      // setTitle(response.data.result.title)
+      // setContent(response.data.result.detail)
+      // setAddress(response.data.result.location)
+      // setStartDate(new Date(response.data.result.startDate))
+      // setFinishDate(new Date(response.data.result.endDate))
+      // setHashtag(response.data.result.hashtag.split(','))
+      // setCategoryId(response.data.result.themeId)
+      // setImageNames(response.data.result.storeFileUrl)
+    })()
+  }, [postId])
 
   const onChangeOpenPost = () => {
     setIsOpenPost(!isOpenPost)
@@ -113,7 +130,9 @@ export default function PostEditPage() {
     <PostForm onSubmit={handlePostInfo} onKeyUp={e => e.key === 'Enter' && e.preventDefault()}>
       <PageTitle title='Edit Post' sub='나의 여행 정보를 수정할 수 있습니다.' />
       <Section>
-        <Title># 테마</Title>
+        <Title type='text' value={formData.themeId} onChange={e => setFormData({...formData, name: e.target.value})}>
+          # 테마
+        </Title>
         <ThemeSlide setCategoryId={setCategoryId} />
         <ContentBox>
           <Title># 날짜</Title>
@@ -192,6 +211,7 @@ export default function PostEditPage() {
               {imageNames.map((name, index) => {
                 return <ImgName key={index}>{name}</ImgName>
               })}
+              {/* <ImgName>{imageNames}</ImgName> */}
             </SelectImgs>
           </ImageBox>
         </ContentBox>
@@ -241,7 +261,7 @@ const ContentBox = styled.div`
   margin-top: 5rem;
 `
 
-const Title = styled.h2`
+const Title = styled.input`
   font-size: 1.5rem;
   margin-right: 2rem;
 `

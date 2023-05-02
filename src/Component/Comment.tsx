@@ -39,12 +39,8 @@ const Comment: React.FC<CommentProps> = () => {
         })
         if (response.data.code === 200) {
           console.log('성공')
-          // setComments(response.data.result)
-          const commentsWithIds = response.data.result.map((comment: any, index: number) => ({
-            ...comment,
-            commentId: index + 1, // assuming the commentIds start from 1
-          }))
-          setComments(commentsWithIds)
+          setComments(response.data.result)
+          setEditingCommentId(response.data.result[0].commentId)
         } else {
           console.error('에러')
         }
@@ -95,15 +91,18 @@ const Comment: React.FC<CommentProps> = () => {
     }
   }
 
-  const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>, commentId: number) => {
+  const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>, editingCommentId: number) => {
     e.preventDefault()
     console.log('수정')
-
+    console.log('수정된 댓글', editedCommentText)
     try {
       const response = await remote.put(
-        `http://localhost:8080/${postId}/comment/${commentId}`,
+        `http://localhost:8080/${postId}/comment/${editingCommentId}`,
+
         {
-          content: newCommentText,
+          userId: userId,
+          postId: Number(postId),
+          content: editedCommentText,
         },
         {
           headers: {
@@ -115,7 +114,7 @@ const Comment: React.FC<CommentProps> = () => {
       if (response.data.code === 200) {
         console.log('수정 완료!')
         const updatedComments = comments.map(comment => {
-          if (comment.commentId === commentId) {
+          if (comment.commentId === editingCommentId) {
             return {
               ...comment,
               content: newCommentText,
@@ -125,12 +124,13 @@ const Comment: React.FC<CommentProps> = () => {
           }
         })
         setComments(updatedComments)
-        setNewCommentText('')
+        setNewCommentText(editedCommentText)
         alert('수정 완료')
       } else {
         console.error('수정 에러')
       }
     } catch (error) {
+      alert('수정 에러')
       console.error('수정 에러', error)
     }
     setIsEditing(false)
@@ -138,7 +138,7 @@ const Comment: React.FC<CommentProps> = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewCommentText(e.target.value)
-    console.log(newCommentText)
+    // console.log(newCommentText)
   }
 
   const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -363,12 +363,10 @@ const NewComment = styled.div`
   }
   .buttons {
     display: flex;
-    width: 20%;
-    justify-content: flex-end;
+
     .delete {
       padding: 0;
       margin: 0;
-      
     }
   }
  
