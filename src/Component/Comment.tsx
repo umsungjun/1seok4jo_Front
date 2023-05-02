@@ -167,7 +167,10 @@ const Comment: React.FC<CommentProps> = () => {
       Authorization: token,
     }
     try {
-      const response = await remote.delete(`http://localhost:8080/comment/${commentId}`, {headers})
+      const response = await remote.delete(
+        `http://localhost:8080/comment/${commentId}`
+        , { headers }
+      )
       console.log(response.data)
       if (response.data.code === 200) {
         setComments(comments.filter(comment => comment.commentId !== commentId))
