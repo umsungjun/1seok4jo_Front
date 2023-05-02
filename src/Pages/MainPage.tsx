@@ -52,7 +52,7 @@ export default function MainPage() {
     hasNextPage: themePostList.length % 10 === 0 ? true : false,
     onLoadMore,
     disabled: false,
-    rootMargin: '0px 0px 400px 0px',
+    rootMargin: '0px 0px 0px 0px',
   })
 
   useEffect(() => {

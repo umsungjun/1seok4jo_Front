@@ -28,7 +28,7 @@ import {fetchPostCommentApi, fetchGetCommentApi} from '../Service/postCommentSer
 const PostDetailPage = () => {
   scrollToTop()
   const {id} = useParams()
-  const [themePostList, setThemePostList] = useState([])
+  const [themePostList, setThemePostList] = useState()
   const [categoryId, setCategoryId] = useState(1)
   const [postDetail, setPostDetail] = useState<PostDetailInterface>({
     baseUrl: '',
@@ -56,7 +56,7 @@ const PostDetailPage = () => {
       setCommentList(commentList.result)
       // setComment(comment.result)
     })()
-    console.log(id)
+    // console.log(id)
   }, [id])
 
   useEffect(() => {
@@ -78,13 +78,15 @@ const PostDetailPage = () => {
       }
 
       const randomPostList = randomPosts?.map(index => postList?.result[index])
+      console.log(randomPostList)
+
       setThemePostList(randomPostList)
     })()
   }, [categoryId, id])
 
-  console.log(postDetail)
-  console.log(themePostList)
-  console.log(commentList)
+  // console.log(postDetail)
+  // console.log(themePostList)
+  // console.log(commentList)
 
   const [post, setPost] = useState<PostDetailInfoInterface>()
   const [isLiked, setIsLiked] = useState(false)

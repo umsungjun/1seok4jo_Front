@@ -28,10 +28,14 @@ export default function ProfileEditPage() {
   const [changePassword, setChangePassword] = useState<boolean>(false)
   const [secession, setSecession] = useState<boolean>(false)
   const [profilePreview, setProfilePreview] = useState<string>(
-    user.profileUrl === null ? basicUser.profile : user.profileUrl,
+    user.profileUrl === 'https://s3.ap-northeast-2.amazonaws.com/compass-s3-bucket/null'
+      ? basicUser.profile
+      : user.profileUrl,
   )
   const [profileBackgroundPreview, setProfileBackgroundPreview] = useState<string>(
-    user.bannerUrl === null ? basicUser.background : user.bannerUrl,
+    user.bannerUrl === 'https://s3.ap-northeast-2.amazonaws.com/compass-s3-bucket/null'
+      ? basicUser.background
+      : user.bannerUrl,
   )
 
   const handlePasswordChange = (e: React.MouseEvent) => {
@@ -70,6 +74,8 @@ export default function ProfileEditPage() {
   const handleEditForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     // console.log(e)
+    console.log(user.bannerUrl)
+    console.log(user.profileUrl)
 
     const form = e.target as HTMLFormElement
     const emailInput = form.elements[0] as HTMLInputElement

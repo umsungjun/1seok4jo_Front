@@ -27,8 +27,21 @@ export default function MyPageBanner() {
           {/* onMouseEnter={handleEditOn} */}
         </ProfileWrapper>
       ) : (
-        <ProfileWrapper background={user.bannerUrl === null ? basicUser.background : user.bannerUrl} theme={theme}>
-          <ProfileImg src={user.profileUrl === null ? basicUser.profile : user.profileUrl} />
+        <ProfileWrapper
+          background={
+            user.bannerUrl === 'https://s3.ap-northeast-2.amazonaws.com/compass-s3-bucket/null'
+              ? basicUser.background
+              : user.bannerUrl
+          }
+          theme={theme}
+        >
+          <ProfileImg
+            src={
+              user.profileUrl === 'https://s3.ap-northeast-2.amazonaws.com/compass-s3-bucket/null'
+                ? basicUser.profile
+                : user.profileUrl
+            }
+          />
           <Name>{user.nickName}</Name>
           <Text>{user.introduction === null ? '나를 소개하는 한문장을 등록해주세요.' : user.introduction}</Text>
           <GoEditProfile onClick={() => navigate('/ProfileEdit')}>회원정보 수정</GoEditProfile>

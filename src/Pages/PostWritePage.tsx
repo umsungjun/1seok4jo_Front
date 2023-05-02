@@ -28,7 +28,7 @@ export default function PostWritePage() {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [createdAt, setCreatedAt] = useState(new Date())
-  const [categoryId, setCategoryId] = useState(1)
+  const [categoryId, setCategoryId] = useState(3)
 
   const [cookies] = useCookies(['token'])
   const token = cookies.token
@@ -48,6 +48,7 @@ export default function PostWritePage() {
     e.preventDefault()
 
     const formData = new FormData()
+    // console.log(categoryId)
 
     const data = {
       title,

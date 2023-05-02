@@ -83,7 +83,7 @@ export default function MyPageList({myPostList}: MyPagePostListType) {
       {myPostList.map(post => {
         const {id, title, detail, location, hashtag, likeCount, startDate, endDate, baseUrl, storeFileUrl} = post
         return (
-          <FeedStyled key={id} to={`/PostDetail/${id}`}>
+          <FeedStyled key={id}>
             <ImgBox>
               <img src={`${baseUrl}${storeFileUrl[0]}`} />
               <div onClick={e => handleClickOutside(e, id)} />
@@ -144,7 +144,7 @@ const PostListStyled = styled.ul`
     grid-template-columns: repeat(1, 1fr);
   }
 `
-const FeedStyled = styled(Link)`
+const FeedStyled = styled.div`
   list-style: none;
   cursor: pointer;
   display: flex;

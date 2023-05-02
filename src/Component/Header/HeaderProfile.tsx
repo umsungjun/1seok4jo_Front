@@ -81,7 +81,14 @@ export default function HeaderProfile() {
           {notification && <Notification setNotification={setNotification} />}
           <UserButton onClick={handleOpenUserUl}>
             <RxHamburgerMenu style={{color: theme === 'light' ? '' : '#fff'}} />
-            <UserImg src={user.profileUrl === null ? basicUser.profile : user.profileUrl} alt='userImg' />
+            <UserImg
+              src={
+                user.profileUrl === 'https://s3.ap-northeast-2.amazonaws.com/compass-s3-bucket/null'
+                  ? basicUser.profile
+                  : user.profileUrl
+              }
+              alt='userImg'
+            />
             {userUlList && (
               <UserUl>
                 <UserLiLink to='PostWrite'>글쓰기</UserLiLink>
