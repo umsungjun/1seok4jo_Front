@@ -129,10 +129,11 @@ const PostDetailPage = () => {
     setPost(selectedPost)
   }, [id])
 
-  if (!post) {
-    return <div>존재하지 않는 게시물입니다.</div>
-  }
+  // if (!post) {
+  //   return <div>존재하지 않는 게시물입니다.</div>
+  // }
   const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
+  console.log(postDetail.userProfileImage)
 
   return (
     <Detail>
@@ -195,7 +196,10 @@ const PostDetailPage = () => {
           <PostArea>
             <ProfileInfo>
               <ProfileImage>
-                <img src={postDetail.userProfileImage} alt='작성자 프로필' />
+                <img
+                  src={`https://s3.ap-northeast-2.amazonaws.com/compass-s3-bucket/${postDetail.userProfileImage}`}
+                  alt='작성자 프로필'
+                />
               </ProfileImage>
               <NickName>{postDetail.nickname}</NickName>
             </ProfileInfo>

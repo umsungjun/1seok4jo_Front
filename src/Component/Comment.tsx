@@ -191,6 +191,7 @@ const Comment: React.FC<CommentProps> = () => {
   }
   // 인풋빈값일때 전송버튼 disabled
   const isInputEmpty = newCommentText.trim() === ''
+  console.log(imageUrl)
 
   return (
     <CommentContainer>
@@ -198,7 +199,7 @@ const Comment: React.FC<CommentProps> = () => {
         {comments.map(comment => (
           <NewComment key={comment.commentId}>
             <div className='info'>
-              <img src={imageUrl} alt='유저프로필' />
+              <img src={`https://s3.ap-northeast-2.amazonaws.com/compass-s3-bucket/${imageUrl}`} alt='유저프로필' />
               {/* <h1>{comment.nickName}</h1> */}
 
               {userId === comment.userId ? (

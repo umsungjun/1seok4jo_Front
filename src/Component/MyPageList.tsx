@@ -100,7 +100,7 @@ export default function MyPageList({myPostList}: MyPagePostListType) {
               )}
             </ImgBox>
             <div className='text'>
-              <FeedInfoStyled>
+              <FeedInfoStyled to={`/PostDetail/${id}`}>
                 <div className='title'>{title}</div>
                 <div className='location'>
                   <IoLocationSharp />
@@ -275,7 +275,7 @@ export const LikeButton = styled(BsSuitHeart)`
     right: 1rem;
   }
 `
-export const FeedInfoStyled = styled.label`
+const FeedInfoStyled = styled(Link)`
   div {
     margin: 0.5rem;
   }
