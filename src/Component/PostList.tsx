@@ -55,7 +55,7 @@ const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostLis
         {props.themePostList.map(post => {
           const {baseUrl, postId, storeFileUrl, title, location, startDate, endDate, likeCount} = post
           return (
-            <FeedStyled key={post.postId}>
+            <FeedStyled key={post.postId} theme={theme}>
               <ImgBox onClick={() => setSlideImgAndShow(storeFileUrl, postId)}>
                 <img src={`${baseUrl}${storeFileUrl[0]}`} />
               </ImgBox>
@@ -286,7 +286,7 @@ const FeedStyled = styled.li`
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  ${props => (props.theme === 'light' ? '' : darkTheme.whiteColor)}
   .text {
     width: 100%;
     display: flex;
