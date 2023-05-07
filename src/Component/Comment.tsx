@@ -184,7 +184,10 @@ const Comment: React.FC<CommentProps> = () => {
   const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>, commentId: number) => {
     e.preventDefault()
     console.log('삭제')
-    confirm('정말 삭제하시겠습니까?')
+    const confirmed = window.confirm('정말 삭제하시겠습니까?')
+    if (!confirmed) {
+      return
+    }
     const headers = {
       Authorization: token,
     }
