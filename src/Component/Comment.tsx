@@ -89,8 +89,22 @@ const Comment: React.FC<CommentProps> = () => {
       )
       if (response.data.code === 200) {
         console.log('성공')
-        setComments([...comments, newComment])
-        setNewCommentText('')
+        const response = await remote.get(`http://localhost:8080/post/${postId}/comment`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        })
+        if (response.data.code === 200) {
+          console.log('성공')
+          setComments(response.data.result)
+          setEditingCommentId(response.data.result[0].commentId)
+          setImageUrl(response.data.result[0].imageUrl)
+        } else {
+          console.error('에러')
+        }
+        // setComments([...comments, newComment])
+        // setNewCommentText('')
       } else {
         console.error('에러')
       }
@@ -170,7 +184,7 @@ const Comment: React.FC<CommentProps> = () => {
   const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>, commentId: number) => {
     e.preventDefault()
     console.log('삭제')
-    // confirm('정말 삭제하시겠습니까?')
+    confirm('정말 삭제하시겠습니까?')
     const headers = {
       Authorization: token,
     }
