@@ -36,7 +36,10 @@ export default function MyPageList({myPostList}: MyPagePostListType) {
   const handleDeletePost = async (e: React.MouseEvent<HTMLButtonElement>, postId: number) => {
     e.stopPropagation()
     // console.log('삭제 클릭')
-    confirm('정말 삭제하시겠습니까?') // TODO 팝업
+    const confirmed = window.confirm('정말 삭제하시겠습니까?')
+    if (!confirmed) {
+      return
+    }
     const headers = {
       'Content-Type': 'multipart/form-data',
       Authorization: token,
