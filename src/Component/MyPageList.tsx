@@ -41,7 +41,6 @@ export default function MyPageList({myPostList}: MyPagePostListType) {
       return
     }
     const headers = {
-      'Content-Type': 'multipart/form-data',
       Authorization: token,
     }
     try {
@@ -85,6 +84,7 @@ export default function MyPageList({myPostList}: MyPagePostListType) {
     <PostListStyled>
       {myPostList.map(post => {
         const {id, title, detail, location, hashtag, likeCount, startDate, endDate, baseUrl, storeFileUrl} = post
+
         return (
           <FeedStyled key={id}>
             <ImgBox>

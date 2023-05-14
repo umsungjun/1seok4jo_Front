@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {useParams} from 'react-router-dom'
 import axios from 'axios'
 import {useCookies} from 'react-cookie'
@@ -46,9 +46,17 @@ export default function PostWritePage() {
 
   const handlePostInfo = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (address === '') {
+      alert('주소를 입력해주세요.')
+      return
+    }
+    if (fileList.length === 0) {
+      alert('이미지를 첨부해주세요.')
+      return
+    }
 
     const formData = new FormData()
-    // console.log(categoryId)
+    console.log('fileList', fileList)
 
     const data = {
       title,
