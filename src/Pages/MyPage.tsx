@@ -71,7 +71,7 @@ export default function MyPage() {
           좋아요
         </TypeSelect>
       </TypeSelectBox>
-      <MyPageList myPostList={myPostList.postResponseList} />
+      <MyPageList myPostList={myPostList?.postResponseList} />
     </MyPageSection>
   )
 }
