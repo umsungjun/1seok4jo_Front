@@ -216,15 +216,17 @@ const Comment: React.FC<CommentProps> = () => {
         {comments.map(comment => (
           <NewComment key={comment.commentId}>
             <div className='info'>
-              <img src={`https://s3.ap-northeast-2.amazonaws.com/compass-s3-bucket/${imageUrl}`} alt='유저프로필' />
+              {/* <img src={`https://s3.ap-northeast-2.amazonaws.com/compass-s3-bucket/${imageUrl}`} alt='유저프로필' /> */}
               {/* <h1>{comment.nickName}</h1> */}
 
               {userId === comment.userId ? (
                 <>
+                  <img src={userImage} alt='유저프로필' />
                   <h1>{userNickName}</h1>
                 </>
               ) : (
                 <>
+                  <img src={`https://s3.ap-northeast-2.amazonaws.com/compass-s3-bucket/${imageUrl}`} alt='유저프로필' />
                   <h1>{comment.nickName}</h1>
                 </>
               )}
