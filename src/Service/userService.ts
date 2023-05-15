@@ -5,7 +5,6 @@ const remote = axios.create()
 // 회원가입
 export const fetchJoinApi = async (blobData: Blob) => {
   const postJoinURL = `http://localhost:8080/api/member/signup`
-  // console.log(blobData)
 
   const joinData = new FormData()
   joinData.append('data', blobData)
@@ -80,6 +79,20 @@ export const fetchEditPassWordApi = async (password: string, newPassword: string
   return response.data
 }
 
+// 초기화 메일
+export const fetchMailPassWordApi = async (mail: string) => {
+  const sendMailURL = `http://localhost:8080/api/member/password/send`
+
+  const paramsMail = {
+    method: 'POST',
+    url: `${sendMailURL}`,
+    data: {
+      email: mail,
+    },
+  }
+  const responseMail = await remote(paramsMail)
+}
+
 // 비밀번호 초기화
 export const fetchInitPassWordApi = async (mail: string, uuid: string, newPassword: string) => {
   const postInitPasswordURL = `http://localhost:8080/api/member/password/reset`
@@ -95,20 +108,6 @@ export const fetchInitPassWordApi = async (mail: string, uuid: string, newPasswo
   }
   const responseInit = await remote(paramsInit)
   console.log(responseInit)
-}
-
-// 초기화 메일
-export const fetchMailPassWordApi = async (mail: string) => {
-  const sendMailURL = `http://localhost:8080/api/member/password/send`
-
-  const paramsMail = {
-    method: 'POST',
-    url: `${sendMailURL}`,
-    data: {
-      email: mail,
-    },
-  }
-  const responseMail = await remote(paramsMail)
 }
 
 // 회원 탈퇴
