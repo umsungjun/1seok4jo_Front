@@ -90,7 +90,7 @@ export const fetchMailPassWordApi = async (mail: string) => {
       email: mail,
     },
   }
-  const responseMail = await remote(paramsMail)
+  await remote(paramsMail)
 }
 
 // 비밀번호 초기화
@@ -106,8 +106,7 @@ export const fetchInitPassWordApi = async (mail: string, uuid: string, newPasswo
       uuid: uuid,
     },
   }
-  const responseInit = await remote(paramsInit)
-  console.log(responseInit)
+  await remote(paramsInit)
 }
 
 // 회원 탈퇴
@@ -119,6 +118,5 @@ export const fetchDeleteUserApi = async (token: string) => {
     url: `${deleteUserURL}`,
     headers: {Authorization: token},
   }
-  const response = await remote(paramsMail)
-  console.log(response)
+  await remote(paramsMail)
 }
