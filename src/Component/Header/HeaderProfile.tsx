@@ -27,7 +27,7 @@ export default function HeaderProfile() {
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [notification, setNotification] = useState(false)
   const navigate = useNavigate()
-  console.log('user', user)
+  console.log({user})
   const handleOpenUserUl = () => {
     setUserUlList(!userUlList)
   }

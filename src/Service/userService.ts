@@ -32,10 +32,10 @@ export const fetchLoginApi = async (email: string, password: string) => {
     },
   }
   const response = await remote(params)
+  console.log('로그인 데이터', response.data)
 
   return response.data
 }
-
 // 회원정보 수정
 export const fetchProfileEditApi = async (
   stringBlob: Blob,
