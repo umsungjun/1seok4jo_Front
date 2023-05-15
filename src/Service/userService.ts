@@ -15,9 +15,7 @@ export const fetchJoinApi = async (blobData: Blob) => {
     url: `${postJoinURL}`,
     data: joinData,
   }
-  const response = await remote(params)
-
-  // console.log(response.data)
+  await remote(params)
 }
 
 // 로그인
