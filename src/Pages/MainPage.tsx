@@ -31,6 +31,15 @@ export default function MainPage() {
     }
   }, [themePostList])
 
+  useEffect(() => {
+    ;(async () => {
+      setIsLoading(true)
+      const postList = await fetchThemePostListApi(categoryId)
+      setThemePostList(postList.result)
+      setIsLoading(false)
+    })()
+  }, [categoryId])
+
   const onLoadMore = useCallback(async () => {
     if (themePostList.length === 0) {
       return
@@ -51,15 +60,6 @@ export default function MainPage() {
     disabled: false,
     rootMargin: '0px 0px 0px 0px',
   })
-
-  useEffect(() => {
-    ;(async () => {
-      setIsLoading(true)
-      const postList = await fetchThemePostListApi(categoryId)
-      setThemePostList(postList.result)
-      setIsLoading(false)
-    })()
-  }, [categoryId])
 
   return (
     <MainSection theme={theme}>
