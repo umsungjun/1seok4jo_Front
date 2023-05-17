@@ -58,7 +58,6 @@ export default function MyPage() {
     const response = await fetchPostListApi('like', token)
     setMyPostList(response)
   }
-  // console.log(myPostList.postResponseList)
 
   return (
     <MyPageSection>

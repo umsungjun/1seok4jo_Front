@@ -98,7 +98,6 @@ export default function ProfileEditPage() {
         bannerImgInput.files?.item(0) as File,
         token,
       )
-      // console.log(response)
 
       userDispatch(editUser(response.result))
       alert('회원 정보 수정이 완료되었습니다.')
