@@ -29,8 +29,6 @@ export default function MainPage() {
     if (lastPost) {
       setLastId(lastPost.postId)
     }
-    console.log('themePostList', themePostList)
-    console.log('lastId', lastId)
   }, [themePostList])
 
   const onLoadMore = useCallback(async () => {
@@ -44,7 +42,6 @@ export default function MainPage() {
     const nextPosts = await fetchThemeScrollApi(categoryId, lastId)
     setThemePostList([...themePostList, ...nextPosts.result])
     setIsLoading(false)
-    console.log('nextPosts:', nextPosts)
   }, [categoryId, lastId, themePostList])
 
   const [infiniteRef] = useInfiniteScroll({
