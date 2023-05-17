@@ -23,6 +23,8 @@ const initialState: UserState = JSON.parse(
     }),
 )
 
+console.log({initialState})
+
 export const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -36,7 +38,7 @@ export const userSlice = createSlice({
       state.nickName = nickName
       state.profileUrl = profileUrl
       state.userId = userId
-
+      console.log('state', JSON.stringify(state))
       localStorage.setItem('USER', JSON.stringify(state))
     },
     editUser: (state, action: PayloadAction<UserState>) => {

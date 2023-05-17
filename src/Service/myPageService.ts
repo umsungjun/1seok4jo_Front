@@ -28,6 +28,5 @@ export const fetchPostListApi = async (type: string, token: string) => {
   }
   const response = await remote(params)
 
-  //   console.log(response)
   return response.data.result
 }
