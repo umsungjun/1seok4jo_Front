@@ -1,7 +1,5 @@
 import React, {useState, forwardRef, ForwardedRef} from 'react'
 import styled from 'styled-components'
-import axios from 'axios'
-import {useNavigate} from 'react-router-dom'
 import {BsFillSuitHeartFill, BsSuitHeart} from 'react-icons/bs'
 import SlideImg from '../Popups/SlideImg'
 import {IoLocationSharp} from 'react-icons/io5'
@@ -10,7 +8,6 @@ import {RiErrorWarningLine} from 'react-icons/ri'
 import {darkTheme, lightTheme} from '../Theme/theme'
 import {useSelector} from 'react-redux'
 import {RootState} from '../Store'
-import {useCookies} from 'react-cookie'
 
 export interface ThemePostListProps {
   themePostList: {
@@ -34,8 +31,6 @@ const PostList = forwardRef<HTMLDivElement, ThemePostListProps>(function PostLis
   const [showHandleSlideImg, setShowHandleSlideImg] = useState<boolean>(false)
   const [slideImgs, setSlideImgs] = useState<string[]>([])
   const [slideId, setSlideId] = useState<number>(0)
-
-  // const menuOptions = ['삭제', '편집']
 
   const setSlideImgAndShow = (images: string[], id: number) => {
     setSlideImgs(images)

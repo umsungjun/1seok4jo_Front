@@ -83,45 +83,46 @@ export default function MyPageList({myPostList}: MyPagePostListType) {
   }
   return (
     <PostListStyled>
-      {myPostList.map(post => {
-        const {id, title, detail, location, hashtag, likeCount, startDate, endDate, baseUrl, storeFileUrl} = post
-        return (
-          <FeedStyled key={id}>
-            <ImgBox>
-              <img src={`${baseUrl}${storeFileUrl[0]}`} />
-              <div onClick={e => handleClickOutside(e, id)} />
-              <MenuButton className='circle-button' onClick={e => handleOptionClick(e, id)}>
-                <div className='circle' />
-                <div className='circle' />
-                <div className='circle' />
-              </MenuButton>
-              {openMenuPostId === id && ( // Render the menu only for the selected post
-                <OptionList>
-                  <OptionsButton onClick={e => handleDeletePost(e, id)}>삭제</OptionsButton>
-                  <OptionsButton onClick={e => handleEditPost(e, id)}>편집</OptionsButton>
-                </OptionList>
-              )}
-            </ImgBox>
-            <div className='text'>
-              <FeedInfoStyled to={`/PostDetail/${id}`}>
-                <div className='title'>{title}</div>
-                <div className='location'>
-                  <IoLocationSharp />
-                  <span>{location}</span>
-                </div>
-                <div className='date'>{`${startDate} ~ ${endDate}`}</div>
-              </FeedInfoStyled>
+      {myPostList &&
+        myPostList.map(post => {
+          const {id, title, detail, location, hashtag, likeCount, startDate, endDate, baseUrl, storeFileUrl} = post
+          return (
+            <FeedStyled key={id}>
+              <ImgBox>
+                <img src={`${baseUrl}${storeFileUrl[0]}`} />
+                <div onClick={e => handleClickOutside(e, id)} />
+                <MenuButton className='circle-button' onClick={e => handleOptionClick(e, id)}>
+                  <div className='circle' />
+                  <div className='circle' />
+                  <div className='circle' />
+                </MenuButton>
+                {openMenuPostId === id && ( // Render the menu only for the selected post
+                  <OptionList>
+                    <OptionsButton onClick={e => handleDeletePost(e, id)}>삭제</OptionsButton>
+                    <OptionsButton onClick={e => handleEditPost(e, id)}>편집</OptionsButton>
+                  </OptionList>
+                )}
+              </ImgBox>
+              <div className='text'>
+                <FeedInfoStyled to={`/PostDetail/${id}`}>
+                  <div className='title'>{title}</div>
+                  <div className='location'>
+                    <IoLocationSharp />
+                    <span>{location}</span>
+                  </div>
+                  <div className='date'>{`${startDate} ~ ${endDate}`}</div>
+                </FeedInfoStyled>
 
-              <FeedLikeStyled>
-                <LikeButtonStyled>
-                  <BsFillSuitHeartFill />
-                </LikeButtonStyled>
-                <div>{likeCount}</div>
-              </FeedLikeStyled>
-            </div>
-          </FeedStyled>
-        )
-      })}
+                <FeedLikeStyled>
+                  <LikeButtonStyled>
+                    <BsFillSuitHeartFill />
+                  </LikeButtonStyled>
+                  <div>{likeCount}</div>
+                </FeedLikeStyled>
+              </div>
+            </FeedStyled>
+          )
+        })}
     </PostListStyled>
   )
 }

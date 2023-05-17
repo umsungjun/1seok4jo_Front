@@ -1,4 +1,4 @@
-import {useEffect, useState, useRef, useCallback} from 'react'
+import {useEffect, useState, useCallback} from 'react'
 import MainBanner from '../Component/MainBanner'
 import ThemeSlide from '../Common/ThemeSlide'
 import PostList from '../Component/PostList'
@@ -29,9 +29,16 @@ export default function MainPage() {
     if (lastPost) {
       setLastId(lastPost.postId)
     }
-    console.log('themePostList', themePostList)
-    console.log('lastId', lastId)
   }, [themePostList])
+
+  useEffect(() => {
+    ;(async () => {
+      setIsLoading(true)
+      const postList = await fetchThemePostListApi(categoryId)
+      setThemePostList(postList.result)
+      setIsLoading(false)
+    })()
+  }, [categoryId])
 
   const onLoadMore = useCallback(async () => {
     if (themePostList.length === 0) {
@@ -44,7 +51,6 @@ export default function MainPage() {
     const nextPosts = await fetchThemeScrollApi(categoryId, lastId)
     setThemePostList([...themePostList, ...nextPosts.result])
     setIsLoading(false)
-    console.log('nextPosts:', nextPosts)
   }, [categoryId, lastId, themePostList])
 
   const [infiniteRef] = useInfiniteScroll({
@@ -54,15 +60,6 @@ export default function MainPage() {
     disabled: false,
     rootMargin: '0px 0px 0px 0px',
   })
-
-  useEffect(() => {
-    ;(async () => {
-      setIsLoading(true)
-      const postList = await fetchThemePostListApi(categoryId)
-      setThemePostList(postList.result)
-      setIsLoading(false)
-    })()
-  }, [categoryId])
 
   return (
     <MainSection theme={theme}>
