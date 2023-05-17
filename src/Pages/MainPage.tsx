@@ -1,4 +1,4 @@
-import {useEffect, useState, useRef, useCallback} from 'react'
+import {useEffect, useState, useCallback} from 'react'
 import MainBanner from '../Component/MainBanner'
 import ThemeSlide from '../Common/ThemeSlide'
 import PostList from '../Component/PostList'
