@@ -1,6 +1,5 @@
 import {FormEvent, FormEventHandler, useEffect, useState} from 'react'
 import {useNavigate, useParams} from 'react-router-dom'
-import axios from 'axios'
 import {useCookies} from 'react-cookie'
 import DatePicker from 'react-datepicker'
 import DaumPostcode from 'react-daum-postcode'
@@ -17,7 +16,6 @@ import {fetchPostEditApi} from '../Service/postWriteService'
 export default function PostEditPage() {
   scrollToTop()
   const navigate = useNavigate()
-  const remote = axios.create()
   const {id} = useParams()
 
   const [title, setTitle] = useState('')

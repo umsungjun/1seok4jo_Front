@@ -24,5 +24,5 @@ export const fetchThemePostDetailApi = async (id: number) => {
 
   const response = await remote.get(postDetailURL)
 
-  return response.data
+  return response.data.result
 }
