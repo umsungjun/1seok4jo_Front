@@ -4,7 +4,6 @@ import {BsFillSuitHeartFill, BsSuitHeart} from 'react-icons/bs'
 import {IoLocationSharp} from 'react-icons/io5'
 import {Link, useNavigate} from 'react-router-dom'
 import {useCookies} from 'react-cookie'
-import axios from 'axios'
 import {fetchPostDeleteApi} from '../Service/postWriteService'
 interface MyPagePostListType {
   myPostList: {
@@ -25,8 +24,7 @@ export default function MyPageList({myPostList}: MyPagePostListType) {
   const navigate = useNavigate()
   const [cookies] = useCookies(['token'])
   const token = cookies.token
-  const remote = axios.create()
-  const [openMenuPostId, setOpenMenuPostId] = useState<number | null>(null) // Add new state variable
+  const [openMenuPostId, setOpenMenuPostId] = useState<number | null>(null)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
 
   const handleDeletePost = async (e: React.MouseEvent<HTMLButtonElement>, id: number) => {
@@ -51,15 +49,12 @@ export default function MyPageList({myPostList}: MyPagePostListType) {
 
   const handleEditPost = (e: React.MouseEvent<HTMLButtonElement>, postId: number) => {
     e.stopPropagation()
-    // console.log('편집 클릭')
     navigate(`/PostEdit/${postId}`)
   }
   const handleOptionClick = (e: React.MouseEvent<HTMLButtonElement>, postId: number) => {
     e.preventDefault()
     e.stopPropagation()
-    // console.log('옵션 클릭')
-    // setIsMenuOpen(!isMenuOpen)
-    setOpenMenuPostId(postId === openMenuPostId ? null : postId) // Set the postId to open the menu only for the selected post
+    setOpenMenuPostId(postId === openMenuPostId ? null : postId)
   }
 
   const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>, postId: number) => {
