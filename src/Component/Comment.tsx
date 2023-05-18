@@ -129,7 +129,7 @@ const Comment: React.FC<CommentProps> = () => {
       return
     }
     try {
-      const success = await fetchDeleteCommentApi(Number(id), commentId, token)
+      const success = await fetchDeleteCommentApi(commentId, token)
       if (success) {
         setComments(comments.filter(comment => comment.commentId !== commentId))
         alert('삭제 완료!')

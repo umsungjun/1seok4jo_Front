@@ -108,13 +108,12 @@ export const fetchEditCommentApi = async (
 }
 
 // 댓글 삭제
-export const fetchDeleteCommentApi = async (id: number, commentId: number, token: string) => {
-  const url = `http://localhost:8080/${id}/comment/${commentId}`
+export const fetchDeleteCommentApi = async (commentId: number, token: string) => {
+  const url = `http://localhost:8080/comment/${commentId}`
 
   try {
     const response = await axios.delete(url, {
       headers: {
-        'Content-Type': 'application/json',
         Authorization: token,
       },
     })
