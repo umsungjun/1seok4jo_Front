@@ -1,6 +1,5 @@
 import {FormEvent, FormEventHandler, useEffect, useState} from 'react'
 import {useNavigate, useParams} from 'react-router-dom'
-import axios from 'axios'
 import {useCookies} from 'react-cookie'
 import DatePicker from 'react-datepicker'
 import DaumPostcode from 'react-daum-postcode'
@@ -11,11 +10,12 @@ import {FaMapMarkerAlt} from 'react-icons/fa'
 import {RiCloseFill} from 'react-icons/ri'
 import {scrollToTop} from '../util/scrollToTop'
 import {text} from 'express'
+import {fetchThemePostDetailApi} from '../Service/postDetailService'
+import {fetchPostEditApi} from '../Service/postWriteService'
 
 export default function PostEditPage() {
   scrollToTop()
   const navigate = useNavigate()
-  const remote = axios.create()
   const {id} = useParams()
 
   const [title, setTitle] = useState('')
@@ -32,13 +32,11 @@ export default function PostEditPage() {
   const [cookies] = useCookies(['token'])
   const token = cookies.token
   const [fileList, setFileList] = useState<File[]>([])
-  const [postId, setPostId] = useState(id)
 
   useEffect(() => {
     const fetchPostData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/post/${postId}`)
-        const postData = response.data.result
+        const postData = await fetchThemePostDetailApi(Number(id))
         setTitle(postData.title)
         setContent(postData.detail)
         setAddress(postData.location)
@@ -46,13 +44,12 @@ export default function PostEditPage() {
         setPrevFinishDate(postData.endDate.toISOString)
         setHashtag(postData.hashtag.split(','))
         setCategoryId(postData.themeId)
-        // setImageNames(postData.storeFileUrl)
       } catch (error) {
         console.error(error)
       }
     }
     fetchPostData()
-  }, [postId])
+  }, [id])
 
   const onChangeOpenPost = () => {
     setIsOpenPost(!isOpenPost)
@@ -83,22 +80,16 @@ export default function PostEditPage() {
     }
     const dataBlob = new Blob([JSON.stringify(data)], {type: 'application/json'})
     formData.append('data', dataBlob)
-    const headers = {
-      'Content-Type': 'multipart/form-data',
-      Authorization: token,
-    }
+
     try {
-      const response = await remote.put(`http://localhost:8080/post/${postId}`, formData, {headers})
-      console.log(response.data)
-      if (response.data.code === 200) {
+      const response = await fetchPostEditApi(Number(id), formData, token)
+      if (response.code === 200) {
         alert('게시글이 수정되었습니다.')
         navigate('/MyPage')
       } else {
-        alert(response.data.message)
-        console.log(response.data.message)
+        alert(response.message)
       }
     } catch (error) {
-      console.error(error)
       throw error
     }
   }

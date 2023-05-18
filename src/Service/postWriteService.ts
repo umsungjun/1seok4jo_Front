@@ -18,8 +18,8 @@ export const fetchPostWriteApi = async (formData: FormData, token: string) => {
 }
 
 // 글 수정
-export const fetchPostEditApi = async (formData: FormData, token: string, postId: number) => {
-  const postEditURL = `http://localhost:8080/post/${postId}`
+export const fetchPostEditApi = async (id: number, formData: FormData, token: string) => {
+  const postEditURL = `http://localhost:8080/post/${id}`
   const headers = {
     'Content-Type': 'multipart/form-data',
     Authorization: token,

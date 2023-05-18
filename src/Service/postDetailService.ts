@@ -19,10 +19,10 @@ export interface PostDetailInterface {
   userProfileImage: string
 }
 
-export const fetchThemePostDetailApi = async (postId: number) => {
-  const postDetailURL = `http://localhost:8080/post/${postId}`
+export const fetchThemePostDetailApi = async (id: number) => {
+  const postDetailURL = `http://localhost:8080/post/${id}`
 
   const response = await remote.get(postDetailURL)
 
-  return response.data
+  return response.data.result
 }
