@@ -1,14 +1,11 @@
 import React, {useState} from 'react'
-import {useSelector} from 'react-redux'
-import {RootState} from '../Store'
-import {MyPostListType} from '../Service/myPageService'
 import styled from 'styled-components'
-
 import {BsFillSuitHeartFill, BsSuitHeart} from 'react-icons/bs'
 import {IoLocationSharp} from 'react-icons/io5'
 import {Link, useNavigate} from 'react-router-dom'
 import {useCookies} from 'react-cookie'
 import axios from 'axios'
+import {fetchPostDeleteApi} from '../Service/postWriteService'
 interface MyPagePostListType {
   myPostList: {
     id: number
@@ -29,33 +26,24 @@ export default function MyPageList({myPostList}: MyPagePostListType) {
   const [cookies] = useCookies(['token'])
   const token = cookies.token
   const remote = axios.create()
-  const user = useSelector((state: RootState) => state.user)
   const [openMenuPostId, setOpenMenuPostId] = useState<number | null>(null) // Add new state variable
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
 
-  const handleDeletePost = async (e: React.MouseEvent<HTMLButtonElement>, postId: number) => {
+  const handleDeletePost = async (e: React.MouseEvent<HTMLButtonElement>, id: number) => {
     e.stopPropagation()
-    // console.log('삭제 클릭')
     const confirmed = window.confirm('정말 삭제하시겠습니까?')
     if (!confirmed) {
       return
     }
-    const headers = {
-      'Content-Type': 'multipart/form-data',
-      Authorization: token,
-    }
     try {
-      const response = await remote.delete(`http://localhost:8080/post/${postId}`, {headers})
-      // console.log(response.data)
-      if (response.data.code === 200) {
+      const response = await fetchPostDeleteApi(token, id)
+      if (response.code === 200) {
         alert('게시글이 삭제되었습니다.')
         navigate('/MyPage')
       } else {
-        alert(response.data.message)
-        // console.log(response.data.message)
+        alert(response.message)
       }
     } catch (error) {
-      // console.error(error)
       throw error
     }
     setIsMenuOpen(!isMenuOpen)

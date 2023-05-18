@@ -76,11 +76,11 @@ export default function PostWritePage() {
 
     try {
       const response = await fetchPostWriteApi(formData, token)
-      if (response.data.code === 200) {
+      if (response.code === 200) {
         alert('게시글이 등록되었습니다.')
         navigate('/MyPage')
       } else {
-        alert(response.data.message)
+        alert(response.message)
       }
     } catch (error) {
       throw error
