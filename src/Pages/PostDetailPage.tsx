@@ -1,37 +1,49 @@
 import React, {useState, useEffect} from 'react'
-import styled from 'styled-components'
-import MapContainer from '../Component/MapContainer'
-import {PostListStyled} from '../Component/PostDetailFeed'
-import PostDetailFeed from '../Component/PostDetailFeed'
+import {useParams} from 'react-router-dom'
+import {useSelector} from 'react-redux'
 import {RWebShare} from 'react-web-share'
 import {FiShare} from 'react-icons/fi'
-import {BsSuitHeart} from 'react-icons/bs'
-import {BsSuitHeartFill} from 'react-icons/bs'
-import {PostDetailInfo} from '../Mock/postDetail'
-import type {PostDetailInfoInterface} from '../Interface/interface'
-import type {PostCommentInterface} from '../Interface/interface'
-import {scrollToTop} from '../util/scrollToTop'
-import {useParams} from 'react-router-dom'
+import {BsSuitHeart, BsSuitHeartFill} from 'react-icons/bs'
+import styled from 'styled-components'
 import {Swiper, SwiperSlide} from 'swiper/react'
 import SwiperCore, {Navigation, Scrollbar} from 'swiper'
+SwiperCore.use([Navigation, Scrollbar])
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/scrollbar'
-SwiperCore.use([Navigation, Scrollbar])
+
+import MapContainer from '../Component/MapContainer'
+import PostDetailFeed from '../Component/PostDetailFeed'
+import Comment from '../Component/Comment'
+
 import {PostDetailInterface, fetchThemePostDetailApi} from '../Service/postDetailService'
 import {fetchThemePostListApi} from '../Service/postThemeService'
-import Comment from '../Component/Comment'
-import {ThemePostListProps} from '../Component/PostList'
-import {fetchPostCommentApi, fetchGetCommentApi} from '../Service/postCommentService'
-import {useSelector} from 'react-redux'
+import {fetchGetCommentApi} from '../Service/postCommentService'
+
 import {RootState} from '../Store'
+import {scrollToTop} from '../util/scrollToTop'
 import {basicUser} from '../Mock/users'
+
+import {PostDetailInfo} from '../Mock/postDetail'
+import type {PostDetailInfoInterface} from '../Interface/interface'
+import type {PostCommentInterface} from '../Interface/interface'
 
 const PostDetailPage = () => {
   scrollToTop()
   const {id} = useParams()
-  const [themePostList, setThemePostList] = useState()
-  const [categoryId, setCategoryId] = useState(1)
+  const [themePostList, setThemePostList] = useState<
+    {
+      baseUrl: string
+      endDate: string
+      likeCount: number
+      location: string
+      postId: number
+      startDate: string
+      storeFileUrl: string[]
+      title: string
+    }[]
+  >([])
+  const [categoryId] = useState(1)
   const [postDetail, setPostDetail] = useState<PostDetailInterface>({
     baseUrl: '',
     commentCount: 0,
@@ -50,55 +62,59 @@ const PostDetailPage = () => {
   })
   const [commentList, setCommentList] = useState<PostCommentInterface[]>([])
   const user = useSelector((state: RootState) => state.user)
-  const userImage =
-    user.profileUrl === 'https://s3.ap-northeast-2.amazonaws.com/compass-s3-bucket/null'
-      ? basicUser.profile
-      : user.profileUrl
 
   useEffect(() => {
-    ;(async () => {
-      const postDetail = await fetchThemePostDetailApi(Number(id))
-      const commentList = await fetchGetCommentApi(Number(id))
-      // const comment = await fetchPostCommentApi(Number(id))
-      setPostDetail(postDetail.result)
-      setCommentList(commentList.result)
-      // setComment(comment.result)
-    })()
-    // console.log(id)
+    const fetchData = async () => {
+      try {
+        const postDetailResponse = await fetchThemePostDetailApi(Number(id))
+        const commentListResponse = await fetchGetCommentApi(Number(id))
+        setPostDetail(postDetailResponse.result)
+        setCommentList(commentListResponse.result)
+      } catch (error) {
+        console.error({error})
+        throw error
+      }
+    }
+
+    fetchData()
   }, [id])
 
   useEffect(() => {
-    ;(async () => {
-      const postList = await fetchThemePostListApi(categoryId)
-      const randomPosts: number[] = []
-      const postListLength = postList?.result.length
-      const currentPost = postList?.result.find((post: {postId: string | undefined}) => post.postId === id)
+    const fetchThemePostList = async () => {
+      try {
+        const postList = await fetchThemePostListApi(categoryId)
+        const currentPost = postList?.result.find((post: {postId: string | undefined}) => post.postId === id)
+        const randomPosts: number[] = []
+        const postListLength = postList?.result.length
 
-      while (randomPosts.length < 4) {
-        const randomIndex = Math.floor(Math.random() * postListLength)
-        const randomPost = postList?.result[randomIndex]
-        if (
-          randomPost.postId !== currentPost?.postId && // 현재 게시물과 다른 게시물
-          randomPost.categoryId === currentPost?.categoryId // 현재 게시물과 같은 카테고리
-        ) {
-          randomPosts.push(randomIndex)
+        while (randomPosts.length < 4) {
+          const randomIndex = Math.floor(Math.random() * postListLength)
+          const randomPost = postList?.result[randomIndex]
+          if (randomPost.postId !== currentPost?.postId && randomPost.categoryId === currentPost?.categoryId) {
+            randomPosts.push(randomIndex)
+          }
         }
+
+        const randomPostList = randomPosts.map(index => postList?.result[index])
+        console.log(randomPostList)
+        setThemePostList(randomPostList)
+      } catch (error) {
+        console.error('Error fetching theme post list:', error)
+        throw error
       }
+    }
 
-      const randomPostList = randomPosts?.map(index => postList?.result[index])
-      console.log(randomPostList)
-
-      setThemePostList(randomPostList)
-    })()
+    fetchThemePostList()
   }, [categoryId, id])
 
-  // console.log(postDetail)
-  // console.log(themePostList)
-  // console.log(commentList)
+  useEffect(() => {
+    const selectedPost = PostDetailInfo.find(post => post.id === parseInt(id as string))
+    setPost(selectedPost)
+  }, [id])
 
-  const [post, setPost] = useState<PostDetailInfoInterface>()
+  const [post, setPost] = useState<PostDetailInfoInterface | undefined>()
   const [isLiked, setIsLiked] = useState(false)
-  const [scrollbar, setScrollbar] = useState<{
+  const [scrollbar] = useState<{
     el: string
     hide: boolean
   }>({
@@ -124,19 +140,11 @@ const PostDetailPage = () => {
     setIsLiked(!isLiked)
   }
 
-  useEffect(() => {
-    const selectedPost = PostDetailInfo.find(post => post.id === parseInt(id as string))
-    setPost(selectedPost)
-  }, [id])
-
-  // if (!post) {
-  //   return <div>존재하지 않는 게시물입니다.</div>
-  // }
   const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
-  console.log(postDetail.userProfileImage)
 
   return (
     <Detail>
+      {/* Header component */}
       <Header>
         <Title>{postDetail.title}</Title>
         <Buttons>
@@ -154,12 +162,15 @@ const PostDetailPage = () => {
             </ShareButton>
           </RWebShare>
 
+          {/* LikeButton component */}
           <LikeButton type='submit'>
             {isLiked ? <BsSuitHeartFill onClick={handleClick} /> : <BsSuitHeart onClick={handleClick} />}
             좋아요
           </LikeButton>
         </Buttons>
       </Header>
+
+      {/* ImageArea component */}
       <ImageArea>
         {postDetail.storeFileUrl.map((url, index) => (
           <Image key={`${url}${index}`}>
@@ -167,6 +178,8 @@ const PostDetailPage = () => {
           </Image>
         ))}
       </ImageArea>
+
+      {/* SwiperArea component */}
       <SwiperArea>
         <Swiper {...slide_settings} scrollbar={scrollbar}>
           {postDetail.storeFileUrl.map((url, index) => (
@@ -192,6 +205,8 @@ const PostDetailPage = () => {
             댓글 {postDetail.commentCount}개 · 좋아요 {postDetail.likeCount}
           </Status>
         </Info>
+
+        {/* ContentBox component */}
         <ContentBox>
           <PostArea>
             <ProfileInfo>
@@ -206,6 +221,8 @@ const PostDetailPage = () => {
             {postDetail.detail}
           </PostArea>
         </ContentBox>
+
+        {/* HashtagTitle component */}
         <HashtagTitle>
           <Suggest># 이런 분들에게 추천합니다</Suggest>
           <Hashtag>{postDetail.hashtag}</Hashtag>
@@ -217,6 +234,8 @@ const PostDetailPage = () => {
         </CommentBox>
         <MapContainer />
       </Bottom>
+
+      {/* ThemePostList component */}
       <h4>같은 테마의 이런 곳은 어떨까요?</h4>
       <PostDetailFeed themePostList={themePostList} />
     </Detail>

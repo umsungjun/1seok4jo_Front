@@ -46,7 +46,6 @@ export default function PostEditPage() {
         setPrevFinishDate(postData.endDate.toISOString)
         setHashtag(postData.hashtag.split(','))
         setCategoryId(postData.themeId)
-        // setImageNames(postData.storeFileUrl)
       } catch (error) {
         console.error(error)
       }
