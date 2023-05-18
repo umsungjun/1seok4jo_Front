@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {useParams} from 'react-router-dom'
-import {useSelector} from 'react-redux'
+import {useCookies} from 'react-cookie'
 import {RWebShare} from 'react-web-share'
 import {FiShare} from 'react-icons/fi'
 import {BsSuitHeart, BsSuitHeartFill} from 'react-icons/bs'
@@ -61,13 +61,14 @@ const PostDetailPage = () => {
     userProfileImage: '',
   })
   const [commentList, setCommentList] = useState<PostCommentInterface[]>([])
-  const user = useSelector((state: RootState) => state.user)
+  const [cookies] = useCookies(['token'])
+  const token = cookies.token
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const postDetailResponse = await fetchThemePostDetailApi(Number(id))
-        const commentListResponse = await fetchGetCommentApi(Number(id))
+        const commentListResponse = await fetchGetCommentApi(Number(id), token)
         setPostDetail(postDetailResponse.result)
         setCommentList(commentListResponse.result)
       } catch (error) {
@@ -99,7 +100,6 @@ const PostDetailPage = () => {
         console.log(randomPostList)
         setThemePostList(randomPostList)
       } catch (error) {
-        console.error('Error fetching theme post list:', error)
         throw error
       }
     }

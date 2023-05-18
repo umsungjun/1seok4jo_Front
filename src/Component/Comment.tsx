@@ -2,16 +2,19 @@ import React, {useState, useRef, useEffect} from 'react'
 import {useParams} from 'react-router-dom'
 import {useCookies} from 'react-cookie'
 import styled from 'styled-components'
-import sangchu from '../Assets/sangchu.png'
 import type {CommentBubbleProps} from '../Interface/interface'
 import type {CommentProps} from '../Interface/interface'
-import axios from 'axios'
 import {useSelector} from 'react-redux'
 import {RootState} from '../Store'
 import {basicUser} from '../Mock/users'
+import {
+  fetchPostCommentApi,
+  fetchGetCommentApi,
+  fetchEditCommentApi,
+  fetchDeleteCommentApi,
+} from '../Service/postCommentService'
 
 const Comment: React.FC<CommentProps> = () => {
-  const remote = axios.create()
   const {id} = useParams()
   const user = useSelector((state: RootState) => state.user)
   const userId = user.userId
@@ -27,43 +30,28 @@ const Comment: React.FC<CommentProps> = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null)
   const [imageUrl, setImageUrl] = useState<string>('')
-  const [postId, setPostId] = useState(id)
   const [cookies] = useCookies(['token'])
   const token = cookies.token
 
   useEffect(() => {
-    console.log('정보', userId, postId)
-  }, [userId, postId])
-
-  useEffect(() => {
     ;(async () => {
       try {
-        const response = await remote.get(`http://localhost:8080/post/${postId}/comment`, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: token,
-          },
-        })
-        if (response.data.code === 200) {
-          console.log('성공')
-          setComments(response.data.result)
-          setEditingCommentId(response.data.result[0].commentId)
-          setImageUrl(response.data.result[0].imageUrl)
-        } else {
-          console.error('에러')
-        }
+        const comments = await fetchGetCommentApi(Number(id), token)
+        setComments(comments.result)
+        setEditingCommentId(comments.result[0].commentId)
+        setImageUrl(comments.result[0].imageUrl)
       } catch (error) {
-        console.error('에러', error)
+        throw error
       }
     })()
-  }, [postId])
+  }, [id])
 
   const handleNewCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log('inputValue', newCommentText)
     const newComment: CommentBubbleProps = {
       userId: userId,
-      postId: Number(postId),
+      postId: Number(id),
       content: newCommentText,
       createdTime: new Date(),
       nickName: '',
@@ -72,44 +60,21 @@ const Comment: React.FC<CommentProps> = () => {
     setComments([...comments, newComment])
     setNewCommentText('')
     console.log('댓글정보', newComment)
+
     try {
-      const response = await remote.post(
-        `http://localhost:8080/${postId}/comment`,
-        {
-          userId: userId,
-          postId: Number(postId),
-          content: newCommentText,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: token,
-          },
-        },
-      )
-      if (response.data.code === 200) {
-        console.log('성공')
-        const response = await remote.get(`http://localhost:8080/post/${postId}/comment`, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: token,
-          },
-        })
-        if (response.data.code === 200) {
-          console.log('성공')
-          setComments(response.data.result)
-          setEditingCommentId(response.data.result[0].commentId)
-          setImageUrl(response.data.result[0].imageUrl)
-        } else {
-          console.error('에러')
-        }
-        // setComments([...comments, newComment])
-        // setNewCommentText('')
+      const success = await fetchPostCommentApi(Number(id), userId, newCommentText, token)
+      if (success) {
+        console.log('댓글 작성 성공')
+
+        const commentsResponse = await fetchGetCommentApi(Number(id), token)
+        setComments(commentsResponse)
+        setEditingCommentId(commentsResponse[0]?.commentId)
+        setImageUrl(commentsResponse[0]?.imageUrl)
       } else {
-        console.error('에러')
+        console.error('댓글 작성 에러')
       }
     } catch (error) {
-      console.error('에러', error)
+      console.error('댓글 작성 에러', error)
     }
   }
 
@@ -117,23 +82,10 @@ const Comment: React.FC<CommentProps> = () => {
     e.preventDefault()
     console.log('수정')
     console.log('수정된 댓글', editedCommentText)
-    try {
-      const response = await remote.put(
-        `http://localhost:8080/${postId}/comment/${editingCommentId}`,
 
-        {
-          userId: userId,
-          postId: Number(postId),
-          content: editedCommentText,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: token,
-          },
-        },
-      )
-      if (response.data.code === 200) {
+    try {
+      const success = await fetchEditCommentApi(Number(id), editingCommentId, userId, editedCommentText, token)
+      if (success) {
         console.log('수정 완료!')
         const updatedComments = comments.map(comment => {
           if (comment.commentId === editingCommentId) {
@@ -150,11 +102,13 @@ const Comment: React.FC<CommentProps> = () => {
         alert('수정 완료')
       } else {
         console.error('수정 에러')
+        alert('수정 에러')
       }
     } catch (error) {
-      alert('수정 에러')
       console.error('수정 에러', error)
+      alert('수정 에러')
     }
+
     setIsEditing(false)
   }
 
@@ -188,27 +142,22 @@ const Comment: React.FC<CommentProps> = () => {
     if (!confirmed) {
       return
     }
-    const headers = {
-      Authorization: token,
-    }
     try {
-      const response = await remote.delete(`http://localhost:8080/comment/${commentId}`, {headers})
-      console.log(response.data)
-      if (response.data.code === 200) {
+      const success = await fetchDeleteCommentApi(Number(id), commentId, token)
+      if (success) {
         setComments(comments.filter(comment => comment.commentId !== commentId))
         alert('삭제 완료!')
       } else {
-        alert(response.data.message)
-        console.log(response.data.message)
+        console.error('삭제 에러')
+        alert('삭제 에러')
       }
     } catch (error) {
       console.error(error)
-      throw error
+      alert('삭제 에러')
     }
   }
   // 인풋빈값일때 전송버튼 disabled
   const isInputEmpty = newCommentText.trim() === ''
-  console.log(imageUrl)
 
   return (
     <CommentContainer>
@@ -216,9 +165,6 @@ const Comment: React.FC<CommentProps> = () => {
         {comments.map(comment => (
           <NewComment key={comment.commentId}>
             <div className='info'>
-              {/* <img src={`https://s3.ap-northeast-2.amazonaws.com/compass-s3-bucket/${imageUrl}`} alt='유저프로필' /> */}
-              {/* <h1>{comment.nickName}</h1> */}
-
               {userId === comment.userId ? (
                 <>
                   <img src={userImage} alt='유저프로필' />

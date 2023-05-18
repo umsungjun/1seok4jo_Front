@@ -12,18 +12,121 @@ export interface PostCommentInterface {
   updatedAt: string
 }
 
-export const fetchGetCommentApi = async (postId: number) => {
-  const postCommentURL = `http://localhost:8080/post/${postId}/comment`
+// 댓글 조회
+export const fetchGetCommentApi = async (id: number, token: string) => {
+  const postCommentURL = `http://localhost:8080/post/${id}/comment`
 
-  const response = await remote.get(postCommentURL)
+  try {
+    const response = await remote.get(postCommentURL, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    })
 
-  return response.data
+    if (response.data.code === 200) {
+      return response.data.result
+    } else {
+      console.error('에러')
+      return []
+    }
+  } catch (error) {
+    console.error('에러', error)
+    return []
+  }
 }
 
-export const fetchPostCommentApi = async (postId: number) => {
-  const postCommentURL = `http://localhost:8080/${postId}/comment`
+// 댓글 생성
+export const fetchPostCommentApi = async (id: number, userId: number, content: string, token: string) => {
+  const url = `http://localhost:8080/${id}/comment`
 
-  const response = await remote.post(postCommentURL)
+  try {
+    const response = await axios.post(
+      url,
+      {
+        userId: userId,
+        postId: Number(id),
+        content: content,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      },
+    )
 
-  return response.data
+    if (response.data.code === 200) {
+      return true // Successful comment post
+    } else {
+      console.error('댓글 작성 에러')
+      return false // Comment post error
+    }
+  } catch (error) {
+    console.error('댓글 작성 에러', error)
+    return false // Comment post error
+  }
+}
+
+// 댓글 수정
+
+export const fetchEditCommentApi = async (
+  id: number,
+  editingCommentId: number,
+  userId: number,
+  editedCommentText: string,
+  token: string,
+) => {
+  const url = `http://localhost:8080/${id}/comment/${editingCommentId}`
+
+  try {
+    const response = await axios.put(
+      url,
+      {
+        userId: userId,
+        postId: Number(id),
+        content: editedCommentText,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      },
+    )
+
+    if (response.data.code === 200) {
+      return true // Successful edit
+    } else {
+      console.error('수정 에러')
+      return false // Edit error
+    }
+  } catch (error) {
+    console.error('수정 에러', error)
+    return false // Edit error
+  }
+}
+
+// 댓글 삭제
+export const fetchDeleteCommentApi = async (id: number, commentId: number, token: string) => {
+  const url = `http://localhost:8080/${id}/comment/${commentId}`
+
+  try {
+    const response = await axios.delete(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    })
+
+    if (response.data.code === 200) {
+      return true // Successful delete
+    } else {
+      console.error('삭제 에러')
+      return false // Delete error
+    }
+  } catch (error) {
+    console.error('삭제 에러', error)
+    return false // Delete error
+  }
 }
