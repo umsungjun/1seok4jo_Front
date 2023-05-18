@@ -13,6 +13,7 @@ import {scrollToTop} from '../util/scrollToTop'
 import {FaMapMarkerAlt} from 'react-icons/fa'
 import {RiCloseFill} from 'react-icons/ri'
 import {AiOutlinePaperClip} from 'react-icons/ai'
+import {fetchPostWriteApi} from '../Service/postWriteService'
 
 export default function PostWritePage() {
   scrollToTop()
@@ -72,12 +73,9 @@ export default function PostWritePage() {
     }
     const dataBlob = new Blob([JSON.stringify(data)], {type: 'application/json'})
     formData.append('data', dataBlob)
-    const headers = {
-      'Content-Type': 'multipart/form-data',
-      Authorization: token,
-    }
+
     try {
-      const response = await remote.post('http://localhost:8080/post', formData, {headers})
+      const response = await fetchPostWriteApi(formData, token)
       if (response.data.code === 200) {
         alert('게시글이 등록되었습니다.')
         navigate('/MyPage')
