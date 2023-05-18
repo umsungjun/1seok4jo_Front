@@ -37,7 +37,8 @@ export default function MyPageList({myPostList}: MyPagePostListType) {
       const response = await fetchPostDeleteApi(token, id)
       if (response.code === 200) {
         alert('게시글이 삭제되었습니다.')
-        navigate('/MyPage')
+        navigate('/MyPage', {replace: true})
+        window.location.reload()
       } else {
         alert(response.message)
       }
