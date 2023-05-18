@@ -29,10 +29,10 @@ export default function PostWritePage() {
   const [content, setContent] = useState('')
   const [createdAt, setCreatedAt] = useState(new Date())
   const [categoryId, setCategoryId] = useState(3)
-
   const [cookies] = useCookies(['token'])
   const token = cookies.token
   const [fileList, setFileList] = useState<File[]>([])
+
   const onChangeOpenPost = () => {
     setIsOpenPost(!isOpenPost)
   }
@@ -56,7 +56,6 @@ export default function PostWritePage() {
     }
 
     const formData = new FormData()
-    console.log('fileList', fileList)
 
     const data = {
       title,
@@ -79,16 +78,13 @@ export default function PostWritePage() {
     }
     try {
       const response = await remote.post('http://localhost:8080/post', formData, {headers})
-      console.log(response.data)
       if (response.data.code === 200) {
         alert('게시글이 등록되었습니다.')
         navigate('/MyPage')
       } else {
         alert(response.data.message)
-        console.log(response.data.message)
       }
     } catch (error) {
-      console.error(error)
       throw error
     }
   }
@@ -99,12 +95,6 @@ export default function PostWritePage() {
       alert('이미지 첨부 갯수를 조정해주세요!')
       return
     }
-    //     const imageNames = []
-    //     for (let i = 0; i < fileList.length; i++) {
-    //       const file = fileList[i]
-    //
-    //       imageNames.push(file)
-    //     }
     setImageNames(Array.from(file).map(file => file.name))
     setFileList(prev => prev.concat(Array.from(file)))
   }
