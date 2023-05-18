@@ -1,10 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import MyPageBanner from '../Common/MyPageBanner'
 import styled from 'styled-components'
-
 import {scrollToTop} from '../util/scrollToTop'
-import {useSelector} from 'react-redux'
-import {RootState} from '../Store'
 import {MyPostListType, fetchPostListApi} from '../Service/myPageService'
 import {useCookies} from 'react-cookie'
 import MyPageList from '../Component/MyPageList'
@@ -13,9 +10,8 @@ export default function MyPage() {
   scrollToTop()
   const [active, setActive] = useState(true)
   const [chooseMyPost, setChooseMyPost] = useState(true)
-  const user = useSelector((state: RootState) => state.user)
-  const [cookie, setCookie] = useCookies(['token'])
-  const token = cookie.token
+  const [cookies] = useCookies(['token'])
+  const token = cookies.token
   const [myPostList, setMyPostList] = useState<MyPostListType>({
     count: 0,
     postResponseList: [

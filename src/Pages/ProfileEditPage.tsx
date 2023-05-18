@@ -1,9 +1,7 @@
 import React, {useState} from 'react'
 import MyPageBanner from '../Common/MyPageBanner'
 import styled from 'styled-components'
-
 import ChangePassword from '../Popups/ChangePassword'
-
 import {scrollToTop} from '../util/scrollToTop'
 import {useCookies} from 'react-cookie'
 import NoToken from '../Common/NoToken'
