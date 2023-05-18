@@ -36,10 +36,10 @@ const Comment: React.FC<CommentProps> = () => {
   useEffect(() => {
     ;(async () => {
       try {
-        const comments = await fetchGetCommentApi(Number(id), token)
-        setComments(comments.result)
-        setEditingCommentId(comments.result[0].commentId)
-        setImageUrl(comments.result[0].imageUrl)
+        const commentsResponse = await fetchGetCommentApi(Number(id), token)
+        setComments(commentsResponse)
+        setEditingCommentId(commentsResponse[0]?.commentId)
+        setImageUrl(commentsResponse[0]?.imageUrl)
       } catch (error) {
         throw error
       }
@@ -48,7 +48,6 @@ const Comment: React.FC<CommentProps> = () => {
 
   const handleNewCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log('inputValue', newCommentText)
     const newComment: CommentBubbleProps = {
       userId: userId,
       postId: Number(id),
@@ -59,34 +58,28 @@ const Comment: React.FC<CommentProps> = () => {
     }
     setComments([...comments, newComment])
     setNewCommentText('')
-    console.log('댓글정보', newComment)
 
     try {
       const success = await fetchPostCommentApi(Number(id), userId, newCommentText, token)
       if (success) {
-        console.log('댓글 작성 성공')
-
         const commentsResponse = await fetchGetCommentApi(Number(id), token)
         setComments(commentsResponse)
         setEditingCommentId(commentsResponse[0]?.commentId)
         setImageUrl(commentsResponse[0]?.imageUrl)
       } else {
-        console.error('댓글 작성 에러')
+        alert('댓글 작성 에러')
       }
     } catch (error) {
-      console.error('댓글 작성 에러', error)
+      throw error
     }
   }
 
   const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>, editingCommentId: number) => {
     e.preventDefault()
-    console.log('수정')
-    console.log('수정된 댓글', editedCommentText)
 
     try {
       const success = await fetchEditCommentApi(Number(id), editingCommentId, userId, editedCommentText, token)
       if (success) {
-        console.log('수정 완료!')
         const updatedComments = comments.map(comment => {
           if (comment.commentId === editingCommentId) {
             return {
@@ -101,12 +94,10 @@ const Comment: React.FC<CommentProps> = () => {
         setNewCommentText('')
         alert('수정 완료')
       } else {
-        console.error('수정 에러')
         alert('수정 에러')
       }
     } catch (error) {
-      console.error('수정 에러', error)
-      alert('수정 에러')
+      throw error
     }
 
     setIsEditing(false)
@@ -114,17 +105,14 @@ const Comment: React.FC<CommentProps> = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewCommentText(e.target.value)
-    // console.log(newCommentText)
   }
 
   const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedCommentText(e.target.value)
-    console.log(editedCommentText)
   }
 
   const handleEdit = (e: React.MouseEvent<HTMLButtonElement>, commentId: number) => {
     e.preventDefault()
-    console.log('수정')
     setIsEditing(true)
     setEditingCommentId(commentId)
     const comment = comments.find(comment => comment.commentId === commentId)
@@ -132,12 +120,10 @@ const Comment: React.FC<CommentProps> = () => {
       setPrevCommentText(comment.content)
       setEditedCommentText(comment.content)
     }
-    console.log('수정할 댓글 아이디', commentId)
   }
 
   const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>, commentId: number) => {
     e.preventDefault()
-    console.log('삭제')
     const confirmed = window.confirm('정말 삭제하시겠습니까?')
     if (!confirmed) {
       return
@@ -148,11 +134,9 @@ const Comment: React.FC<CommentProps> = () => {
         setComments(comments.filter(comment => comment.commentId !== commentId))
         alert('삭제 완료!')
       } else {
-        console.error('삭제 에러')
         alert('삭제 에러')
       }
     } catch (error) {
-      console.error(error)
       alert('삭제 에러')
     }
   }
