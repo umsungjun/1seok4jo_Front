@@ -1,5 +1,4 @@
 import axios from 'axios'
-
 const remote = axios.create()
 
 // 글 작성
@@ -13,7 +12,7 @@ export const fetchPostWriteApi = async (formData: FormData, token: string) => {
     const response = await remote.post(postWriteURL, formData, {headers})
     return response.data
   } catch (error) {
-    throw error
+    console.error(error)
   }
 }
 
@@ -28,7 +27,7 @@ export const fetchPostEditApi = async (id: number, formData: FormData, token: st
     const response = await remote.put(postEditURL, formData, {headers})
     return response.data
   } catch (error) {
-    throw error
+    console.error(error)
   }
 }
 
@@ -42,6 +41,6 @@ export const fetchPostDeleteApi = async (token: string, id: number) => {
     const response = await remote.delete(postDeleteURL, {headers})
     return response.data
   } catch (error) {
-    throw error
+    console.error(error)
   }
 }

@@ -20,9 +20,7 @@ import {PostDetailInterface, fetchThemePostDetailApi} from '../Service/postDetai
 import {fetchThemePostListApi} from '../Service/postThemeService'
 import {fetchGetCommentApi} from '../Service/postCommentService'
 
-import {RootState} from '../Store'
 import {scrollToTop} from '../util/scrollToTop'
-import {basicUser} from '../Mock/users'
 
 import {PostDetailInfo} from '../Mock/postDetail'
 import type {PostDetailInfoInterface} from '../Interface/interface'
@@ -68,9 +66,7 @@ const PostDetailPage = () => {
     const fetchData = async () => {
       try {
         const postDetailResponse = await fetchThemePostDetailApi(Number(id))
-        const commentListResponse = await fetchGetCommentApi(Number(id), token)
-        setPostDetail(postDetailResponse.result)
-        setCommentList(commentListResponse.result)
+        setPostDetail(postDetailResponse)
       } catch (error) {
         console.error({error})
         throw error

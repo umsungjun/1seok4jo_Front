@@ -41,6 +41,7 @@ const Comment: React.FC<CommentProps> = () => {
         setEditingCommentId(commentsResponse[0]?.commentId)
         setImageUrl(commentsResponse[0]?.imageUrl)
       } catch (error) {
+        console.error(error)
         throw error
       }
     })()
@@ -70,6 +71,7 @@ const Comment: React.FC<CommentProps> = () => {
         alert('댓글 작성 에러')
       }
     } catch (error) {
+      console.error(error)
       throw error
     }
   }
@@ -97,6 +99,7 @@ const Comment: React.FC<CommentProps> = () => {
         alert('수정 에러')
       }
     } catch (error) {
+      console.error(error)
       throw error
     }
 
@@ -137,7 +140,7 @@ const Comment: React.FC<CommentProps> = () => {
         alert('삭제 에러')
       }
     } catch (error) {
-      alert('삭제 에러')
+      console.error(error)
     }
   }
   // 인풋빈값일때 전송버튼 disabled

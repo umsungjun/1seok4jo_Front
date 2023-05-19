@@ -69,7 +69,6 @@ export const fetchPostCommentApi = async (id: number, userId: number, content: s
 }
 
 // 댓글 수정
-
 export const fetchEditCommentApi = async (
   id: number,
   editingCommentId: number,
