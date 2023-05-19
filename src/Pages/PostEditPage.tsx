@@ -17,18 +17,15 @@ export default function PostEditPage() {
   scrollToTop()
   const navigate = useNavigate()
   const {id} = useParams()
-
+  const [categoryId, setCategoryId] = useState<number>(1)
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [address, setAddress] = useState('')
   const [isOpenPost, setIsOpenPost] = useState(false)
-  const [prevStartDate, setPrevStartDate] = useState(new Date())
-  const [prevFinishDate, setPrevFinishDate] = useState(new Date())
   const [startDate, setStartDate] = useState(new Date())
   const [finishDate, setFinishDate] = useState(new Date())
   const [imageNames, setImageNames] = useState(['# 이미지첨부 버튼을 누르시고 이미지를 첨부해주세요.(최대 5장)'])
   const [hashtag, setHashtag] = useState<string[]>([])
-  const [categoryId, setCategoryId] = useState(1)
   const [cookies] = useCookies(['token'])
   const token = cookies.token
   const [fileList, setFileList] = useState<File[]>([])
@@ -40,8 +37,8 @@ export default function PostEditPage() {
         setTitle(postData.title)
         setContent(postData.detail)
         setAddress(postData.location)
-        setPrevStartDate(postData.startDate.toISOString)
-        setPrevFinishDate(postData.endDate.toISOString)
+        setStartDate(postData.startDate.toIsoString())
+        setFinishDate(postData.endDate.toIsoString())
         setHashtag(postData.hashtag.split(','))
         setCategoryId(postData.themeId)
       } catch (error) {
@@ -49,6 +46,7 @@ export default function PostEditPage() {
       }
     }
     fetchPostData()
+    console.log({startDate}, {finishDate})
   }, [id])
 
   const onChangeOpenPost = () => {
@@ -74,7 +72,6 @@ export default function PostEditPage() {
       hashtag: hashtag.toString(),
       themeId: `${categoryId}`,
     }
-    console.log('data', data)
     for (let list of fileList) {
       formData.append('images', list)
     }
@@ -90,7 +87,7 @@ export default function PostEditPage() {
         alert(response.message)
       }
     } catch (error) {
-      throw error
+      console.error(error)
     }
   }
 
@@ -133,7 +130,6 @@ export default function PostEditPage() {
           <Title># 날짜</Title>
           <DateBox>
             <DateText>시작 :</DateText>
-            {/* <DateText>{prevStartDate.toLocaleDateString}</DateText> */}
             <DatePickerBox>
               <DatePicker
                 dateFormat='yyyy.MM.dd'

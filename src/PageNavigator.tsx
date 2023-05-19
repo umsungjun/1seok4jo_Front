@@ -13,8 +13,6 @@ import PostEditPage from './Pages/PostEditPage'
 import SearchDetailPage from './Pages/SearchDetailPage'
 
 export default function PageNavigator() {
-  const navigate = useNavigate()
-  const location = useLocation()
   const [shouldShowDesktop, setShouldShowDesktop] = useState(false)
 
   useEffect(() => {

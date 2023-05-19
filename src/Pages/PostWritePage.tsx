@@ -18,8 +18,6 @@ import {fetchPostWriteApi} from '../Service/postWriteService'
 export default function PostWritePage() {
   scrollToTop()
   const navigate = useNavigate()
-  const remote = axios.create()
-  const {id} = useParams()
   const [address, setAddress] = useState('')
   const [isOpenPost, setIsOpenPost] = useState(false)
   const [startDate, setStartDate] = useState(new Date())

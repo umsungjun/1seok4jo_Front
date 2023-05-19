@@ -48,20 +48,20 @@ export default function MyPageList({myPostList}: MyPagePostListType) {
     setIsMenuOpen(!isMenuOpen)
   }
 
-  const handleEditPost = (e: React.MouseEvent<HTMLButtonElement>, postId: number) => {
+  const handleEditPost = (e: React.MouseEvent<HTMLButtonElement>, id: number) => {
     e.stopPropagation()
-    navigate(`/PostEdit/${postId}`)
+    navigate(`/PostEdit/${id}`)
   }
-  const handleOptionClick = (e: React.MouseEvent<HTMLButtonElement>, postId: number) => {
+  const handleOptionClick = (e: React.MouseEvent<HTMLButtonElement>, id: number) => {
     e.preventDefault()
     e.stopPropagation()
-    setOpenMenuPostId(postId === openMenuPostId ? null : postId)
+    setOpenMenuPostId(id === openMenuPostId ? null : id)
   }
 
-  const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>, postId: number) => {
+  const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>, id: number) => {
     e.preventDefault()
     e.stopPropagation()
-    if (openMenuPostId === postId) {
+    if (openMenuPostId === id) {
       setOpenMenuPostId(null)
     }
   }
@@ -80,7 +80,7 @@ export default function MyPageList({myPostList}: MyPagePostListType) {
                   <div className='circle' />
                   <div className='circle' />
                 </MenuButton>
-                {openMenuPostId === id && ( // Render the menu only for the selected post
+                {openMenuPostId === id && (
                   <OptionList>
                     <OptionsButton onClick={e => handleDeletePost(e, id)}>삭제</OptionsButton>
                     <OptionsButton onClick={e => handleEditPost(e, id)}>편집</OptionsButton>
