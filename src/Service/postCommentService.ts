@@ -95,14 +95,14 @@ export const fetchEditCommentApi = async (
     )
 
     if (response.data.code === 200) {
-      return true // Successful edit
+      return true
     } else {
       console.error('수정 에러')
-      return false // Edit error
+      return false
     }
   } catch (error) {
     console.error('수정 에러', error)
-    return false // Edit error
+    return false
   }
 }
 
@@ -118,13 +118,13 @@ export const fetchDeleteCommentApi = async (commentId: number, token: string) =>
     })
 
     if (response.data.code === 200) {
-      return true // Successful delete
+      return true
     } else {
       console.error('삭제 에러')
-      return false // Delete error
+      return false
     }
   } catch (error) {
     console.error('삭제 에러', error)
-    return false // Delete error
+    return false
   }
 }
