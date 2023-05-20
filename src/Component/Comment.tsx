@@ -140,7 +140,7 @@ const Comment: React.FC<CommentProps> = () => {
         alert('삭제 에러')
       }
     } catch (error) {
-      console.error(error)
+      console.error('삭제 에러', error)
     }
   }
   // 인풋빈값일때 전송버튼 disabled
