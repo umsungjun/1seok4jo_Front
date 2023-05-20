@@ -5,6 +5,9 @@
 
 ![image](https://github.com/1seok4jjo/1seok4jo_Front/assets/66244752/2dcafbf5-617a-4416-8028-1cf9bfed00d8)
 
+#### 시연 영상 링크:
+https://drive.google.com/file/d/1TbwsMCSeGHi0Du9lxwXTVvzyJ-tJADbO/view?usp=sharing
+
 <br />
 
 ### 🖼 **기획 배경**
